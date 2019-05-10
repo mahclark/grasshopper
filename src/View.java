@@ -1,4 +1,5 @@
-package PACKAGE_NAME;
+import javax.swing.*;
 
-public class View {
+public abstract class View extends JPanel {
+    public abstract void loadView();
 }
