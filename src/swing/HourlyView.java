@@ -1,13 +1,15 @@
+package swing;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class HourlyView extends View {
 
-    AppManager app;
+    private AppManager app;
 
-    JLabel  title = new JLabel("Secondary View");
-    JButton sharedButton;
+    private JLabel  title = new JLabel("Secondary swing.View");
+    private JButton sharedButton;
 
     public HourlyView(AppManager app, JButton button) {
         this.app = app;
@@ -27,7 +29,7 @@ public class HourlyView extends View {
             sharedButton.removeActionListener(listener);
         }
         sharedButton.addActionListener(e -> app.segueToInitial());
-        sharedButton.setBounds(60, 800, 220, 30);
+//        swing.Animator.animate(sharedButton, 60, 200, 1);
         add(sharedButton);
     }
 }

@@ -1,3 +1,5 @@
+package swing;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,6 +15,7 @@ public class AppManager extends JFrame {
         super(title);
         mainPanel.setLayout(cl);
         setSize(562,1000); // 0.75 scaled resolution of iPhone 8
+        setResizable(false);
 
         initialView = new InitialView(this, switchButton);
         secondaryView = new HourlyView(this, switchButton); //is there a better way to pass shared view components?
