@@ -34,6 +34,6 @@ public class InitialView extends View {
         sharedButton.addActionListener(e -> app.segueToSecond());
 
 //        swing.Animator.animate(sharedButton, 100, 500, 1);
-        add(sharedButton); //Automatically removes button from previous container
+//        add(sharedButton); //Automatically removes button from previous container
     }
 }

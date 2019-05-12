@@ -9,19 +9,23 @@ import java.util.Map;
 
 public class Main extends Application {
 
-    public final static int screenWidth = 562;
-    public final static int screenHeight = 1000;  // 0.75 scaled resolution of iPhone 8
+//    public final static int screenWidth = 562;
+//    public final static int screenHeight = 1000;  // 0.75 scaled resolution of iPhone 8
+
+    public final static int screenWidth = 375;
+    public final static int screenHeight = 667;  // 0.5 scaled resolution of iPhone 8
 
     private static Map<ViewName, View> views = new HashMap<>();
 
     public static Button sharedButton;
+    public static Graph temperatureGraph;
 
     @Override
     public void start(Stage stage) {
         stage.setResizable(false);
 
-        sharedButton = new Button("Shared Animated Button");
-
+        sharedButton = new Button("Shared Button");
+        temperatureGraph = new Graph();
 
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));

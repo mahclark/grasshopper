@@ -9,6 +9,5 @@ public abstract class View {
     private Scene scene;
 
     abstract void makeScene();
-    abstract Scene getScene();
     abstract void show();
 }

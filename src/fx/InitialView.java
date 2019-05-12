@@ -1,17 +1,11 @@
 package fx;
 
-import javafx.animation.TranslateTransition;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class InitialView extends View {
 
@@ -27,34 +21,20 @@ public class InitialView extends View {
         Button switchButton = Main.sharedButton;
         switchButton.setOnMousePressed(e -> Main.getViews().get(ViewName.HOURLY).show());
 
-        Pane pane = new Pane();
-        pane.getChildren().add(switchButton);
+        Pane root = new Pane();
 
-        TranslateTransition buttonTransition = new TranslateTransition();
-        buttonTransition.setDuration(Duration.seconds(0.2));
-        buttonTransition.setToX(20);
-        buttonTransition.setToY(50);
-        buttonTransition.setNode(switchButton);
-        buttonTransition.play();
+        root.getChildren().add(switchButton);
+        Animator.transition(switchButton, 20, 50, 0.2);
 
-        BorderPane root = new BorderPane();
-        root.setLeft(pane);
         Label label = new Label("Initial View");
         label.setFont(new Font(32));
-        root.setTop(label);
+        root.getChildren().add(label);
 
-        Button closeButton = new Button("Close");
-        closeButton.setOnMousePressed(e -> stage.close());
-        ButtonBar bbar = new ButtonBar();
-        bbar.setPadding(new Insets(10));
-        bbar.getButtons().add(closeButton);
-        root.setBottom(bbar);
+        Graph graph = Main.temperatureGraph;
+        root.getChildren().add(graph);
+        Animator.transition(graph, 0, 300, 0.2);
+
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
-    }
-
-    @Override
-    public Scene getScene() {
-        return scene;
     }
 
     @Override
