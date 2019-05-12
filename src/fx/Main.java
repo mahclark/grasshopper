@@ -20,7 +20,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         stage.setResizable(false);
 
-        sharedButton = new Button("Shared Button");
+        sharedButton = new Button("Shared Animated Button");
 
 
         views.put(ViewName.INITIAL, new InitialView(stage));

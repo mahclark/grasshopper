@@ -1,37 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0308660-8e75-4f01-9e67-9d65d3399469" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/META-INF/grasshopper.kotlin_module" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/HourlyView.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/InitialView.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/View.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/ViewName.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/swing/Animator$1ScheduleTask.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/swing/Animator.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/swing/AppManager.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/swing/HourlyView.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/swing/InitialView.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/grasshopper/swing/View.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fx/HourlyView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fx/InitialView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fx/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fx/View.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fx/ViewName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/swing/Animator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e0308660-8e75-4f01-9e67-9d65d3399469" name="Default Changelist" comment="Animated a shared object between views">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grasshopper.iml" beforeDir="false" afterPath="$PROJECT_DIR$/grasshopper.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/AppManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/HourlyView.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/InitialView.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/View.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AppManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/AppManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HourlyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/HourlyView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InitialView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/InitialView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/swing/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/fx/HourlyView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/HourlyView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/fx/InitialView.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/InitialView.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/fx/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/grasshopper/fx/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/grasshopper/swing/AppManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/grasshopper/swing/AppManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fx/HourlyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fx/HourlyView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fx/InitialView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fx/InitialView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fx/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fx/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -45,8 +23,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/swing/AppManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="16" lean-forward="true" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="64" />
+            <state relative-caret-position="136">
+              <caret line="11" column="47" lean-forward="true" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -54,11 +32,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/fx/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="38" lean-forward="true" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
+            <state relative-caret-position="187">
+              <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1141#1142#0" expanded="true" />
@@ -85,8 +63,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fx/InitialView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="841">
-              <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
+            <state relative-caret-position="496">
+              <caret line="51" column="74" selection-start-line="51" selection-start-column="74" selection-end-line="51" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#472#473#0" expanded="true" />
@@ -98,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/fx/HourlyView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="22" column="29" lean-forward="true" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+            <state relative-caret-position="405">
+              <caret line="51" column="74" selection-start-line="51" selection-start-column="74" selection-end-line="51" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#447#448#0" expanded="true" />
@@ -157,6 +135,7 @@
         <option value="$PROJECT_DIR$/src/fx/SceneName.java" />
         <option value="$PROJECT_DIR$/src/fx/ViewName.java" />
         <option value="$PROJECT_DIR$/src/fx/View.java" />
+        <option value="$PROJECT_DIR$/src/swing/AppManager.java" />
         <option value="$PROJECT_DIR$/src/fx/Main.java" />
         <option value="$PROJECT_DIR$/src/fx/InitialView.java" />
         <option value="$PROJECT_DIR$/src/fx/HourlyView.java" />
@@ -206,7 +185,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557674877596" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557676332264" />
     <property name="last_opened_file_path" value="C:/Program Files/Java/javafx-sdk-11.0.2/lib" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -286,7 +265,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49945828" visible="true" weight="0.12793177" />
       <window_info id="Structure" order="1" sideWeight="0.5005417" side_tool="true" weight="0.12793177" />
@@ -306,7 +284,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Messages" order="11" visible="true" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -316,6 +294,10 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Animated a shared object between views" />
+    <option name="LAST_COMMIT_MESSAGE" value="Animated a shared object between views" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/ShapeTest.java" />
@@ -364,16 +346,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/swing/AppManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="16" lean-forward="true" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/swing/Animator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -384,17 +356,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fx/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/fx/ViewName.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="38" lean-forward="true" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1141#1142#0" expanded="true" />
-            <element signature="e#1170#1171#0" expanded="true" />
-            <element signature="e#1162#1163#0" expanded="true" />
-            <element signature="e#1190#1191#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="34">
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -408,10 +373,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/swing/AppManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="11" column="47" lean-forward="true" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/fx/InitialView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="841">
-          <caret line="54" column="24" selection-start-line="54" selection-start-column="24" selection-end-line="54" selection-end-column="24" />
+        <state relative-caret-position="496">
+          <caret line="51" column="74" selection-start-line="51" selection-start-column="74" selection-end-line="51" selection-end-column="74" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#472#473#0" expanded="true" />
@@ -422,23 +397,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/fx/ViewName.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/fx/HourlyView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="22" column="29" lean-forward="true" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+        <state relative-caret-position="405">
+          <caret line="51" column="74" selection-start-line="51" selection-start-column="74" selection-end-line="51" selection-end-column="74" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#447#448#0" expanded="true" />
             <element signature="e#481#482#0" expanded="true" />
             <element signature="e#1412#1413#0" expanded="true" />
             <element signature="e#1440#1441#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/fx/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1141#1142#0" expanded="true" />
+            <element signature="e#1170#1171#0" expanded="true" />
+            <element signature="e#1162#1163#0" expanded="true" />
+            <element signature="e#1190#1191#0" expanded="true" />
           </folding>
         </state>
       </provider>
