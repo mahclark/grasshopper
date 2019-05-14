@@ -15,6 +15,7 @@ public class HourlyView extends View {
         this.stage = stage;
     }
 
+
     @Override
     public void makeScene() {
         Pane root = new Pane();

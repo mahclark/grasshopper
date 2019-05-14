@@ -1,5 +1,5 @@
 package fx;
 
 public enum ViewName {
-    INITIAL, HOURLY
+    INITIAL, HOURLY, SETTINGS
 }
