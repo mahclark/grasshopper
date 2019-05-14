@@ -24,7 +24,7 @@ public class HourlyView extends View {
         Pane root = new Pane();
 
         root.getChildren().add(switchButton);
-        Animator.transition(switchButton, 70, 50, 0.2);
+        Animator.transition(switchButton, 70, 600, 0.2);
 
         Label label = new Label("Hourly View");
         label.setFont(new Font(32));
@@ -32,8 +32,11 @@ public class HourlyView extends View {
 
         Graph graph = Main.temperatureGraph;
         root.getChildren().add(graph);
+        Animator.transition(graph, 0, 110, 0.2);
 
-        Animator.transition(graph, 0, 100, 0.2);
+        Selector selector = Main.selector;
+        root.getChildren().add(selector);
+        Animator.transition(selector, 0, 50, 0.2);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }

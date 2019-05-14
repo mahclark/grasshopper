@@ -19,6 +19,7 @@ public class Main extends Application {
 
     public static Button sharedButton;
     public static Graph temperatureGraph;
+    public static Selector selector;
 
     @Override
     public void start(Stage stage) {
@@ -26,6 +27,9 @@ public class Main extends Application {
 
         sharedButton = new Button("Shared Button");
         temperatureGraph = new Graph();
+        selector = new Selector();
+//        selector.fadeItems();
+//        selector.setHvalue(100);
 
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));

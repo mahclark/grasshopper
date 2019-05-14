@@ -4,6 +4,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -24,7 +26,7 @@ public class InitialView extends View {
         Pane root = new Pane();
 
         root.getChildren().add(switchButton);
-        Animator.transition(switchButton, 20, 50, 0.2);
+        Animator.transition(switchButton, 20, 600, 0.2);
 
         Label label = new Label("Initial View");
         label.setFont(new Font(32));
@@ -33,6 +35,10 @@ public class InitialView extends View {
         Graph graph = Main.temperatureGraph;
         root.getChildren().add(graph);
         Animator.transition(graph, 0, 300, 0.2);
+
+        Selector selector = Main.selector;
+        root.getChildren().add(selector);
+        Animator.transition(selector, 0, 50, 0.2);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }
