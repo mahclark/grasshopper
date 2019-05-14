@@ -28,6 +28,7 @@ public class Main extends Application {
 
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));
+        views.put(ViewName.SETTINGS, new SettingsView(stage));
 
         views.get(ViewName.INITIAL).show();
         stage.setTitle("Grasshopper");

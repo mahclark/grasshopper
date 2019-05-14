@@ -1,6 +1,7 @@
 package fx;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -30,6 +31,11 @@ public class InitialView extends View {
         Selector selector = Main.selector;
         root.getChildren().add(selector);
         Animator.transition(selector, 0, 50, 0.2);
+
+        Button settingsButton = new Button("Settings");
+        settingsButton.setOnAction(e -> Main.getViews().get(ViewName.SETTINGS).show());
+        root.getChildren().add(settingsButton);
+        Animator.transition(settingsButton, 10, Main.screenHeight - 35, 0.2);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }
