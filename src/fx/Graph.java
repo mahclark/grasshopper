@@ -2,15 +2,16 @@ package fx;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,56 +23,37 @@ public class Graph extends ScrollPane {
     private Pane content = new Pane();
 
     private int height = 200;
+    final double cellWidth = 40;
+    final int dotRadius = (int) cellWidth/7;
 
     private int rangeMin = 0;
     private int rangeMax = 24; //Index of the first value which won't be shown
 
+    public GraphCell selectedCell; //null when nothing selected
+
 //    double[] temperatures = new double[24];
-    Double[] temperatures = {6.0,6.0,6.0,6.0,7.0,7.0,8.0,9.0,10.0,11.0,13.0,14.0,15.0,15.0,15.0,16.0,15.0,13.0,11.0,9.0,8.0,8.0,8.0,7.0};
+    List<Double> temps = Arrays.asList(new Double[] {6.0,6.0,6.0,6.0,7.0,7.0,8.0,9.0,10.0,11.0,13.0,14.0,15.0,15.0,15.0,16.0,15.0,13.0,11.0,9.0,8.0,8.0,8.0,7.0});
 
     public Graph() {
-        assert temperatures.length == 24;
+        assert temps.size() == 24;
         assert rangeMin >= 0 && rangeMax <= 24 && rangeMin < rangeMax;
 
-        content.setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
-
-        List<Double> temps = Arrays.asList(temperatures);
-
-        double min = Collections.min(temps);
-        double max = Collections.max(temps);
+//        content.setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
 
         temps = temps.subList(rangeMin, rangeMax);
 
-        double cellWidth = 40;
-        int verticalPadding = 10; //Gap between max/min dots and pane top/bottom
-        int dotRadius = (int) cellWidth/7;
+        double cumulativeX = 0;
 
-        List<Double> dotCentersX = new ArrayList<>();
-        List<Double> dotCentersY = new ArrayList<>();
+        List<GraphCell> cells = new ArrayList<>();
 
-        //Draw the dots
+        //Draw the cells
         for (int i = 0; i < temps.size(); i++) {
-            Pane cell = new Pane();
-            cell.setPrefSize(cellWidth, height);
-            cell.setLayoutX(i*cellWidth);
+            GraphCell cell = new GraphCell(i);
             content.getChildren().add(cell);
+            cell.setLayoutX(cumulativeX);
+            cells.add(cell);
 
-            if (i % 2 == 0) {
-                cell.setBackground(new Background(new BackgroundFill(Color.color(0.72, 0.8, 0.94), CornerRadii.EMPTY, Insets.EMPTY)));
-            }
-
-            final int hour = i;
-            cell.addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> selectHour(hour)));
-
-            Circle dot = new Circle(dotRadius, Color.WHITE);
-            dot.relocate(
-                    cellWidth/2 - dotRadius,
-                    verticalPadding + (height - dotRadius*2 - verticalPadding*2)*(1 - (temps.get(i) - min)/(max - min))
-            );
-            cell.getChildren().add(dot);
-
-            dotCentersX.add(cellWidth*(i + 0.5));
-            dotCentersY.add(dotRadius + verticalPadding + (height - dotRadius*2 - verticalPadding*2)*(1 - (temps.get(i) - min)/(max - min)));
+            cumulativeX += cell.getWidth();
         }
 
         int lineGap = dotRadius*3; //Gap between dot centre and line end
@@ -79,15 +61,15 @@ public class Graph extends ScrollPane {
         //Draw the lines
         for (int i = 0; i < temps.size() - 1; i++) {
             double dist = Math.sqrt(
-                    Math.pow(dotCentersX.get(i) - dotCentersX.get(i + 1), 2) +
-                    Math.pow(dotCentersY.get(i) - dotCentersY.get(i + 1), 2)
+                    Math.pow(cellWidth*(i + 0.5) - cellWidth*(i + 1.5), 2) +
+                    Math.pow(cells.get(i).dotCenterY - cells.get(i + 1).dotCenterY, 2)
             );
 
             Line line = new Line(
-                    dotCentersX.get(i) + Math.abs(dotCentersX.get(i) - dotCentersX.get(i + 1))*lineGap/dist,
-                    dotCentersY.get(i) - (dotCentersY.get(i) - dotCentersY.get(i + 1))*lineGap/dist,
-                    dotCentersX.get(i + 1) - Math.abs(dotCentersX.get(i) - dotCentersX.get(i + 1))*lineGap/dist,
-                    dotCentersY.get(i + 1) + (dotCentersY.get(i) - dotCentersY.get(i + 1))*lineGap/dist
+                    cellWidth*(i + 0.5) + Math.abs(cellWidth*(i + 0.5) - cellWidth*(i + 1.5))*lineGap/dist,
+                    cells.get(i).dotCenterY - (cells.get(i).dotCenterY - cells.get(i + 1).dotCenterY)*lineGap/dist,
+                    cellWidth*(i + 1.5) - Math.abs(cellWidth*(i + 0.5) - cellWidth*(i + 1.5))*lineGap/dist,
+                    cells.get(i + 1).dotCenterY + (cells.get(i).dotCenterY - cells.get(i + 1).dotCenterY)*lineGap/dist
             );
             line.setStroke(Color.WHITE);
             line.setStrokeWidth(dotRadius/2.0);
@@ -100,9 +82,75 @@ public class Graph extends ScrollPane {
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
 
-    private void selectHour(int hour) {
-        System.out.println("hour " + hour + " selected");
-        Main.getViews().get(ViewName.HOURLY).show();
+    class GraphCell extends Pane {
+
+        final int verticalPadding = 10; //Gap between max/min dots and pane top/bottom
+        final int hour;
+        double temp;
+        double dotCenterY;
+        Circle dot;
+        Label tempLbl;
+
+        public void setColor(Paint paint) {
+            setBackground(new Background(new BackgroundFill(paint, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
+
+        public GraphCell(int hour) {
+            this.temp = temps.get(hour);
+            this.hour = hour;
+
+            double min = Collections.min(temps);
+            double max = Collections.max(temps);
+
+            setWidth(cellWidth);
+            setHeight(height);
+            setPrefSize(cellWidth, height);
+//            setAlignment(Pos.CENTER);
+
+            if (hour % 2 == 0) {
+                setColor(Color.color(0.72, 0.8, 0.94));
+            } else {
+                setColor(Color.color(0.57, 0.72, 0.96));
+            }
+
+            dot = new Circle(dotRadius, Color.WHITE);
+            dotCenterY = dotRadius + verticalPadding + (height - dotRadius*2 - verticalPadding*2)*(1 - (temp - min)/(max - min));
+            dot.relocate(
+                    cellWidth/2 - dotRadius,
+                    dotCenterY - dotRadius
+            );
+
+            tempLbl = new Label("" + temps.get(hour).intValue());
+            tempLbl.setFont(new Font(20));
+            tempLbl.setLayoutY(dotCenterY + 5);
+
+            getChildren().addAll(dot, tempLbl);
+            tempLbl.setVisible(false);
+
+            addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));
+        }
+
+        void select() {
+            if (selectedCell != null) selectedCell.deselect();
+            selectedCell = this;
+
+            tempLbl.setVisible(true);
+
+            Main.getViews().get(ViewName.HOURLY).show();
+            setColor(Color.WHITE);
+            dot.setFill(Color.BLACK);
+        }
+
+        void deselect() {
+            tempLbl.setVisible(false);
+
+            if (hour % 2 == 0) {
+                setColor(Color.color(0.72, 0.8, 0.94));
+            } else {
+                setColor(Color.color(0.57, 0.72, 0.96));
+            }
+            dot.setFill(Color.WHITE);
+        }
     }
 }
 
