@@ -1,7 +1,6 @@
 package fx;
 
 import javafx.application.Application;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -17,7 +16,6 @@ public class Main extends Application {
 
     private static Map<ViewName, View> views = new HashMap<>();
 
-    public static Button sharedButton;
     public static Graph temperatureGraph;
     public static Selector selector;
 
@@ -25,11 +23,8 @@ public class Main extends Application {
     public void start(Stage stage) {
         stage.setResizable(false);
 
-        sharedButton = new Button("Shared Button");
         temperatureGraph = new Graph();
         selector = new Selector();
-//        selector.fadeItems();
-//        selector.setHvalue(100);
 
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));

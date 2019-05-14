@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -25,6 +26,8 @@ public class Selector extends ScrollPane {
 
         for (Pane item : items) {
             content.getChildren().add(item);
+
+            item.addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> selectDate(/*TODO*/)));
         }
 
         setContent(content);
@@ -82,6 +85,11 @@ public class Selector extends ScrollPane {
             }
         }
         return items;
+    }
+
+    private void selectDate() {
+        System.out.println("A date has been selected");
+        Main.getViews().get(ViewName.INITIAL).show();
     }
 }
 

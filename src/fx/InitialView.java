@@ -1,11 +1,8 @@
 package fx;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -20,13 +17,7 @@ public class InitialView extends View {
 
     @Override
     public void makeScene() {
-        Button switchButton = Main.sharedButton;
-        switchButton.setOnMousePressed(e -> Main.getViews().get(ViewName.HOURLY).show());
-
         Pane root = new Pane();
-
-        root.getChildren().add(switchButton);
-        Animator.transition(switchButton, 20, 600, 0.2);
 
         Label label = new Label("Initial View");
         label.setFont(new Font(32));

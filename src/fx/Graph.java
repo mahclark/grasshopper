@@ -1,7 +1,9 @@
 package fx;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -58,6 +60,9 @@ public class Graph extends ScrollPane {
                 cell.setBackground(new Background(new BackgroundFill(Color.color(0.72, 0.8, 0.94), CornerRadii.EMPTY, Insets.EMPTY)));
             }
 
+            final int hour = i;
+            cell.addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> selectHour(hour)));
+
             Circle dot = new Circle(dotRadius, Color.WHITE);
             dot.relocate(
                     cellWidth/2 - dotRadius,
@@ -93,5 +98,31 @@ public class Graph extends ScrollPane {
         setPannable(true);
         setPrefWidth(Main.screenWidth);
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    }
+
+    private void selectHour(int hour) {
+        System.out.println("hour " + hour + " selected");
+        Main.getViews().get(ViewName.HOURLY).show();
+    }
+}
+
+class clickNotDragHandler implements EventHandler<MouseEvent> {
+    boolean dragging = false;
+    final EventHandler<MouseEvent> onClickedEventHandler;
+    public clickNotDragHandler(EventHandler<MouseEvent> onClickedEventHandler) {
+        this.onClickedEventHandler = onClickedEventHandler;
+    }
+
+    @Override
+    public void handle(MouseEvent event) {
+        if (event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+            dragging = false;
+        } else if (event.getEventType() == MouseEvent.DRAG_DETECTED) {
+            dragging = true;
+        } else if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            if (!dragging) {
+                onClickedEventHandler.handle(event);
+            }
+        }
     }
 }

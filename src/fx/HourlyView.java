@@ -1,7 +1,6 @@
 package fx;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -18,13 +17,7 @@ public class HourlyView extends View {
 
     @Override
     public void makeScene() {
-        Button switchButton = Main.sharedButton;
-        switchButton.setOnMousePressed(e -> Main.getViews().get(ViewName.INITIAL).show());
-
         Pane root = new Pane();
-
-        root.getChildren().add(switchButton);
-        Animator.transition(switchButton, 70, 600, 0.2);
 
         Label label = new Label("Hourly View");
         label.setFont(new Font(32));
