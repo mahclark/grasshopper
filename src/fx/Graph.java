@@ -29,7 +29,7 @@ public class Graph extends ScrollPane {
     private int rangeMin = 0;
     private int rangeMax = 24; //Index of the first value which won't be shown
 
-    public GraphCell selectedCell; //null when nothing selected
+    private GraphCell selectedCell; //null when nothing selected
 
 //    double[] temperatures = new double[24];
     List<Double> temps = Arrays.asList(new Double[] {6.0,6.0,6.0,6.0,7.0,7.0,8.0,9.0,10.0,11.0,13.0,14.0,15.0,15.0,15.0,16.0,15.0,13.0,11.0,9.0,8.0,8.0,8.0,7.0});
@@ -37,8 +37,6 @@ public class Graph extends ScrollPane {
     public Graph() {
         assert temps.size() == 24;
         assert rangeMin >= 0 && rangeMax <= 24 && rangeMin < rangeMax;
-
-//        content.setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
 
         temps = temps.subList(rangeMin, rangeMax);
 
@@ -82,6 +80,13 @@ public class Graph extends ScrollPane {
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
 
+    public void deselect() {
+        if (selectedCell != null) {
+            selectedCell.deselect();
+            selectedCell = null;
+        }
+    }
+
     class GraphCell extends Pane {
 
         final int verticalPadding = 10; //Gap between max/min dots and pane top/bottom
@@ -105,7 +110,6 @@ public class Graph extends ScrollPane {
             setWidth(cellWidth);
             setHeight(height);
             setPrefSize(cellWidth, height);
-//            setAlignment(Pos.CENTER);
 
             if (hour % 2 == 0) {
                 setColor(Color.color(0.72, 0.8, 0.94));
@@ -122,7 +126,9 @@ public class Graph extends ScrollPane {
 
             tempLbl = new Label("" + temps.get(hour).intValue());
             tempLbl.setFont(new Font(20));
-            tempLbl.setLayoutY(dotCenterY + 5);
+            tempLbl.setLayoutY(dotCenterY - 15);
+            tempLbl.setPrefWidth(cellWidth);
+            tempLbl.setAlignment(Pos.CENTER);
 
             getChildren().addAll(dot, tempLbl);
             tempLbl.setVisible(false);
@@ -138,7 +144,7 @@ public class Graph extends ScrollPane {
 
             Main.getViews().get(ViewName.HOURLY).show();
             setColor(Color.WHITE);
-            dot.setFill(Color.BLACK);
+            dot.setVisible(false);
         }
 
         void deselect() {
@@ -149,7 +155,7 @@ public class Graph extends ScrollPane {
             } else {
                 setColor(Color.color(0.57, 0.72, 0.96));
             }
-            dot.setFill(Color.WHITE);
+            dot.setVisible(true);
         }
     }
 }

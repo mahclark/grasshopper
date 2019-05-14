@@ -91,7 +91,7 @@ public class Selector extends ScrollPane {
         System.out.println("A date has been selected");
         Main.getViews().get(ViewName.INITIAL).show();
 
-        Main.temperatureGraph.selectedCell.deselect();
+        Main.temperatureGraph.deselect();
     }
 }
 
