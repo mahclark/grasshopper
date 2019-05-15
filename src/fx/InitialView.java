@@ -26,18 +26,18 @@ public class InitialView extends View {
 
         Graph graph = Main.temperatureGraph;
         root.getChildren().add(graph);
-        Animator.transition(graph, 0, 300, 0.2);
+        Animator.transitionTo(graph, 0, 300, 0.2);
 
         Selector selector = Main.selector;
         root.getChildren().add(selector);
-        Animator.transition(selector, 0, 50, 0.2);
+        Animator.transitionTo(selector, 0, 50, 0.2);
 
         Button settingsButton = new Button("Settings");
         settingsButton.setOnAction(e -> Main.getViews().get(ViewName.SETTINGS).show());
         root.getChildren().add(settingsButton);
-//        settingsButton.setLayoutX(10);
-        settingsButton.setLayoutY(Main.screenHeight - 35);
-        Animator.transition(settingsButton, 10, Main.screenHeight - 35, 0.2);
+        settingsButton.setLayoutX(10);
+        settingsButton.setLayoutY(Main.screenHeight + 10);
+        Animator.transitionBy(settingsButton, 0, -45, 0.2);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }

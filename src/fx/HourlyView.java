@@ -26,11 +26,11 @@ public class HourlyView extends View {
 
         Graph graph = Main.temperatureGraph;
         root.getChildren().add(graph);
-        Animator.transition(graph, 0, 110, 0.2);
+        Animator.transitionTo(graph, 0, 110, 0.2);
 
         Selector selector = Main.selector;
         root.getChildren().add(selector);
-        Animator.transition(selector, 0, 50, 0.2);
+        Animator.transitionTo(selector, 0, 50, 0.2);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }
