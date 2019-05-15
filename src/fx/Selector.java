@@ -1,5 +1,6 @@
 package fx;
 
+import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -17,17 +18,17 @@ import java.util.List;
 public class Selector extends ScrollPane {
 
     private HBox content = new HBox(10);
+    private SelectorItem selectedItem;
+
     private int height = 100;
     final int FADE_THRESHOLD = 100;
 
-    private List<Pane> items = makeSomeStuff();//new ArrayList<>();
+    private List<SelectorItem> items = makeSomeStuff();//new ArrayList<>();
 
     public Selector() {
 
         for (Pane item : items) {
             content.getChildren().add(item);
-
-            item.addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> selectDate(/*TODO*/)));
         }
 
         setContent(content);
@@ -36,7 +37,7 @@ public class Selector extends ScrollPane {
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         // Fading
-        fadeItems(); //Ensuring objects are faded before scrolling starts.
+//        fadeItems(); //Ensuring objects are faded before scrolling starts.
         hvalueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -47,33 +48,33 @@ public class Selector extends ScrollPane {
 
     public void fadeItems() {
         double totalWidth = content.getWidth();
-        double scrollCenter = Main.screenWidth/2.0 + (totalWidth - Main.screenWidth)*getHvalue();
+        double scrollCenter = Main.screenWidth / 2.0 + (totalWidth - Main.screenWidth) * getHvalue();
 
-        for (Pane item : items) {
+        for (SelectorItem item : items) {
             double leftDist = scrollCenter - item.getLayoutX();
             double rightDist = scrollCenter - (item.getLayoutX() + item.getWidth());
 
-            double maxScreenEdgeDist = Main.screenWidth/2.0 - Math.min(
+            double maxScreenEdgeDist = Main.screenWidth / 2.0 - Math.min(
                     Math.abs(leftDist),
                     Math.abs(rightDist)
             );
 
-            if (maxScreenEdgeDist >= FADE_THRESHOLD || leftDist/Math.abs(leftDist) != rightDist/Math.abs(rightDist) || totalWidth == 0.0) {
+            if (maxScreenEdgeDist >= FADE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
                 item.setOpacity(1);
             } else {
-                item.setOpacity(maxScreenEdgeDist/FADE_THRESHOLD);
+                item.setOpacity(maxScreenEdgeDist / FADE_THRESHOLD);
             }
         }
     }
 
-    public List<Pane> makeSomeStuff() {
+    public List<SelectorItem> makeSomeStuff() {
         List<Event> events = new ArrayList<>();
         events.add(new Event("Match vs Oxford", 1, 5));
         events.add(new Event("M2", 4, 5));
         events.add(new Event("Rematch vs Oxford", 10, 5));
         events.add(new Event("Training", 10, 5));
 
-        List<Pane> items = new ArrayList<>();
+        List<SelectorItem> items = new ArrayList<>();
         for (int i = 1; i < 32; i++) {
             items.add(new Date(i, 5));
 
@@ -93,47 +94,103 @@ public class Selector extends ScrollPane {
 
         Main.temperatureGraph.deselect();
     }
-}
 
-class Date extends VBox {
-    final String[] months = {
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    };
-
-    public Date(int date, int month) {
-        super(-10);
-        setWidth(50);
-        setPrefWidth(50);
-        setPrefHeight(50);
-        setAlignment(Pos.CENTER);
-
-        Label monthLbl = new Label(months[month]);
-        monthLbl.setFont(new Font(10));
-
-        Label dateLbl = new Label("" + date);
-        dateLbl.setFont(new Font(30));
-
-        setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
-
-        getChildren().addAll(monthLbl, dateLbl);
+    abstract class SelectorItem extends VBox {
+        public FadeTransition fadeTransition;
+        public SelectorItem(double v) {
+            super(v);
+        }
+        abstract void select();
+        abstract void deselect();
     }
-}
 
-class Event extends VBox {
-    int month;
-    int date;
+    class Date extends SelectorItem {
+        final String[] months = {
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        };
+        Label dateLbl;
+        Label monthLbl;
 
-    public Event(String name, int date, int month) {
-        super(-10);
-        this.date = date;
-        setPrefHeight(50);
-        setAlignment(Pos.CENTER);
+        public Date(int date, int month) {
+            super(-10);
+            setWidth(50);
+            setPrefWidth(50);
+            setPrefHeight(50);
+            setAlignment(Pos.CENTER);
 
-        Label nameLbl = new Label(name);
-        nameLbl.setFont(new Font(28));
+            monthLbl = new Label(months[month]);
+            monthLbl.setFont(new Font(10));
 
-        setBackground(new Background(new BackgroundFill(Color.color(0.94, 0.89, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
+            dateLbl = new Label("" + date);
+            dateLbl.setFont(new Font(30));
 
-        getChildren().add(nameLbl);
+            setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
+
+            addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));
+
+            getChildren().addAll(monthLbl, dateLbl);
+        }
+
+        @Override
+        void select() {
+            if (selectedItem != null) selectedItem.deselect();
+            selectedItem = this;
+
+            dateLbl.setTextFill(Color.WHITE);
+            monthLbl.setTextFill(Color.WHITE);
+            Main.getViews().get(ViewName.INITIAL).show();
+
+            Main.temperatureGraph.deselect();
+
+            /*TODO: make call in HourlyView*/
+        }
+
+        @Override
+        void deselect() {
+            dateLbl.setTextFill(Color.BLACK);
+            monthLbl.setTextFill(Color.BLACK);
+        }
+    }
+
+    class Event extends SelectorItem {
+        int month;
+        int date;
+
+        Label nameLbl;
+
+        public Event(String name, int date, int month) {
+            super(-10);
+            this.date = date;
+            setPrefHeight(50);
+            setAlignment(Pos.CENTER);
+            setPadding(new Insets(0,10,0,10));
+
+            nameLbl = new Label(name);
+            nameLbl.setFont(new Font(28));
+
+            setBackground(new Background(new BackgroundFill(Color.color(0.94, 0.89, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
+
+            addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));
+
+            getChildren().add(nameLbl);
+        }
+
+        @Override
+        void select() {
+            if (selectedItem != null) selectedItem.deselect();
+            selectedItem = this;
+
+            nameLbl.setTextFill(Color.WHITE);
+            Main.getViews().get(ViewName.HOURLY).show();
+
+            Main.temperatureGraph.deselect();
+
+            /*TODO: make call in HourlyView*/
+        }
+
+        @Override
+        void deselect() {
+            nameLbl.setTextFill(Color.BLACK);
+        }
     }
 }

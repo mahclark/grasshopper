@@ -1,5 +1,6 @@
 package fx;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
@@ -24,5 +25,15 @@ public class Animator {
         transition.setNode(node);
 
         transition.play();
+    }
+
+    public static FadeTransition fade(Node node, double fromValue, double toValue, double duration) {
+        FadeTransition transition = new FadeTransition(Duration.seconds(duration), node);
+        transition.setFromValue(fromValue);
+        transition.setToValue(toValue);
+
+        transition.play();
+
+        return transition;
     }
 }

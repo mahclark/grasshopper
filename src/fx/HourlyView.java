@@ -16,8 +16,8 @@ public class HourlyView extends View {
     }
 
 
-    @Override
-    public void makeScene() {
+//    @Override
+    private void makeScene() {
         Pane root = new Pane();
 
         Label label = new Label("Hourly View");
