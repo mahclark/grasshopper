@@ -139,7 +139,7 @@ public class Graph extends ScrollPane {
         void select() {
             if (selectedCell != null) selectedCell.deselect();
             if (selectedCell == this) {
-                deselect();
+                selectedCell = null;
                 Main.getViews().get(ViewName.INITIAL).show();
                 return;
             }

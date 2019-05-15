@@ -35,6 +35,8 @@ public class InitialView extends View {
         Button settingsButton = new Button("Settings");
         settingsButton.setOnAction(e -> Main.getViews().get(ViewName.SETTINGS).show());
         root.getChildren().add(settingsButton);
+//        settingsButton.setLayoutX(10);
+        settingsButton.setLayoutY(Main.screenHeight - 35);
         Animator.transition(settingsButton, 10, Main.screenHeight - 35, 0.2);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
