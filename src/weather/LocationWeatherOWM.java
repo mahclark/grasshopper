@@ -6,6 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+// Imports for location
+import backend.Location;
 
 // Imports for URL
 import java.io.IOException;
@@ -23,7 +25,7 @@ public class LocationWeatherOWM implements LocationWeather {
     private Map<Integer, WeatherData> data;
 
     // Class constructor
-    public LocationWeatherOWM(double latitude, double longitude) throws IOException {
+    private LocationWeatherOWM(double latitude, double longitude) throws IOException {
         // Adapt URL with long+lat
         apiLocation = apiLocation.replace("{lat}", Double.toString(latitude)).replace("{lon}", Double.toString(longitude));
 
@@ -83,6 +85,11 @@ public class LocationWeatherOWM implements LocationWeather {
             // Adds to map
             data.put(dateTimeNumber, weatherData);
         }
+    }
+
+    //  Class constructor for location
+    public LocationWeatherOWM(Location location) throws IOException {
+        this(location.getLat(), location.getLon());
     }
 
     @Override

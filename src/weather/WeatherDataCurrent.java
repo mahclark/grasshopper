@@ -1,5 +1,6 @@
 package weather;
 
+import backend.Location;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -30,7 +31,7 @@ public class WeatherDataCurrent{
     private float windDeg;
 
     // Constructor
-    public WeatherDataCurrent(double latitude, double longitude) throws IOException {
+    private WeatherDataCurrent(double latitude, double longitude) throws IOException {
         // Adapt URL with long+lat
         apiLocation = apiLocation.replace("{lat}", Double.toString(latitude)).replace("{lon}", Double.toString(longitude));
 
@@ -58,6 +59,11 @@ public class WeatherDataCurrent{
 
         // Gets clouds
         JsonObject clouds = (JsonObject) rootobj.get("clouds");
+    }
+
+    //  Class constructor for location
+    public WeatherDataCurrent(Location location) throws IOException {
+        this(location.getLat(), location.getLon());
     }
 
     // Returns values
