@@ -93,7 +93,7 @@ public class LocationWeatherOWM implements LocationWeather {
     }
 
     @Override
-    public int[] giveDays() {
+    public List<Integer> giveDays() {
         // Gets set of values
         Set<Integer> datetimes = data.keySet();
         // New set of dates
@@ -105,15 +105,11 @@ public class LocationWeatherOWM implements LocationWeather {
         // Returns in sorted array
         List<Integer> list = new ArrayList<>(dates);
         Collections.sort(list);
-        int[] out = new int[dates.size()];
-        for (int i = 0; i<list.size(); i++){
-            out[i] = list.get(i);
-        }
-        return out;
+        return list;
     }
 
     @Override
-    public int[] giveHours(int date) {
+    public List<Integer> giveHours(int date) {
         // Gets set of values
         Set<Integer> datetimes = data.keySet();
         // New set of dates
@@ -127,11 +123,7 @@ public class LocationWeatherOWM implements LocationWeather {
         // Returns in sorted array
         List<Integer> list = new ArrayList<>(times);
         Collections.sort(list);
-        int[] out = new int[times.size()];
-        for (int i = 0; i<list.size(); i++){
-            out[i] = list.get(i);
-        }
-        return out;
+        return list;
     }
 
     @Override
