@@ -12,7 +12,7 @@ public class Main extends Application {
 //    public final static int screenWidth = 562;
 //    public final static int screenHeight = 1000;  // 0.75 scaled resolution of iPhone 8
 
-    private final static String iconPath = "file:resources/rainhopper_4096x4096.png";
+    private final static String iconPath = "file:resources/rainhopper_512x512.png";
 
     public final static int screenWidth = 375;
     public final static int screenHeight = 667;  // 0.5 scaled resolution of iPhone 8
