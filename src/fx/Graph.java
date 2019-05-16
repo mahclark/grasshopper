@@ -35,6 +35,8 @@ public class Graph extends ScrollPane {
     List<Double> temps = Arrays.asList(new Double[] {6.0,6.0,6.0,6.0,7.0,7.0,8.0,9.0,10.0,11.0,13.0,14.0,15.0,15.0,15.0,16.0,15.0,13.0,11.0,9.0,8.0,8.0,8.0,7.0});
 
     public Graph() {
+        setStyle("-fx-focus-color: transparent;");
+
         assert temps.size() == 24;
         assert rangeMin >= 0 && rangeMax <= 24 && rangeMin < rangeMax;
 

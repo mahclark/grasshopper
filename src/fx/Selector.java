@@ -17,15 +17,23 @@ import java.util.List;
 
 public class Selector extends ScrollPane {
 
-    private HBox content = new HBox(10);
-    private SelectorItem selectedItem;
-
     private int height = 100;
     final int FADE_THRESHOLD = 100;
+    final int SCALE_THRESHOLD = 80;
+    final int separation = 5;
+
+    private HBox content = new HBox(separation);
+    private SelectorItem selectedItem;
+
 
     private List<SelectorItem> items = makeSomeStuff();//new ArrayList<>();
 
     public Selector() {
+        setStyle("-fx-focus-color: transparent;");
+
+        Pane blankPane = new Pane();
+        blankPane.setPrefWidth(Main.screenWidth/2 - separation - 50);
+        content.getChildren().add(blankPane);
 
         for (Pane item : items) {
             content.getChildren().add(item);
@@ -37,18 +45,54 @@ public class Selector extends ScrollPane {
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         // Fading
-//        fadeItems(); //Ensuring objects are faded before scrolling starts.
+//        reformatItems(); //Ensuring objects are faded before scrolling starts.
         hvalueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                fadeItems();
+                reformatItems();
             }
         });
     }
 
-    public void fadeItems() {
+    public void reformatItems() {
         double totalWidth = content.getWidth();
         double scrollCenter = Main.screenWidth / 2.0 + (totalWidth - Main.screenWidth) * getHvalue();
+
+        double minFromCenter = Double.POSITIVE_INFINITY;
+        SelectorItem middleItem = null;
+
+        for (SelectorItem item : items) {
+            double leftDist = scrollCenter - item.getLayoutX();
+            double rightDist = scrollCenter - (item.getLayoutX() + item.getWidth());
+
+            double maxScreenEdgeDist = Main.screenWidth / 2.0 - Math.min(
+                    Math.abs(leftDist),
+                    Math.abs(rightDist)
+            );
+            if (item == selectedItem) {
+                item.setScaleX(1);
+                item.setScaleY(1);
+            } else if (maxScreenEdgeDist >= SCALE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
+                item.setScaleX(0.9);
+                item.setScaleY(0.9);
+            } else {
+                item.setScaleX(0.9 * maxScreenEdgeDist / SCALE_THRESHOLD);
+                item.setScaleY(0.9 * maxScreenEdgeDist / SCALE_THRESHOLD);
+            }
+
+            if (item == selectedItem || maxScreenEdgeDist >= FADE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
+                item.setOpacity(1);
+            } else {
+                item.setOpacity(maxScreenEdgeDist / FADE_THRESHOLD);
+            }
+        }
+    }
+
+    public void mouseUp() {
+        double totalWidth = content.getWidth();
+        double scrollCenter = Main.screenWidth / 2.0 + (totalWidth - Main.screenWidth) * getHvalue();
+        double minFromCenter = Double.POSITIVE_INFINITY;
+        SelectorItem middleItem = null;
 
         for (SelectorItem item : items) {
             double leftDist = scrollCenter - item.getLayoutX();
@@ -59,19 +103,18 @@ public class Selector extends ScrollPane {
                     Math.abs(rightDist)
             );
 
-            if (leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
-                item.setScaleX(1);
-                item.setScaleY(1);
-            } else {
-                item.setScaleX(maxScreenEdgeDist/Main.screenWidth + 0.5);
-                item.setScaleY(maxScreenEdgeDist/Main.screenWidth + 0.5);
-            }
+            double minScreenMiddleDist = Main.screenWidth / 2 - maxScreenEdgeDist;
 
-            if (maxScreenEdgeDist >= FADE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
-                item.setOpacity(1);
-            } else {
-                item.setOpacity(maxScreenEdgeDist / FADE_THRESHOLD);
+            if (Math.abs(minScreenMiddleDist) < minFromCenter) {
+                minFromCenter = Math.abs(minScreenMiddleDist);
+                middleItem = item;
             }
+        }
+
+        if (middleItem != null && middleItem != selectedItem) {
+            middleItem.select();
+
+            reformatItems();
         }
     }
 

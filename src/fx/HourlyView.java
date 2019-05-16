@@ -33,6 +33,8 @@ public class HourlyView extends View {
         Animator.transitionTo(selector, 0, 50, 0.2);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
+
+        scene.setOnMouseReleased(e -> selector.mouseUp());
     }
 
     @Override
