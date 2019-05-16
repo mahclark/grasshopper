@@ -133,4 +133,15 @@ public class LocationWeatherOWM implements LocationWeather {
         // Returns null if no value
         return data.get(date*100 + hour);
     }
+
+    public static void main(String[] args) throws IOException{
+        LocationWeatherOWM owm = new LocationWeatherOWM(52.211109, 0.091517);
+        for (int i : owm.giveDays()){
+            System.out.println(i);
+        }
+        System.out.println("------------------");
+        for (int i : owm.giveHours(20190516)) {
+            System.out.println(i);
+        }
+    }
 }
