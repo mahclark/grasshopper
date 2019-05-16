@@ -133,4 +133,10 @@ public class LocationWeatherOWM implements LocationWeather {
         // Returns null if no value
         return data.get(date*100 + hour);
     }
+
+    // Example for hourly
+    public static void main(String[] args) throws IOException {
+        LocationWeather owm = new LocationWeatherOWM(52.211109, 0.091517);
+        System.out.println(owm.giveData(20190517, 12).getTemp());
+    }
 }
