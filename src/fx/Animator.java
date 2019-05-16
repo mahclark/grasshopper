@@ -1,6 +1,7 @@
 package fx;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.util.Duration;
@@ -35,5 +36,13 @@ public class Animator {
         transition.play();
 
         return transition;
+    }
+
+    public static void scale(Node node, double xScale, double yScale, double duration) {
+        ScaleTransition transition = new ScaleTransition(Duration.seconds(duration), node);
+        transition.setByX(xScale);
+        transition.setByY(yScale);
+
+        transition.play();
     }
 }
