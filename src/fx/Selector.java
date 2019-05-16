@@ -1,8 +1,8 @@
 package fx;
 
-import javafx.animation.FadeTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -14,9 +14,7 @@ import javafx.scene.text.Font;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Selector extends ScrollPane {
 
@@ -57,7 +55,6 @@ public class Selector extends ScrollPane {
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
         // Fading
-//        reformatItems(); //Ensuring objects are faded before scrolling starts.
         hvalueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
@@ -111,9 +108,8 @@ public class Selector extends ScrollPane {
     }
 
     public void mouseUp() {
-        double totalWidth = content.getWidth();
-
         if (dragging) {
+            double totalWidth = content.getWidth();
             double scrollCenter = Main.screenWidth / 2.0 + (totalWidth - Main.screenWidth) * getHvalue();
             double minFromCenter = Double.POSITIVE_INFINITY;
             SelectorItem middleItem = null;
@@ -142,15 +138,25 @@ public class Selector extends ScrollPane {
                 middleItem.setScaleX(1);
                 middleItem.setScaleY(1);
             }
-        } else {
-            Point p = Main.getMousePosition();
-            double newScroll = (totalWidth * getHvalue() + p.getX() - Main.screenWidth / 2.0) / totalWidth;
-            Animator.timeline(hvalueProperty(), newScroll, 0.2);
+
+            itemClicked(middleItem);
         }
         dragging = false;
     }
 
-    public List<SelectorItem> makeSomeStuff() {
+    private void itemClicked(SelectorItem item) {
+        Bounds boundsInScene = item.localToScene(item.getBoundsInLocal());
+        double centerX = boundsInScene.getCenterX();
+
+        double totalWidth = content.getWidth();
+        double newScroll = (totalWidth * getHvalue() + 1.16*(centerX - Main.screenWidth / 2.0)) / totalWidth;
+
+        Animator.timeline(hvalueProperty(), newScroll, 0.2);
+
+        item.select();
+    }
+
+    private List<SelectorItem> makeSomeStuff() {
         List<EventItem> events = new ArrayList<>();
         events.add(new EventItem("Match vs Oxford", 1, 5));
         events.add(new EventItem("M2", 4, 5));
@@ -179,7 +185,6 @@ public class Selector extends ScrollPane {
     }
 
     abstract class SelectorItem extends VBox {
-        public FadeTransition fadeTransition;
         public SelectorItem(double v) {
             super(v);
         }
@@ -209,7 +214,7 @@ public class Selector extends ScrollPane {
 
             setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));
+            addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> itemClicked(this)));
 
             getChildren().addAll(monthLbl, dateLbl);
         }
@@ -255,7 +260,7 @@ public class Selector extends ScrollPane {
 
             setBackground(new Background(new BackgroundFill(Color.color(0.94, 0.89, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
 
-            addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));
+            addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> itemClicked(this)));
 
             getChildren().add(nameLbl);
         }

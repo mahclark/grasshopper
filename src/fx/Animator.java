@@ -27,14 +27,12 @@ public class Animator {
         transition.play();
     }
 
-    public static FadeTransition fade(Node node, double fromValue, double toValue, double duration) {
+    public static void fade(Node node, double fromValue, double toValue, double duration) {
         FadeTransition transition = new FadeTransition(Duration.seconds(duration), node);
         transition.setFromValue(fromValue);
         transition.setToValue(toValue);
 
         transition.play();
-
-        return transition;
     }
 
     public static void scale(Node node, double xScale, double yScale, double duration) {
