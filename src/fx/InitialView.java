@@ -7,9 +7,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.awt.event.MouseEvent;
-import java.sql.SQLOutput;
-
 public class InitialView extends View {
 
     private Stage stage;
