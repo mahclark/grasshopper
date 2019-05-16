@@ -14,6 +14,10 @@ public class Main extends Application {
     public final static int screenWidth = 375;
     public final static int screenHeight = 667;  // 0.5 scaled resolution of iPhone 8
 
+    //Depend on whether u guys think is needed
+    private static boolean notification_status;//false=NO,true=YES
+    private static boolean time_format;//false=24hr,true=12Hr
+
     private static Map<ViewName, View> views = new HashMap<>();
 
     public static Graph temperatureGraph;
@@ -37,6 +41,24 @@ public class Main extends Application {
 
     public static Map<ViewName, View> getViews() {
         return views;
+    }
+
+    public static void changenotistatus(Number notistatus){
+        if (notistatus.equals(0)){
+            notification_status=false;
+        }
+        else{
+            notification_status=true;
+        }
+    }
+
+    public static void changetimeformat(Number timeformat){
+        if (timeformat.equals(0)){
+            time_format=false;
+        }
+        else{
+            time_format=true;
+        }
     }
 
     public static void main(String[] args) {
