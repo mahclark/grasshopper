@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,8 +27,12 @@ public class Main extends Application {
     public static Graph temperatureGraph;
     public static Selector selector;
 
+    private static Stage stage;
+
     @Override
     public void start(Stage stage) {
+        this.stage = stage;
+
         stage.setResizable(false);
 
         temperatureGraph = new Graph();
@@ -41,6 +46,13 @@ public class Main extends Application {
         stage.setTitle("Grasshopper");
         stage.getIcons().add(new Image(iconPath));
         stage.show();
+    }
+
+    public static Point getMousePosition() {
+        Point p = MouseInfo.getPointerInfo().getLocation();
+        p.x -= stage.getX();
+        p.y -= stage.getY();
+        return p;
     }
 
     public static Map<ViewName, View> getViews() {

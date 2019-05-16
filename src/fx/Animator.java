@@ -1,8 +1,7 @@
 package fx;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
+import javafx.beans.value.WritableValue;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
@@ -44,5 +43,13 @@ public class Animator {
         transition.setByY(yScale);
 
         transition.play();
+    }
+
+    public static void timeline(WritableValue value, double toValue, double duration) {
+        Timeline timeline = new Timeline();
+        KeyValue kv = new KeyValue(value, toValue);
+        KeyFrame kf = new KeyFrame(Duration.seconds(duration), kv);
+        timeline.getKeyFrames().add(kf);
+        timeline.play();
     }
 }

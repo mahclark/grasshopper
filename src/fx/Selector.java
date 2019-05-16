@@ -12,18 +12,22 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Selector extends ScrollPane {
 
     private int height = 100;
     final int FADE_THRESHOLD = 100;
-    final int SCALE_THRESHOLD = 80;
+    final int SCALE_THRESHOLD = 70;
     final int separation = 5;
 
     private HBox content = new HBox(separation);
     private SelectorItem selectedItem;
+    private boolean dragging = false;
 
 
     private List<SelectorItem> items = makeSomeStuff();//new ArrayList<>();
@@ -31,13 +35,21 @@ public class Selector extends ScrollPane {
     public Selector() {
         setStyle("-fx-focus-color: transparent;");
 
-        Pane blankPane = new Pane();
-        blankPane.setPrefWidth(Main.screenWidth/2 - separation - 50);
-        content.getChildren().add(blankPane);
+        setOnDragDetected(e -> dragging = true);
+
+        Pane blankPaneStart = new Pane();
+        blankPaneStart.setPrefWidth(Main.screenWidth/2 - separation - 25);
+        content.getChildren().add(blankPaneStart);
 
         for (Pane item : items) {
             content.getChildren().add(item);
         }
+
+        Pane blankPaneEnd = new Pane();
+        blankPaneEnd.setPrefWidth(Main.screenWidth/2 - separation - 25);
+        content.getChildren().add(blankPaneEnd);
+
+        items.get(0).select();
 
         setContent(content);
         setPannable(true);
@@ -69,39 +81,6 @@ public class Selector extends ScrollPane {
                     Math.abs(leftDist),
                     Math.abs(rightDist)
             );
-            if (item == selectedItem) {
-                item.setScaleX(1);
-                item.setScaleY(1);
-            } else if (maxScreenEdgeDist >= SCALE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
-                item.setScaleX(0.9);
-                item.setScaleY(0.9);
-            } else {
-                item.setScaleX(0.9 * maxScreenEdgeDist / SCALE_THRESHOLD);
-                item.setScaleY(0.9 * maxScreenEdgeDist / SCALE_THRESHOLD);
-            }
-
-            if (item == selectedItem || maxScreenEdgeDist >= FADE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
-                item.setOpacity(1);
-            } else {
-                item.setOpacity(maxScreenEdgeDist / FADE_THRESHOLD);
-            }
-        }
-    }
-
-    public void mouseUp() {
-        double totalWidth = content.getWidth();
-        double scrollCenter = Main.screenWidth / 2.0 + (totalWidth - Main.screenWidth) * getHvalue();
-        double minFromCenter = Double.POSITIVE_INFINITY;
-        SelectorItem middleItem = null;
-
-        for (SelectorItem item : items) {
-            double leftDist = scrollCenter - item.getLayoutX();
-            double rightDist = scrollCenter - (item.getLayoutX() + item.getWidth());
-
-            double maxScreenEdgeDist = Main.screenWidth / 2.0 - Math.min(
-                    Math.abs(leftDist),
-                    Math.abs(rightDist)
-            );
 
             double minScreenMiddleDist = Main.screenWidth / 2 - maxScreenEdgeDist;
 
@@ -109,25 +88,78 @@ public class Selector extends ScrollPane {
                 minFromCenter = Math.abs(minScreenMiddleDist);
                 middleItem = item;
             }
+
+            if (maxScreenEdgeDist >= SCALE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
+                item.setScaleX(0.9);
+                item.setScaleY(0.9);
+            } else {
+                item.setScaleX(0.5 + 0.4 * maxScreenEdgeDist / SCALE_THRESHOLD);
+                item.setScaleY(0.3 + 0.6 * maxScreenEdgeDist / SCALE_THRESHOLD);
+            }
+
+            if (maxScreenEdgeDist >= FADE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
+                item.setOpacity(1);
+            } else {
+                item.setOpacity(maxScreenEdgeDist / FADE_THRESHOLD);
+            }
         }
 
-        if (middleItem != null && middleItem != selectedItem) {
-            middleItem.select();
-
-            reformatItems();
+        if (middleItem != null) {
+            middleItem.setScaleX(1);
+            middleItem.setScaleY(1);
         }
     }
 
+    public void mouseUp() {
+        double totalWidth = content.getWidth();
+
+        if (dragging) {
+            double scrollCenter = Main.screenWidth / 2.0 + (totalWidth - Main.screenWidth) * getHvalue();
+            double minFromCenter = Double.POSITIVE_INFINITY;
+            SelectorItem middleItem = null;
+
+            for (SelectorItem item : items) {
+                double leftDist = scrollCenter - item.getLayoutX();
+                double rightDist = scrollCenter - (item.getLayoutX() + item.getWidth());
+
+                double maxScreenEdgeDist = Main.screenWidth / 2.0 - Math.min(
+                        Math.abs(leftDist),
+                        Math.abs(rightDist)
+                );
+
+                double minScreenMiddleDist = Main.screenWidth / 2.0 - maxScreenEdgeDist;
+
+                if (Math.abs(minScreenMiddleDist) < minFromCenter) {
+                    minFromCenter = Math.abs(minScreenMiddleDist);
+                    middleItem = item;
+                }
+            }
+
+            if (middleItem != null && middleItem != selectedItem) {
+                middleItem.select();
+                reformatItems();
+
+                middleItem.setScaleX(1);
+                middleItem.setScaleY(1);
+            }
+        } else {
+            Point p = Main.getMousePosition();
+            double newScroll = (totalWidth * getHvalue() + p.getX() - Main.screenWidth / 2.0) / totalWidth;
+            Animator.timeline(hvalueProperty(), newScroll, 0.2);
+        }
+        dragging = false;
+    }
+
     public List<SelectorItem> makeSomeStuff() {
-        List<Event> events = new ArrayList<>();
-        events.add(new Event("Match vs Oxford", 1, 5));
-        events.add(new Event("M2", 4, 5));
-        events.add(new Event("Rematch vs Oxford", 10, 5));
-        events.add(new Event("Training", 10, 5));
+        List<EventItem> events = new ArrayList<>();
+        events.add(new EventItem("Match vs Oxford", 1, 5));
+        events.add(new EventItem("M2", 4, 5));
+        events.add(new EventItem("Rematch vs Oxford", 10, 5));
+        events.add(new EventItem("Training", 10, 5));
 
         List<SelectorItem> items = new ArrayList<>();
         for (int i = 1; i < 32; i++) {
-            items.add(new Date(i, 5));
+            items.add(new DateItem(i, 5));
 
             if (!events.isEmpty() && events.get(0).date == i) {
                 items.add(events.remove(0));
@@ -155,14 +187,14 @@ public class Selector extends ScrollPane {
         abstract void deselect();
     }
 
-    class Date extends SelectorItem {
+    class DateItem extends SelectorItem {
         final String[] months = {
                 "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
         };
         Label dateLbl;
         Label monthLbl;
 
-        public Date(int date, int month) {
+        public DateItem(int date, int month) {
             super(-10);
             setWidth(50);
             setPrefWidth(50);
@@ -189,7 +221,9 @@ public class Selector extends ScrollPane {
 
             dateLbl.setTextFill(Color.WHITE);
             monthLbl.setTextFill(Color.WHITE);
-            Main.getViews().get(ViewName.INITIAL).show();
+            if (Main.getViews().get(ViewName.INITIAL) != null) {
+                Main.getViews().get(ViewName.INITIAL).show();
+            }
 
             Main.temperatureGraph.deselect();
 
@@ -203,13 +237,13 @@ public class Selector extends ScrollPane {
         }
     }
 
-    class Event extends SelectorItem {
+    class EventItem extends SelectorItem {
         int month;
         int date;
 
         Label nameLbl;
 
-        public Event(String name, int date, int month) {
+        public EventItem(String name, int date, int month) {
             super(-10);
             this.date = date;
             setPrefHeight(50);
