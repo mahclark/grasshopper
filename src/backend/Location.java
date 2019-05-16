@@ -11,7 +11,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 
-
 public class Location {
 
     private static String LOCATION_TOKEN = "893f62730e9a83";
