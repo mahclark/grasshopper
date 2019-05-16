@@ -1,6 +1,7 @@
 package fx;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.HashMap;
@@ -10,6 +11,8 @@ public class Main extends Application {
 
 //    public final static int screenWidth = 562;
 //    public final static int screenHeight = 1000;  // 0.75 scaled resolution of iPhone 8
+
+    private final static String iconPath = "file:resources/rainhopper_512x512.png";
 
     public final static int screenWidth = 375;
     public final static int screenHeight = 667;  // 0.5 scaled resolution of iPhone 8
@@ -36,6 +39,7 @@ public class Main extends Application {
 
         views.get(ViewName.INITIAL).show();
         stage.setTitle("Grasshopper");
+        stage.getIcons().add(new Image(iconPath));
         stage.show();
     }
 

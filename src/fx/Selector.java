@@ -59,6 +59,14 @@ public class Selector extends ScrollPane {
                     Math.abs(rightDist)
             );
 
+            if (leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
+                item.setScaleX(1);
+                item.setScaleY(1);
+            } else {
+                item.setScaleX(maxScreenEdgeDist/Main.screenWidth + 0.5);
+                item.setScaleY(maxScreenEdgeDist/Main.screenWidth + 0.5);
+            }
+
             if (maxScreenEdgeDist >= FADE_THRESHOLD || leftDist / Math.abs(leftDist) != rightDist / Math.abs(rightDist)) {
                 item.setOpacity(1);
             } else {

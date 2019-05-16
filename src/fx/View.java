@@ -7,6 +7,6 @@ public abstract class View {
 
     private Stage stage;
     private Scene scene;
-    
+
     abstract void show();
 }
