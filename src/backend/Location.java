@@ -26,7 +26,7 @@ public class Location {
     private double lon;
     private String placeId;
 
-    Location (String input) {
+    public Location (String input) {
 
         this.GeocodeSearchUrl = String.format(GEOCODE_BASE_URL, GEOCODE_TOKEN, input);
 

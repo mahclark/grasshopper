@@ -1,5 +1,6 @@
 package fx;
 
+import backend.Location;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
+import weather.LocationWeatherOWM;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,6 +38,8 @@ public class Graph extends ScrollPane {
 
     public Graph() {
         setStyle("-fx-focus-color: transparent;");
+
+        reloadData();
 
         assert temps.size() == 24;
         assert rangeMin >= 0 && rangeMax <= 24 && rangeMin < rangeMax;
@@ -80,6 +84,26 @@ public class Graph extends ScrollPane {
         setPannable(true);
         setPrefWidth(Main.screenWidth);
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    }
+
+    public void reloadData() {
+        LocationWeatherOWM cambridgeWeather = null;
+        try {
+            cambridgeWeather = new LocationWeatherOWM(new Location("Cambridge"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        List<Integer> days = cambridgeWeather.giveDays();
+        int tomorrow = days.get(1);
+        List<Integer> tomorrowHours = cambridgeWeather.giveHours(tomorrow);
+        for (int i = 0; i < 24; i++) {
+            if (tomorrowHours.contains(i)) {
+                temps.set(i, (double) cambridgeWeather.giveData(tomorrow,i).getTemp());
+            } else {
+                temps.set(i, 0.0);
+            }
+        }
     }
 
     public void deselect() {
