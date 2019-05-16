@@ -30,6 +30,7 @@ public class SettingsView extends View {
         Pane root = new Pane();
 
         root.getChildren().add(close);
+        close.setLayoutX(350);
 
         Label label = new Label("Settings");
         label.setFont(new Font(32));
@@ -39,6 +40,8 @@ public class SettingsView extends View {
         TextField location = new TextField();
         location.setPromptText("Enter a location");
         root.getChildren().add(location);
+        location.setLayoutX(50);
+        location.setLayoutY(200);
 
         ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
         timeformat.getSelectionModel().selectedIndexProperty().addListener(
@@ -46,22 +49,27 @@ public class SettingsView extends View {
                     @Override
                     public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                         //Change the time display style
+                        Main.changetimeformat(t1);
                     }
                 }
         );
         root.getChildren().add(timeformat);
+        timeformat.setLayoutX(50);
+        timeformat.setLayoutY(400);
 
-        ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("Yes","No"));
+        ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
         notification.getSelectionModel().selectedIndexProperty().addListener(
                 new ChangeListener<Number>() {
                     @Override
                     public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        //Change the time display style
+                        //Change notification property
+                        Main.changenotistatus(t1);
                     }
                 }
         );
         root.getChildren().add(notification);
-
+        notification.setLayoutX(50);
+        notification.setLayoutY(500);
     }
 
     public void show(){
