@@ -47,6 +47,10 @@ public class Main extends Application {
         return views;
     }
 
+    public static boolean getnotifstatus(){
+        return notification_status;
+    }
+
     public static void changenotistatus(Number notistatus){
         if (notistatus.equals(0)){
             notification_status=false;
@@ -54,6 +58,9 @@ public class Main extends Application {
         else{
             notification_status=true;
         }
+    }
+    public static boolean gettimeformat(){
+        return time_format;
     }
 
     public static void changetimeformat(Number timeformat){

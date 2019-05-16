@@ -5,15 +5,14 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.controlsfx.control.textfield.*;
+
 
 public class SettingsView extends View {
     private Stage stage;
@@ -25,7 +24,44 @@ public class SettingsView extends View {
 
     public void makeScene(){
         close = new Button();
+        //TODO: implement PREVIOUS VIEW
         close.setOnMousePressed(e -> Main.getViews().get(ViewName.INITIAL).show());
+
+        ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
+        if (Main.gettimeformat()){
+            timeformat.setValue("12Hr");
+        }
+        else{
+            timeformat.setValue("24Hr");
+        }
+
+        timeformat.getSelectionModel().selectedIndexProperty().addListener(
+                new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                        //Change the time display style
+                        Main.changetimeformat(t1);
+                    }
+                }
+        );
+
+        ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
+        if (Main.getnotifstatus()){
+            notification.setValue("Yes");
+        }
+        else {
+            notification.setValue("No");
+        }
+
+        notification.getSelectionModel().selectedIndexProperty().addListener(
+                new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                        //Change notification property
+                        Main.changenotistatus(t1);
+                    }
+                }
+        );
 
         Pane root = new Pane();
 
@@ -37,36 +73,30 @@ public class SettingsView extends View {
         root.getChildren().add(label);
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
 
-        TextField location = new TextField();
-        location.setPromptText("Enter a location");
+        ComboBox location = new ComboBox<>(
+                //TODO:Change to some other things later
+                FXCollections.observableArrayList("Cambridge","London","Outer Space","Oxford"));
+        location.setEditable(true);
+        location.setValue("Cambridge");
+        TextFields.bindAutoCompletion(location.getEditor(),location.getItems());
+        location.getSelectionModel().selectedIndexProperty().addListener(
+                new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                        //TODO:change location ID
+                    }
+                }
+        );
+
         root.getChildren().add(location);
         location.setLayoutX(50);
         location.setLayoutY(200);
 
-        ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
-        timeformat.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        //Change the time display style
-                        Main.changetimeformat(t1);
-                    }
-                }
-        );
+
         root.getChildren().add(timeformat);
         timeformat.setLayoutX(50);
-        timeformat.setLayoutY(400);
+        timeformat.setLayoutY(350);
 
-        ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
-        notification.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        //Change notification property
-                        Main.changenotistatus(t1);
-                    }
-                }
-        );
         root.getChildren().add(notification);
         notification.setLayoutX(50);
         notification.setLayoutY(500);
