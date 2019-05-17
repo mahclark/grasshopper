@@ -1,5 +1,6 @@
 package fx;
 
+import backend.Location;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import weather.LocationWeatherOWM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +150,7 @@ public class Selector extends ScrollPane {
         double centerX = boundsInScene.getCenterX();
 
         double totalWidth = content.getWidth();
-        double newScroll = (totalWidth * getHvalue() + 1.16*(centerX - Main.screenWidth / 2.0)) / totalWidth;
+        double newScroll = (totalWidth * getHvalue() + (1 + 366/(totalWidth - 379))*(centerX - Main.screenWidth / 2.0)) / totalWidth;
 
         Animator.timeline(hvalueProperty(), newScroll, 0.2);
 
@@ -163,8 +165,24 @@ public class Selector extends ScrollPane {
         events.add(new EventItem("Training", 10, 5));
 
         List<SelectorItem> items = new ArrayList<>();
-        for (int i = 1; i < 32; i++) {
-            items.add(new DateItem(i, 5));
+
+        try {
+            for (int date : (new LocationWeatherOWM(new Location("Cambridge"))).giveDays()) {
+                items.add(new DateItem(date));
+
+                if (!events.isEmpty() && events.get(0).date == date) {
+                    items.add(events.remove(0));
+                }
+                if (!events.isEmpty() && events.get(0).date == date) {
+                    items.add(events.remove(0));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        for (int i = 1; i < 2; i++) {
+            items.add(new DateItem(i));
 
             if (!events.isEmpty() && events.get(0).date == i) {
                 items.add(events.remove(0));
@@ -174,13 +192,6 @@ public class Selector extends ScrollPane {
             }
         }
         return items;
-    }
-
-    private void selectDate() {
-        System.out.println("A date has been selected");
-        Main.getViews().get(ViewName.INITIAL).show();
-
-        Main.temperatureGraph.deselect();
     }
 
     abstract class SelectorItem extends VBox {
@@ -198,17 +209,17 @@ public class Selector extends ScrollPane {
         Label dateLbl;
         Label monthLbl;
 
-        public DateItem(int date, int month) {
+        public DateItem(int date) {
             super(-10);
             setWidth(50);
             setPrefWidth(50);
             setPrefHeight(50);
             setAlignment(Pos.CENTER);
 
-            monthLbl = new Label(months[month]);
+            monthLbl = new Label(months[(date % 10000  - date % 100)/100]);
             monthLbl.setFont(new Font(10));
 
-            dateLbl = new Label("" + date);
+            dateLbl = new Label("" + (date % 100));
             dateLbl.setFont(new Font(30));
 
             setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -242,7 +253,6 @@ public class Selector extends ScrollPane {
     }
 
     class EventItem extends SelectorItem {
-        int month;
         int date;
 
         Label nameLbl;
