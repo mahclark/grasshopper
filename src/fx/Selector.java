@@ -161,7 +161,9 @@ public class Selector extends ScrollPane {
 
         Animator.timeline(hvalueProperty(), newScroll, 0.2);
 
-        item.select();
+        if (selectedItem != item) {
+            item.select();
+        }
     }
 
     private List<SelectorItem> makeSomeStuff() {
@@ -216,7 +218,7 @@ public class Selector extends ScrollPane {
         private int date;
 
         public DateItem(int date) {
-            super(-10);
+            super(-5);
             this.date = date;
             setWidth(50);
             setPrefWidth(50);
@@ -224,10 +226,10 @@ public class Selector extends ScrollPane {
             setAlignment(Pos.CENTER);
 
             monthLbl = new Label(Event.months[(date % 10000  - date % 100)/100]);
-            monthLbl.setFont(new Font(10));
+            monthLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 10));
 
             dateLbl = new Label("" + (date % 100));
-            dateLbl.setFont(new Font(30));
+            dateLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 30));
 
             setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -278,7 +280,7 @@ public class Selector extends ScrollPane {
             setPadding(new Insets(0,10,0,10));
 
             nameLbl = new Label(event.getName());
-            nameLbl.setFont(new Font(28));
+            nameLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 28));
 
             setBackground(new Background(new BackgroundFill(Color.color(0.94, 0.89, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
 
