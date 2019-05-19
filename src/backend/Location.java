@@ -25,8 +25,10 @@ public class Location {
     private double lat;
     private double lon;
     private String placeId;
+    private String input;
 
     public Location (String input) {
+        this.input = input;
 
         this.GeocodeSearchUrl = String.format(GEOCODE_BASE_URL, GEOCODE_TOKEN, input);
 
@@ -61,6 +63,10 @@ public class Location {
         this.lon = 0.09179849999999999;
         this.placeId = "333245852306";
 
+    }
+
+    public String getInput() {
+        return input;
     }
 
     public static String[] getLocation(String input, boolean nearMe) throws java.io.IOException {
