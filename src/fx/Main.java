@@ -29,6 +29,7 @@ public class Main extends Application {
     public static Selector selector;
     public static Graph temperatureGraph;
     public static EventPanel eventPanel;
+    public static SettingsPanel settingsPanel;
 
     private static Stage stage;
 
@@ -41,11 +42,11 @@ public class Main extends Application {
         selector = new Selector();
         temperatureGraph = new Graph();
         eventPanel = new EventPanel();
+        settingsPanel = new SettingsPanel();
 
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));
         views.put(ViewName.SETTINGS, new SettingsView(stage));
-        views.put(ViewName.EVENTEDIT, new EventEditView(stage));
 
         views.get(ViewName.INITIAL).show();
         stage.setTitle("Grasshopper");

@@ -111,7 +111,6 @@ public class SettingsView extends View {
         location.setLayoutX(150);
         location.setLayoutY(170);
 
-
         Text l =new Text("Location");
         l.setFont(Font.font("Times New Roman",20));
         root.getChildren().add(l);
