@@ -2,6 +2,7 @@ package fx;
 
 import backend.Location;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
@@ -30,6 +31,12 @@ public class HourlyView extends View {
         Label label = new Label("Hourly View");
         label.setFont(new Font(32));
         root.getChildren().add(label);
+
+        Button settingsButton = new Button("Settings");
+        settingsButton.setOnAction(e -> Main.getViews().get(ViewName.SETTINGS).show());
+        root.getChildren().add(settingsButton);
+        settingsButton.setLayoutX(10);
+        settingsButton.setLayoutY(Main.screenHeight - 35);
 
         Graph graph = Main.temperatureGraph;
         if (!root.getChildren().contains(graph)) root.getChildren().add(graph);
