@@ -65,14 +65,14 @@ public class Graph extends ScrollPane {
         //Draw the lines
         for (int i = 0; i < temps.size() - 1; i++) {
             double dist = Math.sqrt(
-                    Math.pow(cellWidth*(i + 0.5) - cellWidth*(i + 1.5), 2) +
+                    Math.pow(cellWidth/2, 2) +
                     Math.pow(cells.get(i).dotCenterY - cells.get(i + 1).dotCenterY, 2)
             );
 
             Line line = new Line(
-                    cellWidth*(i + 0.5) + Math.abs(cellWidth*(i + 0.5) - cellWidth*(i + 1.5))*lineGap/dist,
+                    cellWidth*(i + 0.5) + Math.abs(cellWidth/2)*lineGap/dist,
                     cells.get(i).dotCenterY - (cells.get(i).dotCenterY - cells.get(i + 1).dotCenterY)*lineGap/dist,
-                    cellWidth*(i + 1.5) - Math.abs(cellWidth*(i + 0.5) - cellWidth*(i + 1.5))*lineGap/dist,
+                    cellWidth*(i + 1.5) - Math.abs(cellWidth/2)*lineGap/dist,
                     cells.get(i + 1).dotCenterY + (cells.get(i).dotCenterY - cells.get(i + 1).dotCenterY)*lineGap/dist
             );
             line.setStroke(Color.WHITE);
@@ -91,7 +91,7 @@ public class Graph extends ScrollPane {
         try {
             cambridgeWeather = new LocationWeatherOWM(new Location("Cambridge"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("weather exception: " + e.getMessage());
         }
 
         List<Integer> days = cambridgeWeather.giveDays();

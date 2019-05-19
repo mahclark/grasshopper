@@ -150,7 +150,7 @@ public class Selector extends ScrollPane {
         double centerX = boundsInScene.getCenterX();
 
         double totalWidth = content.getWidth();
-        double newScroll = (totalWidth * getHvalue() + (1 + 366/(totalWidth - 379))*(centerX - Main.screenWidth / 2.0)) / totalWidth;
+        double newScroll = getHvalue() + (centerX - Main.screenWidth / 2.0) / (totalWidth - Main.screenWidth);
 
         Animator.timeline(hvalueProperty(), newScroll, 0.2);
 
@@ -178,19 +178,19 @@ public class Selector extends ScrollPane {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("get weather exception: " + e.getMessage());
         }
 
-        for (int i = 1; i < 2; i++) {
-            items.add(new DateItem(i));
-
-            if (!events.isEmpty() && events.get(0).date == i) {
-                items.add(events.remove(0));
-            }
-            if (!events.isEmpty() && events.get(0).date == i) {
-                items.add(events.remove(0));
-            }
-        }
+//        for (int i = 1; i < 32; i++) {
+//            items.add(new DateItem(i));
+//
+//            if (!events.isEmpty() && events.get(0).date == i) {
+//                items.add(events.remove(0));
+//            }
+//            if (!events.isEmpty() && events.get(0).date == i) {
+//                items.add(events.remove(0));
+//            }
+//        }
         return items;
     }
 

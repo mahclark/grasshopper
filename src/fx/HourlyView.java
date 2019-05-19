@@ -12,6 +12,7 @@ public class HourlyView extends View {
 
     private Stage stage;
     private Scene scene;
+    Pane root = new Pane();
 
     public HourlyView(Stage stage) {
         this.stage = stage;
@@ -20,22 +21,28 @@ public class HourlyView extends View {
 
 //    @Override
     private void makeScene() {
-        Pane root = new Pane();
-
         Label label = new Label("Hourly View");
         label.setFont(new Font(32));
         root.getChildren().add(label);
 
         Graph graph = Main.temperatureGraph;
         root.getChildren().add(graph);
-        Animator.transitionTo(graph, 0, 110, 0.2);
+        Animator.transitionTo(graph, 0, 110, 0.3);
 
         Selector selector = Main.selector;
         root.getChildren().add(selector);
         Animator.transitionTo(selector, 0, 50, 0.2);
 
+        showStrategy(20190520);
+
+        this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
+
+        scene.setOnMouseReleased(e -> selector.mouseUp());
+    }
+
+    private void showStrategy(int date) {
         try {
-            StrategyGenerator generator = new StrategyGenerator(new LocationWeatherOWM(new Location("Cambridge")), 20190518, 12, 30);
+            StrategyGenerator generator = new StrategyGenerator(new LocationWeatherOWM(new Location("Cambridge")), date, 12, 30);
             Label strategyLbl = new Label(generator.getOutput());
             strategyLbl.setFont(new Font(18));
             strategyLbl.setWrapText(true);
@@ -47,12 +54,8 @@ public class HourlyView extends View {
             Animator.fade(strategyLbl, 0.0, 1.0, 0.5);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("weather exception: " + e.getMessage());
         }
-
-        this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
-
-        scene.setOnMouseReleased(e -> selector.mouseUp());
     }
 
     @Override
