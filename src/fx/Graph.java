@@ -176,6 +176,8 @@ public class Graph extends ScrollPane {
             setHeight(graphHeight);
             setPrefSize(cellWidth, graphHeight);
 
+            int timeHeight = 20;
+
             empty = (!temperatures.containsKey(hour));
             if (!empty) {
                 this.temp = temperatures.get(hour);
@@ -189,11 +191,18 @@ public class Graph extends ScrollPane {
                 }
 
                 dot = new Circle(dotRadius, Color.WHITE);
-                dotCenterY = dotRadius + verticalPadding + (graphHeight - dotRadius * 2 - verticalPadding * 2) * (1 - (temp - min) / (max - min));
+                dotCenterY = dotRadius + verticalPadding + (graphHeight - timeHeight - dotRadius * 2 - verticalPadding * 2) * (1 - (temp - min) / (max - min));
                 dot.relocate(
                         cellWidth / 2 - dotRadius,
                         dotCenterY - dotRadius
                 );
+
+                Label timeLbl = new Label("" + hour);
+                timeLbl.setFont(new Font(timeHeight - 3));
+                timeLbl.setLayoutY(graphHeight - timeHeight - 4);
+                timeLbl.setPrefWidth(cellWidth);
+                timeLbl.setAlignment(Pos.CENTER);
+                timeLbl.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
                 tempLbl = new Label("" + temperatures.get(hour).intValue());
                 tempLbl.setFont(new Font(20));
@@ -201,7 +210,7 @@ public class Graph extends ScrollPane {
                 tempLbl.setPrefWidth(cellWidth);
                 tempLbl.setAlignment(Pos.CENTER);
 
-                getChildren().addAll(dot, tempLbl);
+                getChildren().addAll(dot, tempLbl, timeLbl);
                 tempLbl.setVisible(false);
 
                 addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));
