@@ -30,7 +30,7 @@ public class InitialView extends View {
         root.getChildren().add(mainPane);
 
         Label mainTemp = new Label("15°");
-        mainTemp.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 150));
+        mainTemp.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 150));
         mainTemp.setLayoutX(0);
         mainTemp.setLayoutY(80);
         mainPane.getChildren().add(mainTemp);

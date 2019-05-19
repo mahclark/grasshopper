@@ -89,7 +89,7 @@ public class Graph extends ScrollPane {
             content.setPrefHeight(graphHeight);
 
             Label errorLbl = new Label(emptyErrorMessage);
-            errorLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 20));
+            errorLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
             errorLbl.setPrefWidth(Main.screenWidth);
             errorLbl.setPrefHeight(graphHeight);
             errorLbl.setWrapText(true);
@@ -197,14 +197,14 @@ public class Graph extends ScrollPane {
                 );
 
                 Label timeLbl = new Label("" + hour);
-                timeLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), timeHeight - 3));
+                timeLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), timeHeight - 3));
                 timeLbl.setLayoutY(graphHeight - timeHeight - 4);
                 timeLbl.setPrefWidth(cellWidth);
                 timeLbl.setAlignment(Pos.CENTER);
                 timeLbl.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
                 tempLbl = new Label("" + temperatures.get(hour).intValue());
-                tempLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 30));
+                tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
                 tempLbl.setLayoutY(dotCenterY - 15);
                 tempLbl.setPrefWidth(cellWidth);
                 tempLbl.setAlignment(Pos.CENTER);

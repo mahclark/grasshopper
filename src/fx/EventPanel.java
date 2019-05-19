@@ -17,7 +17,7 @@ public class EventPanel extends HBox {
         setStyle("-fx-background-color: rgba(40,40,40, 0.7); -fx-background-radius: 10;");
 
         Label title = new Label("Events");
-        title.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 32));
+        title.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 32));
         title.setTextFill(Color.WHITE);
         title.setPrefWidth(Main.screenWidth - 20);
         getChildren().add(title);
