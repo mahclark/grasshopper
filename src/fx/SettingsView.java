@@ -76,7 +76,7 @@ public class SettingsView extends View {
         close.setLayoutX(350);
 
         Label label = new Label("Settings");
-        label.setFont(new Font(32));
+        label.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 32));
         root.getChildren().add(label);
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
 

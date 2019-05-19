@@ -1,8 +1,8 @@
 package fx;
 
-import backend.Location;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -16,6 +16,11 @@ public class HourlyView extends View {
     private Scene scene;
 
     private Pane root = new Pane();
+    private Pane mainPane = new Pane();
+
+    private EventPanel eventPanel = Main.eventPanel;
+    private boolean eventShowing = false;
+
     private Label strategyLbl = new Label();
     private Label weatherLbl = new Label();
     private Label eventInfoLbl = new Label();
@@ -31,10 +36,17 @@ public class HourlyView extends View {
 
     private void makeScene() {
         root.getChildren().clear();
-        root.getChildren().add(graph);
+        mainPane.getChildren().clear();
+        root.getChildren().add(mainPane);
 
-        root.getChildren().add(selector);
+        mainPane.getChildren().add(graph);
+
+        mainPane.getChildren().add(selector);
         Animator.transitionTo(selector, 0, 20, 0.2);
+
+        root.getChildren().add(eventPanel);
+        eventPanel.setLayoutX(0);
+        eventPanel.setLayoutY(Main.screenHeight - 50);
 
         scene.setOnMouseReleased(e -> selector.mouseUp());
     }
@@ -47,12 +59,12 @@ public class HourlyView extends View {
         int date = selector.getSelectedDate();
         weatherLbl.setText("Weather info for " + hour + " " + date + " goes here");
 
-        weatherLbl.setFont(new Font(18));
+        weatherLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 21));
         weatherLbl.setWrapText(true);
         weatherLbl.setLayoutX(10);
         weatherLbl.setLayoutY(320);
         weatherLbl.setPrefWidth(Main.screenWidth - 20);
-        root.getChildren().add(weatherLbl);
+        mainPane.getChildren().add(weatherLbl);
 
         Animator.fade(weatherLbl, 0.0, 1.0, 0.5);
         Animator.transitionTo(graph, 0, 80, 0.2);
@@ -63,10 +75,10 @@ public class HourlyView extends View {
         strategyLbl.setVisible(true);
         eventInfoLbl.setVisible(true);
 
-        eventInfoLbl.setText(event.getStartHour() + " o'clock - " + event.getLocationName() + ", " + event.getOvers() + " overs");
-        eventInfoLbl.setFont(new Font(25));
+        eventInfoLbl.setText(event.getStartHour() + ":00 - " + event.getLocationName() + ", " + event.getOvers() + " overs");
+        eventInfoLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 28));
         eventInfoLbl.setLayoutY(72);
-        root.getChildren().add(eventInfoLbl);
+        mainPane.getChildren().add(eventInfoLbl);
 
         try {
             generator = new StrategyGenerator(new LocationWeatherOWM(event.getLocation()), event.getDate(), event.getStartHour(), event.getOvers());
@@ -75,12 +87,12 @@ public class HourlyView extends View {
             strategyLbl.setText("There is no weather information for the selected date at the moment.");
         }
 
-        strategyLbl.setFont(new Font(18));
+        strategyLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 21));
         strategyLbl.setWrapText(true);
         strategyLbl.setLayoutX(10);
         strategyLbl.setLayoutY(320);
         strategyLbl.setPrefWidth(Main.screenWidth - 20);
-        root.getChildren().add(strategyLbl);
+        mainPane.getChildren().add(strategyLbl);
 
         Animator.fade(eventInfoLbl, 0.0, 1.0, 0.5);
         Animator.fade(strategyLbl, 0.0, 1.0, 0.5);
@@ -91,6 +103,25 @@ public class HourlyView extends View {
         return generator.getRelevantWeatherHours();
     }
 
+    public void toggleEventPanel() {
+        if (!eventShowing) {
+            eventShowing = true;
+
+            GaussianBlur blur = new GaussianBlur(0);
+            Animator.timeline(blur.radiusProperty(), 8, 0.5);
+            mainPane.setEffect(blur);
+
+            Animator.transitionBy(eventPanel, 0, 100 - Main.screenHeight, 0.5);
+        } else {
+            eventShowing = false;
+
+            GaussianBlur blur = new GaussianBlur(8);
+            Animator.timeline(blur.radiusProperty(), 0, 0.5);
+            mainPane.setEffect(blur);
+
+            Animator.transitionBy(eventPanel, 0, Main.screenHeight - 100, 0.5);
+        }
+    }
     @Override
     public void show() {
         makeScene();

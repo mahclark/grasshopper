@@ -28,6 +28,7 @@ public class Main extends Application {
 
     public static Selector selector;
     public static Graph temperatureGraph;
+    public static EventPanel eventPanel;
 
     private static Stage stage;
 
@@ -39,6 +40,7 @@ public class Main extends Application {
 
         selector = new Selector();
         temperatureGraph = new Graph();
+        eventPanel = new EventPanel();
 
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));
