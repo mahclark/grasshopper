@@ -20,11 +20,8 @@ public class InitialView extends View {
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }
 
-//    @Override
     private void makeScene(boolean withAnimation) {
-//        Label label = new Label("Initial View");
-//        label.setFont(new Font(32));
-//        root.getChildren().add(label);
+        root.getChildren().clear();
 
         Label mainTemp = new Label("15°");
         mainTemp.setFont(new Font(150));
@@ -33,10 +30,10 @@ public class InitialView extends View {
         root.getChildren().add(mainTemp);
 
         Graph graph = Main.temperatureGraph;
-        if (!root.getChildren().contains(graph)) root.getChildren().add(graph);
+        root.getChildren().add(graph);
 
         Selector selector = Main.selector;
-        if (!root.getChildren().contains(selector)) root.getChildren().add(selector);
+        root.getChildren().add(selector);
 
         Button settingsButton = new Button("Settings");
         settingsButton.setOnAction(e -> Main.getViews().get(ViewName.SETTINGS).show());
