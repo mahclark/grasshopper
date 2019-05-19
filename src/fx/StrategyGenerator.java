@@ -2,6 +2,7 @@ package fx;
 
 import backend.Location;
 import weather.LocationWeatherOWM;
+import weather.NoInternetConnection;
 import weather.WeatherData;
 
 import java.io.IOException;
@@ -12,6 +13,8 @@ public class StrategyGenerator {
     private LocationWeatherOWM weather;
     private int date;
     private String output;
+
+    private List<Integer> relevantWeatherHours;
 
     /*Strategies to be determined:
      *
@@ -37,7 +40,7 @@ public class StrategyGenerator {
         this.date = date;
 
         int gamePeriod = (int) Math.round(0.5 + overs*3/20.0);
-        List<Integer> relevantWeatherHours = new ArrayList<>();
+        relevantWeatherHours = new ArrayList<>();
 
         int start = startHour - startHour%3;
         int end = Math.max(startHour + gamePeriod - (startHour + gamePeriod)%3, start + 3);
@@ -115,6 +118,10 @@ public class StrategyGenerator {
 
     public String getOutput() {
         return output;
+    }
+
+    public List<Integer> getRelevantWeatherHours() {
+        return relevantWeatherHours;
     }
 
     private String chooseOne(List<Map<String, String>> hourlyStrategies, String type) {
@@ -227,7 +234,7 @@ public class StrategyGenerator {
 }
 
 class StrategyTester {
-    public static void main(String[] args) throws IOException, MultiDayGameException {
+    public static void main(String[] args) throws NoInternetConnection, MultiDayGameException {
         StrategyGenerator generator = new StrategyGenerator(new LocationWeatherOWM(new Location("Cambridge")), 20190518, 12, 30);
         System.out.println(generator.getOutput());
     }

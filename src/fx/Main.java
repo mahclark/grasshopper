@@ -24,8 +24,8 @@ public class Main extends Application {
 
     private static Map<ViewName, View> views = new HashMap<>();
 
-    public static Graph temperatureGraph;
     public static Selector selector;
+    public static Graph temperatureGraph;
 
     private static Stage stage;
 
@@ -35,8 +35,8 @@ public class Main extends Application {
 
         stage.setResizable(false);
 
-        temperatureGraph = new Graph();
         selector = new Selector();
+        temperatureGraph = new Graph();
 
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));

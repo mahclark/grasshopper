@@ -25,8 +25,10 @@ public class Location {
     private double lat;
     private double lon;
     private String placeId;
+    private String input;
 
     public Location (String input) {
+        this.input = input;
 
         this.GeocodeSearchUrl = String.format(GEOCODE_BASE_URL, GEOCODE_TOKEN, input);
 
@@ -63,6 +65,10 @@ public class Location {
 
     }
 
+    public String getInput() {
+        return input;
+    }
+
     public static String[] getLocation(String input, boolean nearMe) throws java.io.IOException {
 
         String placeSearchUrl = String.format(PLACES_BASE_URL, input);
@@ -81,7 +87,7 @@ public class Location {
         String[] suggestionList = new String[suggestions.size()];
 
         for (int i = 0; i < suggestions.size(); i++) {
-            suggestionList[i] = suggestions.get(i).getAsJsonObject().get("test").getAsString();
+            suggestionList[i] = suggestions.get(i).getAsJsonObject().get("text").getAsString();
             // store the suggestions in an array in the form of strings
         } // end for
 

@@ -166,8 +166,8 @@ public class Selector extends ScrollPane {
 
     private List<SelectorItem> makeSomeStuff() {
         List<EventItem> events = new ArrayList<>();
-        events.add(new EventItem(new Event("Match vs Oxford",   new Location("Cambridge"), 20190519, 12, 30)));
-        events.add(new EventItem(new Event("M2",                new Location("Cambridge"), 20190519, 12, 30)));
+        events.add(new EventItem(new Event("Match vs Oxford",   new Location("Cambridge"), 20190520, 12, 30)));
+        events.add(new EventItem(new Event("M2",                new Location("Cambridge"), 20190520, 12, 30)));
         events.add(new EventItem(new Event("Rematch vs Oxford", new Location("Cambridge"), 20190524, 12, 30)));
         events.add(new EventItem(new Event("Training",          new Location("Cambridge"), 20190531, 12, 30)));
 
@@ -211,9 +211,6 @@ public class Selector extends ScrollPane {
     }
 
     class DateItem extends SelectorItem {
-        final String[] months = {
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-        };
         Label dateLbl;
         Label monthLbl;
         private int date;
@@ -226,7 +223,7 @@ public class Selector extends ScrollPane {
             setPrefHeight(50);
             setAlignment(Pos.CENTER);
 
-            monthLbl = new Label(months[(date % 10000  - date % 100)/100]);
+            monthLbl = new Label(Event.months[(date % 10000  - date % 100)/100]);
             monthLbl.setFont(new Font(10));
 
             dateLbl = new Label("" + (date % 100));
@@ -255,7 +252,10 @@ public class Selector extends ScrollPane {
                 Main.getViews().get(ViewName.INITIAL).show();
             }
 
-            Main.temperatureGraph.deselect();
+            if (Main.temperatureGraph != null) {
+                Main.temperatureGraph.deselect();
+                Main.temperatureGraph.reloadGraph();
+            }
         }
 
         @Override
@@ -299,12 +299,12 @@ public class Selector extends ScrollPane {
 
             nameLbl.setTextFill(Color.WHITE);
 
-            Main.temperatureGraph.deselect();
-
             HourlyView hourlyView = (HourlyView) Main.getViews().get(ViewName.HOURLY);
             hourlyView.show();
-
             hourlyView.showStrategy(event);
+
+            Main.temperatureGraph.deselect();
+            Main.temperatureGraph.reloadGraph();
         }
 
         @Override

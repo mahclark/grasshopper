@@ -1,12 +1,13 @@
 package backend;
 
 import weather.LocationWeatherOWM;
+import weather.NoInternetConnection;
 import weather.WeatherData;
 
 import java.io.IOException;
 
 public class APIDemo {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws NoInternetConnection {
         Location location = new Location("Cambridge");
         LocationWeatherOWM weather = new LocationWeatherOWM(location);
 
