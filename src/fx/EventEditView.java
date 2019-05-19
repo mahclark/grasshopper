@@ -16,8 +16,13 @@ public class EventEditView extends View {
 
     private Pane root = new Pane();
 
-    public void makeScene(){
+    public EventEditView(Stage stage){
+        this.stage = stage;
+        this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
+    }
 
+    public void makeScene(){
+        root.getChildren().clear();
     }
 
     public void show(){
