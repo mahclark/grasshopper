@@ -14,8 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import weather.LocationWeatherOWM;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Selector extends ScrollPane {
 
@@ -62,6 +61,14 @@ public class Selector extends ScrollPane {
                 reformatItems();
             }
         });
+    }
+
+    public boolean eventSelected() {
+        return (selectedItem instanceof EventItem);
+    }
+
+    public int getSelectedDate() {
+        return selectedItem.getDate();
     }
 
     public void reformatItems() {
@@ -150,7 +157,7 @@ public class Selector extends ScrollPane {
         double centerX = boundsInScene.getCenterX();
 
         double totalWidth = content.getWidth();
-        double newScroll = (totalWidth * getHvalue() + (1 + 366/(totalWidth - 379))*(centerX - Main.screenWidth / 2.0)) / totalWidth;
+        double newScroll = getHvalue() + (centerX - Main.screenWidth / 2.0) / (totalWidth - Main.screenWidth);
 
         Animator.timeline(hvalueProperty(), newScroll, 0.2);
 
@@ -159,38 +166,38 @@ public class Selector extends ScrollPane {
 
     private List<SelectorItem> makeSomeStuff() {
         List<EventItem> events = new ArrayList<>();
-        events.add(new EventItem("Match vs Oxford", 1, 5));
-        events.add(new EventItem("M2", 4, 5));
-        events.add(new EventItem("Rematch vs Oxford", 10, 5));
-        events.add(new EventItem("Training", 10, 5));
+        events.add(new EventItem(new Event("Match vs Oxford",   new Location("Cambridge"), 20190519, 12, 30)));
+        events.add(new EventItem(new Event("M2",                new Location("Cambridge"), 20190519, 12, 30)));
+        events.add(new EventItem(new Event("Rematch vs Oxford", new Location("Cambridge"), 20190524, 12, 30)));
+        events.add(new EventItem(new Event("Training",          new Location("Cambridge"), 20190531, 12, 30)));
 
         List<SelectorItem> items = new ArrayList<>();
 
         try {
             for (int date : (new LocationWeatherOWM(new Location("Cambridge"))).giveDays()) {
                 items.add(new DateItem(date));
-
-                if (!events.isEmpty() && events.get(0).date == date) {
-                    items.add(events.remove(0));
-                }
-                if (!events.isEmpty() && events.get(0).date == date) {
-                    items.add(events.remove(0));
-                }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("get weather exception: " + e.getMessage());
         }
 
-        for (int i = 1; i < 2; i++) {
-            items.add(new DateItem(i));
+        for (EventItem event : events) {
+            boolean newDateRequired = true;
+            for (SelectorItem item : items) {
+                if (item.getDate() == event.getDate()) {
+                    newDateRequired = false;
+                    break;
+                }
+            }
 
-            if (!events.isEmpty() && events.get(0).date == i) {
-                items.add(events.remove(0));
+            if (newDateRequired) {
+                items.add(new DateItem(event.getDate()));
             }
-            if (!events.isEmpty() && events.get(0).date == i) {
-                items.add(events.remove(0));
-            }
+            items.add(event);
         }
+
+        items.sort(Comparator.comparingInt(SelectorItem::getDate));
+
         return items;
     }
 
@@ -198,6 +205,7 @@ public class Selector extends ScrollPane {
         public SelectorItem(double v) {
             super(v);
         }
+        abstract int getDate();
         abstract void select();
         abstract void deselect();
     }
@@ -208,9 +216,11 @@ public class Selector extends ScrollPane {
         };
         Label dateLbl;
         Label monthLbl;
+        private int date;
 
         public DateItem(int date) {
             super(-10);
+            this.date = date;
             setWidth(50);
             setPrefWidth(50);
             setPrefHeight(50);
@@ -230,6 +240,11 @@ public class Selector extends ScrollPane {
         }
 
         @Override
+        public int getDate() {
+            return date;
+        }
+
+        @Override
         void select() {
             if (selectedItem != null) selectedItem.deselect();
             selectedItem = this;
@@ -241,8 +256,6 @@ public class Selector extends ScrollPane {
             }
 
             Main.temperatureGraph.deselect();
-
-            /*TODO: make call in HourlyView*/
         }
 
         @Override
@@ -253,18 +266,18 @@ public class Selector extends ScrollPane {
     }
 
     class EventItem extends SelectorItem {
-        int date;
+        private Event event;
 
-        Label nameLbl;
+        private Label nameLbl;
 
-        public EventItem(String name, int date, int month) {
+        public EventItem(Event event) {
             super(-10);
-            this.date = date;
+            this.event = event;
             setPrefHeight(50);
             setAlignment(Pos.CENTER);
             setPadding(new Insets(0,10,0,10));
 
-            nameLbl = new Label(name);
+            nameLbl = new Label(event.getName());
             nameLbl.setFont(new Font(28));
 
             setBackground(new Background(new BackgroundFill(Color.color(0.94, 0.89, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -275,16 +288,23 @@ public class Selector extends ScrollPane {
         }
 
         @Override
+        public int getDate() {
+            return event.getDate();
+        }
+
+        @Override
         void select() {
             if (selectedItem != null) selectedItem.deselect();
             selectedItem = this;
 
             nameLbl.setTextFill(Color.WHITE);
-            Main.getViews().get(ViewName.HOURLY).show();
 
             Main.temperatureGraph.deselect();
 
-            /*TODO: make call in HourlyView*/
+            HourlyView hourlyView = (HourlyView) Main.getViews().get(ViewName.HOURLY);
+            hourlyView.show();
+
+            hourlyView.showStrategy(event);
         }
 
         @Override

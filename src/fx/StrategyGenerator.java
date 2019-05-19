@@ -89,7 +89,7 @@ public class StrategyGenerator {
         String output1 = "For the first half, bring on " + chooseOne(firstHalf, "bowler") + " bowlers. When batting, " + chooseOne(firstHalf, "battingStyle") +
                 ". Fielders should be placed " + chooseOne(firstHalf, "fieldPlacement") + ". It's a good time to " + chooseOne(firstHalf, "batOrBowl") + ".";
 
-        String output2 = "For the first half, bring on " + chooseOne(secondHalf, "bowler") + " bowlers. When batting, " + chooseOne(secondHalf, "battingStyle") +
+        String output2 = "For the second half, bring on " + chooseOne(secondHalf, "bowler") + " bowlers. When batting, " + chooseOne(secondHalf, "battingStyle") +
                 ". Fielders should be placed " + chooseOne(secondHalf, "fieldPlacement") + ". It's a good time to " + chooseOne(secondHalf, "batOrBowl") + ".";
 
         String output3 = "If you win the toss, choose to " + (batFirstScore >= 0 ? "bat" : "bowl") + " first.";
