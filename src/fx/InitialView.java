@@ -17,7 +17,9 @@ public class InitialView extends View {
     private Pane mainPane = new Pane();
 
     private EventPanel eventPanel = Main.eventPanel;
+    private SettingsPanel settingsPanel = Main.settingsPanel;
     private boolean eventShowing = false;
+    private boolean settingsShowing = false;
 
     public InitialView(Stage stage) {
         this.stage = stage;
@@ -42,7 +44,8 @@ public class InitialView extends View {
         mainPane.getChildren().add(selector);
 
         Button settingsButton = new Button("Settings");
-        settingsButton.setOnAction(e -> Main.getViews().get(ViewName.SETTINGS).show());
+        settingsButton.setOnAction(e -> // Main.getViews().get(ViewName.SETTINGS).show()
+                callSettings());
         mainPane.getChildren().add(settingsButton);
         settingsButton.setLayoutX(10);
         settingsButton.setLayoutY(Main.screenHeight - 90);
@@ -50,6 +53,10 @@ public class InitialView extends View {
         root.getChildren().add(eventPanel);
         eventPanel.setLayoutX(0);
         eventPanel.setLayoutY(Main.screenHeight - 50);
+
+        root.getChildren().add(settingsPanel);
+        settingsPanel.setLayoutX(-Main.screenWidth+1);
+        settingsPanel.setLayoutY(82);
 
         if (withAnimation) {
             Animator.fade(mainTemp, 0.0, 1.0, 0.5);
@@ -81,6 +88,20 @@ public class InitialView extends View {
 
             Animator.transitionBy(eventPanel, 0, Main.screenHeight - 100, 0.5);
         }
+    }
+
+    public void callSettings(){
+        GaussianBlur blur = new GaussianBlur(0);
+        Animator.timeline(blur.radiusProperty(), 8, 0.5);
+        mainPane.setEffect(blur);
+        Animator.transitionTo(settingsPanel, Main.screenWidth+30, 0, 0.5);
+    }
+
+    public void recallSettings(){
+        GaussianBlur blur = new GaussianBlur(8);
+        Animator.timeline(blur.radiusProperty(), 0, 0.5);
+        mainPane.setEffect(blur);
+        Animator.transitionTo(settingsPanel, -Main.screenWidth-30, 0, 0.5);
     }
 
     @Override

@@ -1,36 +1,43 @@
 package fx;
 
-
 import backend.Location;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import org.controlsfx.control.textfield.*;
+import org.controlsfx.control.textfield.TextFields;
 
+public class SettingsPanel extends Pane {
 
-public class SettingsView extends View {
-    private Stage stage;
-    private Scene scene;
     private Button close;
     private boolean nearme;
 
-    private static View previous;
+    public SettingsPanel(){
+        setPrefWidth(300);
+        setPrefHeight(500);
+        setPadding(new Insets(10,10,10,10));
 
-    public SettingsView (Stage stage){
-        this.stage=stage;}
+        setStyle("-fx-background-color: rgba(40,40,40, 0.7); -fx-background-radius: 10;");
 
-    public void makeScene(){
+        Label title = new Label("Settings");
+        title.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 32));
+        title.setTextFill(Color.WHITE);
+        title.setPrefWidth(Main.screenWidth - 20);
+        getChildren().add(title);
+        title.setLayoutX(5);
+        title.setLayoutY(5);
+
         close = new Button("X");
         //TODO: implement PREVIOUS VIEW
-        close.setOnMousePressed(e -> Main.getViews().get(ViewName.INITIAL).show());
+        close.setOnMousePressed(e -> clicked());
 
         ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
         if (Main.gettimeformat()){
@@ -69,19 +76,13 @@ public class SettingsView extends View {
                 }
         );
 
-        Pane root = new Pane();
-
-        root.getChildren().add(close);
-        close.setLayoutY(10);
-        close.setLayoutX(350);
-
-        Label label = new Label("Settings");
-        label.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 32));
-        root.getChildren().add(label);
-        this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
+        getChildren().add(close);
+        close.setLayoutX(270);
+        close.setLayoutY(5);
 
         CheckBox nearmebox = new CheckBox("Near Me");
         nearmebox.setSelected(nearme);
+        nearmebox.setTextFill(Color.WHITE);
         nearmebox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
@@ -103,43 +104,47 @@ public class SettingsView extends View {
                 }
         );
 
-        root.getChildren().add(nearmebox);
-        nearmebox.setLayoutX(50);
-        nearmebox.setLayoutY(173);
+        getChildren().add(nearmebox);
+        nearmebox.setLayoutX(20);
+        nearmebox.setLayoutY(103);
 
-        root.getChildren().add(location);
-        location.setLayoutX(150);
-        location.setLayoutY(170);
+        getChildren().add(location);
+        location.setLayoutX(100);
+        location.setLayoutY(100);
 
         Text l =new Text("Location");
         l.setFont(Font.font("Times New Roman",20));
-        root.getChildren().add(l);
+        l.setFill(Color.WHITE);
+        getChildren().add(l);
         l.setLayoutX(30);
-        l.setLayoutY(150);
+        l.setLayoutY(85);
 
-        root.getChildren().add(timeformat);
+        getChildren().add(timeformat);
         timeformat.setLayoutX(50);
-        timeformat.setLayoutY(370);
+        timeformat.setLayoutY(250);
 
         Text t =new Text("Time Format");
         t.setFont(Font.font("Times New Roman",20));
-        root.getChildren().add(t);
+        t.setFill(Color.WHITE);
+        getChildren().add(t);
         t.setLayoutX(30);
-        t.setLayoutY(350);
+        t.setLayoutY(235);
 
-        root.getChildren().add(notification);
+        getChildren().add(notification);
         notification.setLayoutX(50);
-        notification.setLayoutY(570);
+        notification.setLayoutY(400);
 
         Text n =new Text("Notification");
         n.setFont(Font.font("Times New Roman",20));
-        root.getChildren().add(n);
+        n.setFill(Color.WHITE);
+        getChildren().add(n);
         n.setLayoutX(30);
-        n.setLayoutY(550);
+        n.setLayoutY(385);
     }
 
-    public void show(){
-        makeScene();
-        stage.setScene(scene);
+    private void clicked() {
+        ((InitialView) Main.getViews().get(ViewName.INITIAL)).recallSettings();
+        ((HourlyView) Main.getViews().get(ViewName.HOURLY)).recallSettings();
     }
 }
+

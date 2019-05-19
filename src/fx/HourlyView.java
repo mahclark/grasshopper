@@ -10,6 +10,8 @@ import weather.LocationWeatherOWM;
 
 import java.util.List;
 
+import static fx.Main.settingsPanel;
+
 public class HourlyView extends View {
 
     private Stage stage;
@@ -20,6 +22,8 @@ public class HourlyView extends View {
 
     private EventPanel eventPanel = Main.eventPanel;
     private boolean eventShowing = false;
+    private SettingsPanel settingsPanel = Main.settingsPanel;
+    private boolean settingsShowing = false;
 
     private Label strategyLbl = new Label();
     private Label weatherLbl = new Label();
@@ -122,6 +126,21 @@ public class HourlyView extends View {
             Animator.transitionBy(eventPanel, 0, Main.screenHeight - 100, 0.5);
         }
     }
+
+    public void callSettings(){
+        GaussianBlur blur = new GaussianBlur(0);
+        Animator.timeline(blur.radiusProperty(), 8, 0.5);
+        mainPane.setEffect(blur);
+        Animator.transitionTo(settingsPanel, Main.screenWidth+30, 0, 0.5);
+    }
+
+    public void recallSettings(){
+        GaussianBlur blur = new GaussianBlur(8);
+        Animator.timeline(blur.radiusProperty(), 0, 0.5);
+        mainPane.setEffect(blur);
+        Animator.transitionTo(settingsPanel, -Main.screenWidth-30, 0, 0.5);
+    }
+
     @Override
     public void show() {
         makeScene();
