@@ -26,6 +26,7 @@ public class EventEditView extends View {
     }
 
     public void show(){
-
+        makeScene();
+        stage.setScene(scene);
     }
 }
