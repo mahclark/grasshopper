@@ -15,4 +15,12 @@ public class EventEditView extends View {
     private Scene scene;
 
     private Pane root = new Pane();
+
+    public void makeScene(){
+
+    }
+
+    public void show(){
+
+    }
 }
