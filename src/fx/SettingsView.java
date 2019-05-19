@@ -1,6 +1,7 @@
 package fx;
 
 
+import backend.Location;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.controlsfx.control.textfield.*;
 
@@ -26,7 +28,7 @@ public class SettingsView extends View {
         this.stage=stage;}
 
     public void makeScene(){
-        close = new Button();
+        close = new Button("X");
         //TODO: implement PREVIOUS VIEW
         close.setOnMousePressed(e -> Main.getViews().get(ViewName.INITIAL).show());
 
@@ -86,37 +88,55 @@ public class SettingsView extends View {
                 nearme = t1;
             }
         });
-        ComboBox location = new ComboBox<>(
+        ComboBox location = new ComboBox<String>(
                 //TODO:Change to some other things later
-                FXCollections.observableArrayList("Cambridge","London","Outer Space","Oxford"));
+                FXCollections.observableArrayList());
         location.setEditable(true);
-        location.setValue("Cambridge");
+        location.setValue(Main.getUserLocation().getInput());
         TextFields.bindAutoCompletion(location.getEditor(),location.getItems());
-        location.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
+        location.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
                     @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        //TODO:change location ID
+                    public void changed(ObservableValue observableValue, Object o, Object t1) {
+                        Main.setUserLocation(new Location(t1.toString()));
                     }
                 }
         );
 
         root.getChildren().add(nearmebox);
         nearmebox.setLayoutX(50);
-        nearmebox.setLayoutY(200);
+        nearmebox.setLayoutY(173);
 
         root.getChildren().add(location);
         location.setLayoutX(150);
-        location.setLayoutY(200);
+        location.setLayoutY(170);
 
+
+        Text l =new Text("Location");
+        l.setFont(Font.font("Times New Roman",20));
+        root.getChildren().add(l);
+        l.setLayoutX(30);
+        l.setLayoutY(150);
 
         root.getChildren().add(timeformat);
         timeformat.setLayoutX(50);
-        timeformat.setLayoutY(350);
+        timeformat.setLayoutY(370);
+
+        Text t =new Text("Time Format");
+        t.setFont(Font.font("Times New Roman",20));
+        root.getChildren().add(t);
+        t.setLayoutX(30);
+        t.setLayoutY(350);
 
         root.getChildren().add(notification);
         notification.setLayoutX(50);
-        notification.setLayoutY(500);
+        notification.setLayoutY(570);
+
+        Text n =new Text("Notification");
+        n.setFont(Font.font("Times New Roman",20));
+        root.getChildren().add(n);
+        n.setLayoutX(30);
+        n.setLayoutY(550);
     }
 
     public void show(){
