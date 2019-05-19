@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -48,11 +49,11 @@ public class Location {
 
         }
 
-        catch (Exception e) {
-            this.lat = 0;
-            this.lon = 0;
-            this.placeId = "nowhere";
-
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+            this.lat = 52.2107375;
+            this.lon = 0.09179849999999999;
+            this.placeId = "333245852306";
         }
 
     } // end constructor
