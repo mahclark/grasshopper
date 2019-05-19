@@ -12,14 +12,16 @@ public class InitialView extends View {
     private Stage stage;
     private Scene scene;
 
+    private Pane root = new Pane();
+
     public InitialView(Stage stage) {
         this.stage = stage;
+
+        this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }
 
 //    @Override
     private void makeScene(boolean withAnimation) {
-        Pane root = new Pane();
-
         Label label = new Label("Initial View");
         label.setFont(new Font(32));
         root.getChildren().add(label);
@@ -31,10 +33,10 @@ public class InitialView extends View {
         root.getChildren().add(mainTemp);
 
         Graph graph = Main.temperatureGraph;
-        root.getChildren().add(graph);
+        if (!root.getChildren().contains(graph)) root.getChildren().add(graph);
 
         Selector selector = Main.selector;
-        root.getChildren().add(selector);
+        if (!root.getChildren().contains(selector)) root.getChildren().add(selector);
 
         Button settingsButton = new Button("Settings");
         settingsButton.setOnAction(e -> Main.getViews().get(ViewName.SETTINGS).show());
@@ -50,8 +52,6 @@ public class InitialView extends View {
             settingsButton.setLayoutY(Main.screenHeight + 10);
             Animator.transitionBy(settingsButton, 0, -45, 0.2);
         }
-
-        this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
 
         scene.setOnMouseReleased(e -> selector.mouseUp());
     }

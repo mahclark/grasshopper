@@ -163,19 +163,24 @@ public class Graph extends ScrollPane {
         }
 
         void select() {
-            if (selectedCell != null) selectedCell.deselect();
-            if (selectedCell == this) {
-                selectedCell = null;
-                Main.getViews().get(ViewName.INITIAL).show();
-                return;
+            if (!Main.selector.eventSelected()) {
+                if (selectedCell != null) selectedCell.deselect();
+                if (selectedCell == this) {
+                    selectedCell = null;
+                    Main.getViews().get(ViewName.INITIAL).show();
+                    return;
+                }
+                selectedCell = this;
+
+                tempLbl.setVisible(true);
+
+                HourlyView hourlyView = (HourlyView) Main.getViews().get(ViewName.HOURLY);
+                hourlyView.show();
+                hourlyView.showHourlyWeather(hour);
+
+                setColor(Color.WHITE);
+                dot.setVisible(false);
             }
-            selectedCell = this;
-
-            tempLbl.setVisible(true);
-
-            Main.getViews().get(ViewName.HOURLY).show();
-            setColor(Color.WHITE);
-            dot.setVisible(false);
         }
 
         void deselect() {
