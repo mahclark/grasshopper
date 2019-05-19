@@ -10,7 +10,7 @@ public class LocationTester {
         System.out.println(testLoc.getLon());
         System.out.println(testLoc.getPlaceId());
 
-        for (String s : Location.getLocation("Cambridge", true)) {
+        for (String s : Location.getLocation("Cam", true)) {
             System.out.println(s);
         }
     }
