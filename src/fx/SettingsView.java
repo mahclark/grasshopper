@@ -18,6 +18,9 @@ public class SettingsView extends View {
     private Stage stage;
     private Scene scene;
     private Button close;
+    private boolean nearme;
+
+    private static View previous;
 
     public SettingsView (Stage stage){
         this.stage=stage;}
@@ -45,6 +48,7 @@ public class SettingsView extends View {
                 }
         );
 
+
         ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
         if (Main.getnotifstatus()){
             notification.setValue("Yes");
@@ -66,6 +70,7 @@ public class SettingsView extends View {
         Pane root = new Pane();
 
         root.getChildren().add(close);
+        close.setLayoutY(10);
         close.setLayoutX(350);
 
         Label label = new Label("Settings");
@@ -73,6 +78,14 @@ public class SettingsView extends View {
         root.getChildren().add(label);
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
 
+        CheckBox nearmebox = new CheckBox("Near Me");
+        nearmebox.setSelected(nearme);
+        nearmebox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                nearme = t1;
+            }
+        });
         ComboBox location = new ComboBox<>(
                 //TODO:Change to some other things later
                 FXCollections.observableArrayList("Cambridge","London","Outer Space","Oxford"));
@@ -88,8 +101,12 @@ public class SettingsView extends View {
                 }
         );
 
+        root.getChildren().add(nearmebox);
+        nearmebox.setLayoutX(50);
+        nearmebox.setLayoutY(200);
+
         root.getChildren().add(location);
-        location.setLayoutX(50);
+        location.setLayoutX(150);
         location.setLayoutY(200);
 
 
