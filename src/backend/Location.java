@@ -50,7 +50,7 @@ public class Location {
         }
 
         catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println("IOException: "+e.getMessage());
             this.lat = 52.2107375;
             this.lon = 0.09179849999999999;
             this.placeId = "333245852306";

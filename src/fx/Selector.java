@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import weather.LocationWeatherOWM;
+import weather.NoInternetConnection;
 
 import java.util.*;
 
@@ -177,8 +178,8 @@ public class Selector extends ScrollPane {
             for (int date : (new LocationWeatherOWM(new Location("Cambridge"))).giveDays()) {
                 items.add(new DateItem(date));
             }
-        } catch (Exception e) {
-            System.out.println("get weather exception: " + e.getMessage());
+        } catch (NoInternetConnection ex) {
+            System.err.println("No internet connection. Message: " + ex.getMessage());
         }
 
         for (EventItem event : events) {

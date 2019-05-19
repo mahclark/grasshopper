@@ -27,7 +27,6 @@ public class APIDemo {
         System.out.println("Humidity:\t\t" + data.getHumidity());
         System.out.println("Wind speed:\t" + data.getWindSpeed());
         System.out.println("Direction:\t" + data.getWindDeg());
-//        System.out.println("Direction:\t" + data.get());
         System.out.println("Cloud cover:\t" + data.getClouds());
     }
 

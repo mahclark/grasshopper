@@ -61,8 +61,6 @@ public class StrategyGenerator {
         for (int hour : relevantWeatherHours) {
             WeatherData data = weather.giveData(date, hour);
             hourlyStrategies.put(hour, staticStrategy(data));
-//            System.out.println("\nStrategy for " + hour + " o'clock:");
-//            System.out.println(bestStrategies(hourlyStrategies.get(hour)));
             hourlyBest.add(bestStrategies(hourlyStrategies.get(hour)));
         }
 
@@ -87,8 +85,6 @@ public class StrategyGenerator {
             secondHalf.add(hourlyBest.get(i));
         }
 
-        System.out.println();
-
         String output1 = "For the first half, bring on " + chooseOne(firstHalf, "bowler") + " bowlers. When batting, " + chooseOne(firstHalf, "battingStyle") +
                 ". Fielders should be placed " + chooseOne(firstHalf, "fieldPlacement") + ". It's a good time to " + chooseOne(firstHalf, "batOrBowl") + ".";
 
@@ -97,23 +93,7 @@ public class StrategyGenerator {
 
         String output3 = "If you win the toss, choose to " + (batFirstScore >= 0 ? "bat" : "bowl") + " first.";
 
-//        System.out.println(output1);
-//        System.out.println(output2);
-//        System.out.println(output3);
-
         output = output1 + "\n\n" + output2 + "\n\n" + output3;
-
-//        System.out.println("\nFirst half:");
-//        List<String> types = new ArrayList<>(Arrays.asList("bowler", "battingStyle", "fieldPlacement", "batOrBowl"));
-//        for (int i = 0; i < 4; i++) {
-//            System.out.println(chooseOne(firstHalf, types.get(i)));
-//        }
-//
-//
-//        System.out.println("\nSecond half:");
-//        for (int i = 0; i < 4; i++) {
-//            System.out.println(chooseOne(secondHalf, types.get(i)));
-//        }
     }
 
     public String getOutput() {
@@ -236,6 +216,7 @@ public class StrategyGenerator {
 class StrategyTester {
     public static void main(String[] args) throws NoInternetConnection, MultiDayGameException {
         StrategyGenerator generator = new StrategyGenerator(new LocationWeatherOWM(new Location("Cambridge")), 20190518, 12, 30);
+        System.out.println("Strategies generated: ");
         System.out.println(generator.getOutput());
     }
 }

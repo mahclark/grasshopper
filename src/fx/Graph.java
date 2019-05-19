@@ -38,7 +38,7 @@ public class Graph extends ScrollPane {
 
     public Graph() {
         setStyle("-fx-focus-color: transparent;");
-        System.out.println("Cambridge location:\t" + Main.getUserLocation().getLon() + "\t" + Main.getUserLocation().getLat());
+        System.err.println("Cambridge location:\t" + Main.getUserLocation().getLon() + "\t" + Main.getUserLocation().getLat());
 
         reloadGraph();
 
@@ -75,7 +75,7 @@ public class Graph extends ScrollPane {
 
             emptyErrorMessage = "No data available.";
         } catch (NoInternetConnection e) {
-            System.out.println("No internet connection");
+            System.err.println("No internet connection.");
             emptyErrorMessage = "No internet connection detected.";
         }
     }

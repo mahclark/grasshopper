@@ -132,7 +132,7 @@ public class LocationWeatherOWM implements LocationWeather {
 
     @Override
     public WeatherData giveData(int date, int hour) {
-        // Converst to yyyymmddhh and gets
+        // Converts to yyyymmddhh and gets WeatherData
         // Returns null if no value
         return data.get(date*100 + hour);
     }
@@ -140,6 +140,7 @@ public class LocationWeatherOWM implements LocationWeather {
     // Example for hourly
     public static void main(String[] args) throws NoInternetConnection {
         LocationWeather owm = new LocationWeatherOWM(52.211109, 0.091517);
+        System.out.println("Result of 'owm.giveData(20190517, 12).getTemp()':");
         System.out.println(owm.giveData(20190517, 12).getTemp());
     }
 }

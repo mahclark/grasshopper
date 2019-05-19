@@ -44,12 +44,10 @@ public class WeatherDataCurrent{
         JsonParser jp = new JsonParser();
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); // Convert the input stream to a json element
         JsonObject rootobj = root.getAsJsonObject(); // Get object downloaded
-        System.out.println(rootobj);
 
         // Gets weather
         JsonArray weathera = (JsonArray) rootobj.get("weather"); // List of dat
         JsonObject weather =(JsonObject) weathera.get(0);
-        System.out.println(weather);
 
         // Gets main
         JsonObject main = (JsonObject) rootobj.get("main");
