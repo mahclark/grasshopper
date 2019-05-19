@@ -87,7 +87,7 @@ public class Location {
         String[] suggestionList = new String[suggestions.size()];
 
         for (int i = 0; i < suggestions.size(); i++) {
-            suggestionList[i] = suggestions.get(i).getAsJsonObject().get("test").getAsString();
+            suggestionList[i] = suggestions.get(i).getAsJsonObject().get("text").getAsString();
             // store the suggestions in an array in the form of strings
         } // end for
 
