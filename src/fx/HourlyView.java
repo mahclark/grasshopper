@@ -29,17 +29,12 @@ public class HourlyView extends View {
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }
 
-//    @Override
     private void makeScene() {
-        if (!root.getChildren().contains(graph)) root.getChildren().add(graph);
-        Animator.transitionTo(graph, 0, 110, 0.3);
+        root.getChildren().clear();
+        root.getChildren().add(graph);
 
-        if (!root.getChildren().contains(selector)) root.getChildren().add(selector);
+        root.getChildren().add(selector);
         Animator.transitionTo(selector, 0, 20, 0.2);
-
-        Event event = new Event("TestEvent", new Location("Cambridge"), 20190520, 12, 30);
-
-        showStrategy(event);
 
         scene.setOnMouseReleased(e -> selector.mouseUp());
     }
@@ -57,7 +52,7 @@ public class HourlyView extends View {
         weatherLbl.setLayoutX(10);
         weatherLbl.setLayoutY(320);
         weatherLbl.setPrefWidth(Main.screenWidth - 20);
-        if (!root.getChildren().contains(weatherLbl)) root.getChildren().add(weatherLbl);
+        root.getChildren().add(weatherLbl);
 
         Animator.fade(weatherLbl, 0.0, 1.0, 0.5);
         Animator.transitionTo(graph, 0, 80, 0.2);
@@ -71,7 +66,7 @@ public class HourlyView extends View {
         eventInfoLbl.setText(event.getStartHour() + " o'clock - " + event.getLocationName() + ", " + event.getOvers() + " overs");
         eventInfoLbl.setFont(new Font(25));
         eventInfoLbl.setLayoutY(72);
-        if (!root.getChildren().contains(eventInfoLbl)) root.getChildren().add(eventInfoLbl);
+        root.getChildren().add(eventInfoLbl);
 
         try {
             generator = new StrategyGenerator(new LocationWeatherOWM(event.getLocation()), event.getDate(), event.getStartHour(), event.getOvers());
@@ -85,7 +80,7 @@ public class HourlyView extends View {
         strategyLbl.setLayoutX(10);
         strategyLbl.setLayoutY(320);
         strategyLbl.setPrefWidth(Main.screenWidth - 20);
-        if (!root.getChildren().contains(strategyLbl)) root.getChildren().add(strategyLbl);
+        root.getChildren().add(strategyLbl);
 
         Animator.fade(eventInfoLbl, 0.0, 1.0, 0.5);
         Animator.fade(strategyLbl, 0.0, 1.0, 0.5);
