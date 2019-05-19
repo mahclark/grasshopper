@@ -1,5 +1,6 @@
 package fx;
 
+import backend.Location;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -21,6 +22,7 @@ public class Main extends Application {
     //Depend on whether u guys think is needed
     private static boolean notification_status;//false=NO,true=YES
     private static boolean time_format;//false=24hr,true=12Hr
+    private static Location userLocation = new Location("Cambridge");
 
     private static Map<ViewName, View> views = new HashMap<>();
 
@@ -53,6 +55,14 @@ public class Main extends Application {
         p.x -= stage.getX();
         p.y -= stage.getY();
         return p;
+    }
+
+    public static Location getUserLocation() {
+        return userLocation;
+    }
+
+    public static void setUserLocation(Location userLocation) {
+        Main.userLocation = userLocation;
     }
 
     public static Map<ViewName, View> getViews() {

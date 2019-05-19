@@ -38,7 +38,7 @@ public class Graph extends ScrollPane {
 
     public Graph() {
         setStyle("-fx-focus-color: transparent;");
-        System.out.println("Cambridge location:\t" + cambridge.getLon() + "\t" + cambridge.getLat());
+        System.out.println("Cambridge location:\t" + Main.getUserLocation().getLon() + "\t" + Main.getUserLocation().getLat());
 
         reloadGraph();
 
@@ -53,11 +53,9 @@ public class Graph extends ScrollPane {
         reloadVisuals();
     }
 
-    private static final Location cambridge = new Location("Cambridge");
-
     private void reloadData() {
         try {
-            LocationWeatherOWM cambridgeWeather = new LocationWeatherOWM(cambridge);
+            LocationWeatherOWM cambridgeWeather = new LocationWeatherOWM(Main.getUserLocation());
 
             int date = Main.selector.getSelectedDate();
             List<Integer> hours;
