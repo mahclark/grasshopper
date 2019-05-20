@@ -4,13 +4,17 @@ import backend.Location;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.controlsfx.control.textfield.TextFields;
+
+import java.io.IOException;
 
 public class SettingsPanel extends Pane {
 
@@ -86,20 +90,28 @@ public class SettingsPanel extends Pane {
                 nearme = t1;
             }
         });
-        ComboBox location = new ComboBox<String>(
-                //TODO:Change to some other things later
-                FXCollections.observableArrayList());
+        ComboBox location = new ComboBox<String>();
         location.setEditable(true);
-        location.setValue(Main.getUserLocation().getInput());
-        TextFields.bindAutoCompletion(location.getEditor(),location.getItems());
-        location.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue observableValue, Object o, Object t1) {
-                        Main.setUserLocation(new Location(t1.toString()));
-                    }
+        location.getEditor().setText(Main.getUserLocation().getInput());
+        try {
+            TextFields.bindAutoCompletion(location.getEditor(), Location.getLocation(location.getEditor().getText(), true));
+        }
+        catch (IOException e){}
+        location.getEditor().setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                try {
+                    TextFields.bindAutoCompletion(location.getEditor(), Location.getLocation(location.getEditor().getText(), true));
                 }
-        );
+                catch (IOException e){}
+            }
+        });
+        location.selectionModelProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observableValue, Object o, Object t1) {
+                Main.setUserLocation(new Location(t1.toString()));
+            }
+        });
 
         getChildren().add(nearmebox);
         nearmebox.setLayoutX(30);

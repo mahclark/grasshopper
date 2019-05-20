@@ -2,11 +2,15 @@ package fx;
 
 import backend.Location;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -17,6 +21,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.textfield.TextFields;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Comparator;
 
@@ -133,12 +138,24 @@ public class EventPanel extends VBox {
         locationTxt.setFill(Color.WHITE);
 
         //TODO: Make this work
-        locationChoice = new ComboBox<String>(
-                //TODO:Change to some other things later
-                FXCollections.observableArrayList());
+        locationChoice = new ComboBox<String>();
         locationChoice.setEditable(true);
-        locationChoice.setValue(Main.getUserLocation().getInput());
-        TextFields.bindAutoCompletion(locationChoice.getEditor(),locationChoice.getItems());
+        //locationChoice.setValue(Main.getUserLocation().getInput());
+        locationChoice.getEditor().setText(Main.getUserLocation().getInput());
+        try {
+            TextFields.bindAutoCompletion(locationChoice.getEditor(), Location.getLocation(locationChoice.getEditor().getText(), true));
+        }
+        catch (IOException e){}
+        locationChoice.getEditor().setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                try {
+                    TextFields.bindAutoCompletion(locationChoice.getEditor(), Location.getLocation(locationChoice.getEditor().getText(), true));
+                }
+                catch (IOException e){}
+            }
+        });
+
 
         addCell(locationTxt, locationChoice);
 

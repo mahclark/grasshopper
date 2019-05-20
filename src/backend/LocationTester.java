@@ -11,9 +11,11 @@ public class LocationTester {
 
         System.out.println("What was found for 'Cam':");
 
-        for (String s : Location.getLocation("Cam", true)) {
+        for (String s : Location.getLocation("Chic", true)) {
             System.out.println(s);
         }
+        Location chick = new Location("Chicken");
+        System.out.println(chick.getLat());
     }
 
 }
