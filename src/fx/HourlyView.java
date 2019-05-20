@@ -1,5 +1,6 @@
 package fx;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
@@ -81,6 +82,8 @@ public class HourlyView extends View {
         eventInfoLbl.setText(event.getStartHour() + ":00 - " + event.getLocationName() + ", " + event.getOvers() + " overs");
         eventInfoLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 28));
         eventInfoLbl.setLayoutY(72);
+        eventInfoLbl.setPrefWidth(Main.screenWidth);
+        eventInfoLbl.setAlignment(Pos.CENTER);
         mainPane.getChildren().add(eventInfoLbl);
 
         try {
@@ -90,7 +93,7 @@ public class HourlyView extends View {
             strategyLbl.setText("There is no weather information for the selected date at the moment.");
         }
 
-        strategyLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 21));
+        strategyLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         strategyLbl.setWrapText(true);
         strategyLbl.setLayoutX(10);
         strategyLbl.setLayoutY(320);

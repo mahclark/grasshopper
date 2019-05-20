@@ -1,13 +1,11 @@
 package fx;
 
-import javafx.event.EventHandler;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -16,22 +14,23 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.time.LocalDate;
 
 public class EventPanel extends VBox {
 
     public boolean isShowing = false;
-    private boolean editorShowing = false;
     private final int inputIndent = 125;
 
-    private int editorHeight = 220;
+    private int editorHeight = 265;
     private int eventsHeight = Main.events.size()*65 + 60;
 
     private Button newEventBtn;
     private Label errorLbl;
 
     private TextField nameField;
+    private ComboBox locationChoice;
     private DatePicker datePicker;
     private ComboBox<Integer> timeChoice;
     private ComboBox<Integer> overChoice;
@@ -104,7 +103,21 @@ public class EventPanel extends VBox {
 
         addCell(nameTxt, nameField);
 
-        Text dateTxt = new Text("Event Date:");
+        Text locationTxt = new Text("Location:");
+        locationTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+        locationTxt.setFill(Color.WHITE);
+
+        //TODO: Make this work
+        locationChoice = new ComboBox<String>(
+                //TODO:Change to some other things later
+                FXCollections.observableArrayList());
+        locationChoice.setEditable(true);
+        locationChoice.setValue(Main.getUserLocation().getInput());
+        TextFields.bindAutoCompletion(locationChoice.getEditor(),locationChoice.getItems());
+
+        addCell(locationTxt, locationChoice);
+
+        Text dateTxt = new Text("Date:");
         dateTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         dateTxt.setFill(Color.WHITE);
         datePicker = new DatePicker();
@@ -163,7 +176,6 @@ public class EventPanel extends VBox {
     }
 
     private void newEvent() {
-        editorShowing = true;
         Animator.transitionTo(this, 0, -eventsHeight - editorHeight, 0.3);
         Animator.fade(newEventBtn, 1.0, 0.0, 0.3);
         newEventBtn.setDisable(true);
@@ -173,6 +185,8 @@ public class EventPanel extends VBox {
         boolean valid = false;
         if (nameField.getText().equals("")) {
             errorLbl.setText("Please choose a name");
+        } else if (locationChoice.getValue().equals("")) { //TODO: Check for valid location
+            errorLbl.setText("Please choose a location");
         } else if (datePicker.getValue() == null) {
             errorLbl.setText("Please choose a date");
         } else if (timeChoice.getValue() == null) {
@@ -223,7 +237,6 @@ public class EventPanel extends VBox {
             Animator.transitionTo(this, 0, -eventsHeight, 0.5);
         } else {
             isShowing = false;
-            editorShowing = false;
             Main.selector.setDisable(false);
             Main.temperatureGraph.setDisable(false);
 
