@@ -63,7 +63,7 @@ public class HourlyView extends View {
         int date = selector.getSelectedDate();
         weatherLbl.setText("Weather info for " + hour + " " + date + " goes here");
 
-        weatherLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 21));
+        weatherLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 21));
         weatherLbl.setWrapText(true);
         weatherLbl.setLayoutX(10);
         weatherLbl.setLayoutY(320);
@@ -80,7 +80,7 @@ public class HourlyView extends View {
         eventInfoLbl.setVisible(true);
 
         eventInfoLbl.setText(event.getStartHour() + ":00 - " + event.getLocationName() + ", " + event.getOvers() + " overs");
-        eventInfoLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 28));
+        eventInfoLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 28));
         eventInfoLbl.setLayoutY(72);
         mainPane.getChildren().add(eventInfoLbl);
 
@@ -91,7 +91,7 @@ public class HourlyView extends View {
             strategyLbl.setText("There is no weather information for the selected date at the moment.");
         }
 
-        strategyLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 21));
+        strategyLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 21));
         strategyLbl.setWrapText(true);
         strategyLbl.setLayoutX(10);
         strategyLbl.setLayoutY(320);

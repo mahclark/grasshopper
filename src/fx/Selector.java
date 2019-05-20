@@ -155,7 +155,8 @@ public class Selector extends ScrollPane {
 
     private void itemClicked(SelectorItem item) {
         Bounds boundsInScene = item.localToScene(item.getBoundsInLocal());
-        double centerX = boundsInScene.getCenterX();
+        double centerX = (boundsInScene.getMaxX() + boundsInScene.getMinX())/2.0;
+                //.getCenterX();
 
         double totalWidth = content.getWidth();
         double newScroll = getHvalue() + (centerX - Main.screenWidth / 2.0) / (totalWidth - Main.screenWidth);
@@ -227,10 +228,10 @@ public class Selector extends ScrollPane {
             setAlignment(Pos.CENTER);
 
             monthLbl = new Label(Event.months[(date % 10000  - date % 100)/100]);
-            monthLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 10));
+            monthLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 10));
 
             dateLbl = new Label("" + (date % 100));
-            dateLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 30));
+            dateLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
 
             setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -281,7 +282,7 @@ public class Selector extends ScrollPane {
             setPadding(new Insets(0,10,0,10));
 
             nameLbl = new Label(event.getName());
-            nameLbl.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 28));
+            nameLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 28));
 
             setBackground(new Background(new BackgroundFill(Color.color(0.94, 0.89, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
 
