@@ -5,11 +5,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -119,6 +116,31 @@ public class SettingsPanel extends Pane {
         l.setLayoutX(30);
         l.setLayoutY(85);
 
+        Text temp = new Text("Temperature");
+        temp.setFont(Font.font("Times New Roman",20));
+        temp.setFill(Color.WHITE);
+        getChildren().add(temp);
+        temp.setLayoutX(30);
+        temp.setLayoutY(235);
+        ChoiceBox temperaturebox = new ChoiceBox(FXCollections.observableArrayList("Celsius","Fahrenheit"));
+        temperaturebox.setLayoutX(30);
+        temperaturebox.setLayoutY(250);
+        if(!Main.gettempformat())
+            temperaturebox.setValue("Celsius");
+        else{
+            temperaturebox.setValue("Fahrenheit");
+        }
+        temperaturebox.getSelectionModel().selectedIndexProperty().addListener(
+                new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                        //Change the time display style
+                        Main.changetempformat(t1);
+                    }
+                }
+        );
+        getChildren().add(temperaturebox);
+
 //        getChildren().add(timeformat);
 //        timeformat.setLayoutX(50);
 //        timeformat.setLayoutY(250);
@@ -132,14 +154,14 @@ public class SettingsPanel extends Pane {
 
         getChildren().add(notification);
         notification.setLayoutX(30);
-        notification.setLayoutY(300);
+        notification.setLayoutY(400);
 
         Text n =new Text("Notification");
         n.setFont(Font.font("Times New Roman",20));
         n.setFill(Color.WHITE);
         getChildren().add(n);
         n.setLayoutX(30);
-        n.setLayoutY(285);
+        n.setLayoutY(385);
     }
 
     private void clicked() {

@@ -32,23 +32,23 @@ public class SettingsView extends View {
         //TODO: implement PREVIOUS VIEW
         close.setOnMousePressed(e -> Main.getViews().get(ViewName.INITIAL).show());
 
-        ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
-        if (Main.gettimeformat()){
-            timeformat.setValue("12Hr");
-        }
-        else{
-            timeformat.setValue("24Hr");
-        }
-
-        timeformat.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        //Change the time display style
-                        Main.changetimeformat(t1);
-                    }
-                }
-        );
+//        ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
+//        if (Main.gettimeformat()){
+//            timeformat.setValue("12Hr");
+//        }
+//        else{
+//            timeformat.setValue("24Hr");
+//        }
+//
+//        timeformat.getSelectionModel().selectedIndexProperty().addListener(
+//                new ChangeListener<Number>() {
+//                    @Override
+//                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+//                        //Change the time display style
+//                        Main.changetempformat(t1);
+//                    }
+//                }
+//        );
 
 
         ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
@@ -116,10 +116,10 @@ public class SettingsView extends View {
         root.getChildren().add(l);
         l.setLayoutX(30);
         l.setLayoutY(150);
-
-        root.getChildren().add(timeformat);
-        timeformat.setLayoutX(50);
-        timeformat.setLayoutY(370);
+//
+//        root.getChildren().add(timeformat);
+//        timeformat.setLayoutX(50);
+//        timeformat.setLayoutY(370);
 
         Text t =new Text("Time Format");
         t.setFont(Font.font("Times New Roman",20));

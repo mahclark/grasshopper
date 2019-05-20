@@ -20,6 +20,7 @@ public class Main extends Application {
     public final static int screenHeight = 667;  // 0.5 scaled resolution of iPhone 8
 
     private static boolean notification_status;//false=NO,true=YES
+    private static boolean temperature_status;//false=C,true=F
     private static boolean time_format;//false=24hr,true=12Hr
     private static Location userLocation = new Location("Cambridge");
 
@@ -83,16 +84,16 @@ public class Main extends Application {
             notification_status=true;
         }
     }
-    public static boolean gettimeformat(){
-        return time_format;
+    public static boolean gettempformat(){
+        return temperature_status;
     }
 
-    public static void changetimeformat(Number timeformat){
+    public static void changetempformat(Number timeformat){
         if (timeformat.equals(0)){
-            time_format=false;
+            temperature_status=false;
         }
         else{
-            time_format=true;
+            temperature_status=true;
         }
     }
 
