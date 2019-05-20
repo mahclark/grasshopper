@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,6 +18,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class EventPanel extends Pane {
+
+    public boolean isShowing = false;
 
     public EventPanel() {
         setPrefWidth(Main.screenWidth);
@@ -156,8 +159,7 @@ public class EventPanel extends Pane {
         addEvent.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                ((InitialView) Main.getViews().get(ViewName.INITIAL)).toggleEventPanel();
-                ((HourlyView) Main.getViews().get(ViewName.HOURLY)).toggleEventPanel();
+                toggle();
                 Notifications notif = Notifications.create()
                         .title("Event Created")
                         .text("Event Title:"+eventtitlebox.getText())
@@ -173,7 +175,32 @@ public class EventPanel extends Pane {
     }
 
     private void clicked() {
-        ((InitialView) Main.getViews().get(ViewName.INITIAL)).toggleEventPanel();
-        ((HourlyView) Main.getViews().get(ViewName.HOURLY)).toggleEventPanel();
+        toggle();
+    }
+
+    public void toggle() {
+        if (!isShowing) {
+            isShowing = true;
+            Main.selector.setDisable(true);
+            Main.temperatureGraph.setDisable(true);
+
+            GaussianBlur blur = new GaussianBlur(0);
+            Animator.timeline(blur.radiusProperty(), 8, 0.5);
+            ((InitialView) Main.getViews().get(ViewName.INITIAL)).blur(blur);
+            ((HourlyView) Main.getViews().get(ViewName.HOURLY)).blur(blur);
+
+            Animator.transitionBy(this, 0, 100 - Main.screenHeight, 0.5);
+        } else {
+            isShowing = false;
+            Main.selector.setDisable(false);
+            Main.temperatureGraph.setDisable(false);
+
+            GaussianBlur blur = new GaussianBlur(8);
+            Animator.timeline(blur.radiusProperty(), 0, 0.5);
+            ((InitialView) Main.getViews().get(ViewName.INITIAL)).blur(blur);
+            ((HourlyView) Main.getViews().get(ViewName.HOURLY)).blur(blur);
+
+            Animator.transitionBy(this, 0, Main.screenHeight - 100, 0.5);
+        }
     }
 }

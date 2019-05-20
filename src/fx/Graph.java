@@ -55,6 +55,8 @@ public class Graph extends ScrollPane {
     }
 
     private void reloadData() {
+        temperatures = new TreeMap<>();
+
         try {
             LocationWeatherOWM cambridgeWeather = new LocationWeatherOWM(Main.getUserLocation());
 
@@ -66,11 +68,11 @@ public class Graph extends ScrollPane {
                 hours = cambridgeWeather.giveHours(date);
             }
 
-            temperatures = new TreeMap<>();
-
-            for (int hour : hours) {
-                if (cambridgeWeather.giveHours(date).contains(hour)) {
-                    temperatures.put(hour, cambridgeWeather.giveData(date, hour).getTemp());
+            if (hours != null) {
+                for (int hour : hours) {
+                    if (cambridgeWeather.giveHours(date).contains(hour)) {
+                        temperatures.put(hour, cambridgeWeather.giveData(date, hour).getTemp());
+                    }
                 }
             }
 

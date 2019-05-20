@@ -10,8 +10,6 @@ import weather.LocationWeatherOWM;
 
 import java.util.List;
 
-import static fx.Main.settingsPanel;
-
 public class HourlyView extends View {
 
     private Stage stage;
@@ -21,7 +19,6 @@ public class HourlyView extends View {
     private Pane mainPane = new Pane();
 
     private EventPanel eventPanel = Main.eventPanel;
-    private boolean eventShowing = false;
     private SettingsPanel settingsPanel = Main.settingsPanel;
     private boolean settingsShowing = false;
 
@@ -72,6 +69,8 @@ public class HourlyView extends View {
 
         Animator.fade(weatherLbl, 0.0, 1.0, 0.5);
         Animator.transitionTo(graph, 0, 80, 0.2);
+
+        mainPane.setOnMouseClicked(e -> handleBackgroundTap());
     }
 
     public void showStrategy(Event event) {
@@ -104,27 +103,20 @@ public class HourlyView extends View {
     }
 
     public List<Integer> getRelevantWeatherHours() {
-        return generator.getRelevantWeatherHours();
+        if (generator != null) {
+            return generator.getRelevantWeatherHours();
+        } else {
+            return null;
+        }
     }
 
-    public void toggleEventPanel() {
-        if (!eventShowing) {
-            eventShowing = true;
+    private void handleBackgroundTap() {
+        if (eventPanel.isShowing) eventPanel.toggle();
+        if (settingsShowing) recallSettings();
+    }
 
-            GaussianBlur blur = new GaussianBlur(0);
-            Animator.timeline(blur.radiusProperty(), 8, 0.5);
-            mainPane.setEffect(blur);
-
-            Animator.transitionBy(eventPanel, 0, 100 - Main.screenHeight, 0.5);
-        } else {
-            eventShowing = false;
-
-            GaussianBlur blur = new GaussianBlur(8);
-            Animator.timeline(blur.radiusProperty(), 0, 0.5);
-            mainPane.setEffect(blur);
-
-            Animator.transitionBy(eventPanel, 0, Main.screenHeight - 100, 0.5);
-        }
+    public void blur(GaussianBlur blur) {
+        mainPane.setEffect(blur);
     }
 
     public void callSettings(){

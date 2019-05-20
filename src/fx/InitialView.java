@@ -18,7 +18,6 @@ public class InitialView extends View {
 
     private EventPanel eventPanel = Main.eventPanel;
     private SettingsPanel settingsPanel = Main.settingsPanel;
-    private boolean eventShowing = false;
     private boolean settingsShowing = false;
 
     public InitialView(Stage stage) {
@@ -67,27 +66,17 @@ public class InitialView extends View {
             Animator.transitionBy(settingsButton, 0, -100, 0.2);
         }
 
+        mainPane.setOnMouseClicked(e -> handleBackgroundTap());
         scene.setOnMouseReleased(e -> selector.mouseUp());
     }
 
-    public void toggleEventPanel() {
-        if (!eventShowing) {
-            eventShowing = true;
+    private void handleBackgroundTap() {
+        if (eventPanel.isShowing) eventPanel.toggle();
+        if (settingsShowing) recallSettings();
+    }
 
-            GaussianBlur blur = new GaussianBlur(0);
-            Animator.timeline(blur.radiusProperty(), 8, 0.5);
-            mainPane.setEffect(blur);
-
-            Animator.transitionBy(eventPanel, 0, 100 - Main.screenHeight, 0.5);
-        } else {
-            eventShowing = false;
-
-            GaussianBlur blur = new GaussianBlur(8);
-            Animator.timeline(blur.radiusProperty(), 0, 0.5);
-            mainPane.setEffect(blur);
-
-            Animator.transitionBy(eventPanel, 0, Main.screenHeight - 100, 0.5);
-        }
+    public void blur(GaussianBlur blur) {
+        mainPane.setEffect(blur);
     }
 
     public void callSettings(){
