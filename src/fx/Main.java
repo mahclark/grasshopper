@@ -5,8 +5,11 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.awt.*;
+import java.awt.Point;
+import java.awt.MouseInfo;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Main extends Application {
@@ -25,6 +28,7 @@ public class Main extends Application {
     private static Location userLocation = new Location("Cambridge");
 
     private static Map<ViewName, View> views = new HashMap<>();
+    public static List<Event> events = new ArrayList<>();
 
     public static Selector selector;
     public static Graph temperatureGraph;
@@ -38,6 +42,8 @@ public class Main extends Application {
         this.stage = stage;
 
         stage.setResizable(false);
+
+        loadEvents();
 
         selector = new Selector();
         temperatureGraph = new Graph();
@@ -58,6 +64,13 @@ public class Main extends Application {
         p.x -= stage.getX();
         p.y -= stage.getY();
         return p;
+    }
+
+    private void loadEvents() {
+        events.add(new Event("Match vs Oxford",   new Location("Cambridge"), 20190520, 12, 30));
+        events.add(new Event("M2",                new Location("Cambridge"), 20190520, 12, 30));
+        events.add(new Event("Rematch vs Oxford", new Location("Cambridge"), 20190524, 12, 30));
+        events.add(new Event("Training",          new Location("Cambridge"), 20190531, 12, 30));
     }
 
     public static Location getUserLocation() {

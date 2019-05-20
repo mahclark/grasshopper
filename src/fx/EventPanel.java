@@ -3,11 +3,15 @@ package fx;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -17,11 +21,17 @@ import org.controlsfx.control.Notifications;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class EventPanel extends Pane {
+public class EventPanel extends VBox {
 
     public boolean isShowing = false;
+    private boolean editorShowing = false;
+    private final int inputIndent = 125;
+    private Button newEventBtn;
+    private int editorHeight = 220;
+    private int eventsHeight = Main.events.size()*80;
 
     public EventPanel() {
+        super(20);
         setPrefWidth(Main.screenWidth);
         setPrefHeight(Main.screenHeight);
         setPadding(new Insets(10,10,10,10));
@@ -38,37 +48,55 @@ public class EventPanel extends Pane {
 
         title.setOnMouseClicked(e -> clicked());
 
-        Text eventtitle = new Text("Event Title");
-        eventtitle.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 20));
-        eventtitle.setFill(Color.WHITE);
-        eventtitle.setLayoutX(30);
-        eventtitle.setLayoutY(80);
-        TextField eventtitlebox = new TextField();
-        eventtitlebox.setPromptText("Enter the title of event");
-        eventtitlebox.setLayoutX(30);
-        eventtitlebox.setLayoutY(95);
+        for (Event event : Main.events) {
+            Text eventText = new Text(event.getName());
+            eventText.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+            eventText.setFill(Color.WHITE);
+            eventText.setLayoutX(0);
+            eventText.setLayoutY(20);
 
-        Text eventdate = new Text("Event Date");
-        eventdate.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 20));
-        eventdate.setFill(Color.WHITE);
-        eventdate.setLayoutX(30);
-        eventdate.setLayoutY(180);
-        DatePicker eventdatepicker = new DatePicker();
-        eventdatepicker.setLayoutX(30);
-        eventdatepicker.setLayoutY(195);
+            Button editBtn = new Button("Edit");
+            editBtn.setLayoutX(Main.screenWidth - 60);
+            editBtn.setLayoutY(0);
 
-        Text eventtime = new Text("Event Time");
-        eventtime.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 20));
-        eventtime.setFill(Color.WHITE);
-        eventtime.setLayoutX(30);
-        eventtime.setLayoutY(280);
-        Label fromword = new Label("From:");
-        fromword.setTextFill(Color.WHITE);
-        fromword.setLayoutX(30);
-        fromword.setLayoutY(297);
-        Spinner from = new Spinner();
-        from.setEditable(true);
-        from.setValueFactory(new SpinnerValueFactory() {
+            Pane cell = new Pane();
+            cell.setPrefWidth(Main.screenWidth - 20);
+            cell.getChildren().addAll(eventText, editBtn);
+            getChildren().add(cell);
+
+            Line lineBreak = new Line(10,0,Main.screenWidth - 10,0);
+            lineBreak.setStroke(Color.WHITE);
+            getChildren().add(lineBreak);
+        }
+
+        newEventBtn = new Button("New Event");
+        newEventBtn.setOnAction(e -> newEvent());
+        getChildren().add(newEventBtn);
+
+        Text nameTxt = new Text("Event Name:");
+        nameTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+        nameTxt.setFill(Color.WHITE);
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("Enter the title of event");
+        nameField.setPrefWidth(230);
+
+        addCell(nameTxt, nameField);
+
+        Text dateTxt = new Text("Event Date:");
+        dateTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+        dateTxt.setFill(Color.WHITE);
+        DatePicker datePicker = new DatePicker();
+
+        addCell(dateTxt, datePicker);
+
+        Text timeTxt = new Text("Start Time:");
+        timeTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+        timeTxt.setFill(Color.WHITE);
+
+        Spinner timeSpinner = new Spinner();
+        timeSpinner.setEditable(true);
+        timeSpinner.setValueFactory(new SpinnerValueFactory() {
             {
                 setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern("HH:mm"), DateTimeFormatter.ofPattern("HH:mm")));
             }
@@ -92,86 +120,73 @@ public class EventPanel extends Pane {
                 }
             }
         });
-        from.setLayoutX(70);
-        from.setLayoutY(295);
-        from.setPrefWidth(100);
-        Label toword = new Label("To:");
-        toword.setTextFill(Color.WHITE);
-        toword.setLayoutX(190);
-        toword.setLayoutY(297);
-        Spinner to = new Spinner();
-        to.setEditable(true);
-        to.setValueFactory(new SpinnerValueFactory() {
-            {
-                setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern("HH:mm"), DateTimeFormatter.ofPattern("HH:mm")));
-            }
+
+        addCell(timeTxt, timeSpinner);
+
+        Text overTxt = new Text("No. of Overs:");
+        overTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+        overTxt.setFill(Color.WHITE);
+
+        Spinner overSpinner = new Spinner();
+        overSpinner.setEditable(true);
+        overSpinner.setValueFactory(new SpinnerValueFactory() {
             @Override
             public void decrement(int i) {
-                if (getValue()==null)
-                    setValue(LocalTime.now());
-                else {
-                    LocalTime time = (LocalTime) getValue();
-                    setValue(time.minusMinutes(i));
+                if (getValue() == null) {
+                    setValue(20);
+                } else if ((int) getValue() > 5) {
+                    setValue((int) getValue() - i*5);
                 }
             }
 
             @Override
             public void increment(int i) {
-                if (this.getValue() == null)
-                    setValue(LocalTime.now());
-                else {
-                    LocalTime time = (LocalTime) getValue();
-                    setValue(time.plusMinutes(i));
+                if (getValue() == null) {
+                    setValue(20);
+                } else {
+                    setValue((int) getValue() + i*5);
                 }
             }
         });
-        to.setLayoutX(230);
-        to.setLayoutY(295);
-        to.setPrefWidth(100);
 
-        Text description = new Text("Description");
-        description.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 20));
-        description.setFill(Color.WHITE);
-        description.setLayoutX(30);
-        description.setLayoutY(380);
-        TextField descriptionbox = new TextField();
-        descriptionbox.setPromptText("Enter a brief description of the event");
-        descriptionbox.setLayoutX(30);
-        descriptionbox.setLayoutY(395);
-        descriptionbox.setPrefSize(310,130);
-        descriptionbox.setAlignment(Pos.TOP_LEFT);
-
-        getChildren().add(eventtitle);
-        getChildren().add(eventtitlebox);
-        getChildren().add(eventdate);
-        getChildren().add(eventdatepicker);
-        getChildren().add(eventtime);
-        getChildren().add(from);
-        getChildren().add(fromword);
-        getChildren().add(to);
-        getChildren().add(toword);
-        getChildren().add(description);
-        getChildren().add(descriptionbox);
+        addCell(overTxt, overSpinner);
 
         Button addEvent = new Button("Add Event");
-        addEvent.setLayoutX(Main.screenWidth-100);
-        addEvent.setLayoutY(560);
-        addEvent.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                toggle();
-                Notifications notif = Notifications.create()
-                        .title("Event Created")
-                        .text("Event Title:"+eventtitlebox.getText())
-                        .graphic(null)
-                        .hideAfter(Duration.seconds(2))
-                        .position(Pos.BOTTOM_RIGHT);
-                if (Main.getnotifstatus()){
-                    notif.show();
-                }
-            }
-            });
+        addEvent.setOnAction(e -> addEvent());
         getChildren().add(addEvent);
+    }
+
+    private void addCell(Node node1, Node node2) {
+        Pane cell = new Pane();
+
+        node1.setLayoutX(0);
+        node1.setLayoutY(17);
+        node2.setLayoutX(inputIndent);
+        node2.setLayoutY(0);
+
+        cell.setPrefWidth(Main.screenWidth - 20);
+        cell.getChildren().addAll(node1, node2);
+        getChildren().add(cell);
+    }
+
+    private void newEvent() {
+        editorShowing = true;
+        Animator.transitionTo(this, 0, -eventsHeight - editorHeight, 0.3);
+        Animator.fade(newEventBtn, 1.0, 0.0, 0.3);
+        newEventBtn.setDisable(true);
+    }
+
+    private void addEvent() {
+        toggle();
+        Notifications notif = Notifications.create()
+                .title("Event Created")
+//                .text("Event Title:"+nameField.getText())
+                .graphic(null)
+                .hideAfter(Duration.seconds(2))
+                .position(Pos.BOTTOM_RIGHT);
+        if (Main.getnotifstatus()){
+            notif.show();
+        }
     }
 
     private void clicked() {
@@ -189,9 +204,10 @@ public class EventPanel extends Pane {
             ((InitialView) Main.getViews().get(ViewName.INITIAL)).blur(blur);
             ((HourlyView) Main.getViews().get(ViewName.HOURLY)).blur(blur);
 
-            Animator.transitionBy(this, 0, 100 - Main.screenHeight, 0.5);
+            Animator.transitionTo(this, 0, -eventsHeight, 0.5);
         } else {
             isShowing = false;
+            editorShowing = false;
             Main.selector.setDisable(false);
             Main.temperatureGraph.setDisable(false);
 
@@ -200,7 +216,10 @@ public class EventPanel extends Pane {
             ((InitialView) Main.getViews().get(ViewName.INITIAL)).blur(blur);
             ((HourlyView) Main.getViews().get(ViewName.HOURLY)).blur(blur);
 
-            Animator.transitionBy(this, 0, Main.screenHeight - 100, 0.5);
+            Animator.fade(newEventBtn, 0.0, 1.0, 0.3);
+            newEventBtn.setDisable(false);
+
+            Animator.transitionTo(this, 0, 0,0.5);
         }
     }
 }

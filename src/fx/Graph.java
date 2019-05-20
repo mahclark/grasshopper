@@ -205,7 +205,7 @@ public class Graph extends ScrollPane {
                 timeLbl.setAlignment(Pos.CENTER);
                 timeLbl.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
-                tempLbl = new Label("" + temperatures.get(hour).intValue());
+                tempLbl = new Label(temperatures.get(hour).intValue() + "°");
                 tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
                 tempLbl.setLayoutY(dotCenterY - 15);
                 tempLbl.setPrefWidth(cellWidth);

@@ -170,10 +170,9 @@ public class Selector extends ScrollPane {
 
     private List<SelectorItem> makeSomeStuff() {
         List<EventItem> events = new ArrayList<>();
-        events.add(new EventItem(new Event("Match vs Oxford",   new Location("Cambridge"), 20190520, 12, 30)));
-        events.add(new EventItem(new Event("M2",                new Location("Cambridge"), 20190520, 12, 30)));
-        events.add(new EventItem(new Event("Rematch vs Oxford", new Location("Cambridge"), 20190524, 12, 30)));
-        events.add(new EventItem(new Event("Training",          new Location("Cambridge"), 20190531, 12, 30)));
+        for (Event event : Main.events) {
+            events.add(new EventItem(event));
+        }
 
         List<SelectorItem> items = new ArrayList<>();
 
