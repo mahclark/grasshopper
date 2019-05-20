@@ -1,5 +1,6 @@
 package fx;
 
+import backend.Location;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,6 +8,9 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import weather.LocationWeatherOWM;
+import weather.NoInternetConnection;
+import weather.WeatherData;
 
 public class InitialView extends View {
 
@@ -20,11 +24,19 @@ public class InitialView extends View {
     private SettingsPanel settingsPanel = Main.settingsPanel;
     private boolean settingsShowing = false;
 
+    LocationWeatherOWM weather;
+
     public InitialView(Stage stage) {
         this.stage = stage;
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
         eventPanel.setLayoutX(0);
         eventPanel.setLayoutY(Main.screenHeight - 50);
+
+        try {
+            weather = new LocationWeatherOWM(new Location("Cambridge"));
+        } catch (NoInternetConnection noInternetConnection) {
+            weather = null;
+        }
     }
 
     private void makeScene(boolean withAnimation) {
@@ -37,6 +49,26 @@ public class InitialView extends View {
         mainTemp.setLayoutX(0);
         mainTemp.setLayoutY(80);
         mainPane.getChildren().add(mainTemp);
+
+        Label titleLbl = new Label();
+        titleLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 48));
+        titleLbl.setLayoutX(Main.screenWidth/2.0);
+        titleLbl.setLayoutY(80);
+        titleLbl.setWrapText(true);
+        titleLbl.setPrefWidth(Main.screenWidth/2.0);
+        mainPane.getChildren().add(titleLbl);
+        if (weather != null) {
+            try {
+                int date = Main.selector.getSelectedDate();
+                int hour = weather.giveHours(date).get(weather.giveHours(date).size() / 2);
+                WeatherData data = weather.giveData(date, hour);
+                titleLbl.setText(data.getDescription());
+            } catch (IndexOutOfBoundsException e) {
+                titleLbl.setText("");
+            }
+        } else {
+            System.out.println("Weather is null");
+        }
 
         Graph graph = Main.temperatureGraph;
         mainPane.getChildren().add(graph);
