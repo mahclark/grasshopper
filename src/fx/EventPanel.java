@@ -15,20 +15,26 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import javafx.util.converter.LocalTimeStringConverter;
 import org.controlsfx.control.Notifications;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 
 public class EventPanel extends VBox {
 
     public boolean isShowing = false;
     private boolean editorShowing = false;
     private final int inputIndent = 125;
-    private Button newEventBtn;
+
     private int editorHeight = 220;
-    private int eventsHeight = Main.events.size()*80;
+    private int eventsHeight = Main.events.size()*65 + 60;
+
+    private Button newEventBtn;
+    private Label errorLbl;
+
+    private TextField nameField;
+    private DatePicker datePicker;
+    private ComboBox<Integer> timeChoice;
+    private ComboBox<Integer> overChoice;
 
     public EventPanel() {
         super(20);
@@ -49,11 +55,11 @@ public class EventPanel extends VBox {
         title.setOnMouseClicked(e -> clicked());
 
         for (Event event : Main.events) {
-            Text eventText = new Text(event.getName());
-            eventText.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
-            eventText.setFill(Color.WHITE);
-            eventText.setLayoutX(0);
-            eventText.setLayoutY(20);
+            Text eventTxt = new Text(event.getName());
+            eventTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+            eventTxt.setFill(Color.WHITE);
+            eventTxt.setLayoutX(0);
+            eventTxt.setLayoutY(20);
 
             Button editBtn = new Button("Edit");
             editBtn.setLayoutX(Main.screenWidth - 60);
@@ -61,7 +67,7 @@ public class EventPanel extends VBox {
 
             Pane cell = new Pane();
             cell.setPrefWidth(Main.screenWidth - 20);
-            cell.getChildren().addAll(eventText, editBtn);
+            cell.getChildren().addAll(eventTxt, editBtn);
             getChildren().add(cell);
 
             Line lineBreak = new Line(10,0,Main.screenWidth - 10,0);
@@ -71,13 +77,28 @@ public class EventPanel extends VBox {
 
         newEventBtn = new Button("New Event");
         newEventBtn.setOnAction(e -> newEvent());
-        getChildren().add(newEventBtn);
+        newEventBtn.setLayoutX(0);
+        newEventBtn.setLayoutY(0);
+
+        errorLbl = new Label();
+        errorLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
+        errorLbl.setTextFill(Color.color(0.9,0.35,0.35));
+        errorLbl.setOpacity(0.0);
+        errorLbl.setPrefWidth(Main.screenWidth - 20);
+        errorLbl.setAlignment(Pos.CENTER);
+        errorLbl.setLayoutX(0);
+        errorLbl.setLayoutY(0);
+        errorLbl.toBack();
+
+        Pane cell = new Pane();
+        cell.getChildren().addAll(errorLbl, newEventBtn);
+        getChildren().add(cell);
 
         Text nameTxt = new Text("Event Name:");
         nameTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         nameTxt.setFill(Color.WHITE);
 
-        TextField nameField = new TextField();
+        nameField = new TextField();
         nameField.setPromptText("Enter the title of event");
         nameField.setPrefWidth(230);
 
@@ -86,70 +107,42 @@ public class EventPanel extends VBox {
         Text dateTxt = new Text("Event Date:");
         dateTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         dateTxt.setFill(Color.WHITE);
-        DatePicker datePicker = new DatePicker();
+        datePicker = new DatePicker();
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0 );
+            }
+        });
+        datePicker.setValue(LocalDate.now().plusDays(1));
+        datePicker.setEditable(false);
 
         addCell(dateTxt, datePicker);
 
-        Text timeTxt = new Text("Start Time:");
+        Text timeTxt = new Text("Start Hour:");
         timeTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         timeTxt.setFill(Color.WHITE);
 
-        Spinner timeSpinner = new Spinner();
-        timeSpinner.setEditable(true);
-        timeSpinner.setValueFactory(new SpinnerValueFactory() {
-            {
-                setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern("HH:mm"), DateTimeFormatter.ofPattern("HH:mm")));
-            }
-            @Override
-            public void decrement(int i) {
-                if (getValue()==null)
-                    setValue(LocalTime.now());
-                else {
-                    LocalTime time = (LocalTime) getValue();
-                    setValue(time.minusMinutes(i));
-                }
-            }
+        timeChoice = new ComboBox<>();
+        for (int i = 0; i < 23; i++) {
+            timeChoice.getItems().add(i);
+        }
+        timeChoice.setValue(12);
 
-            @Override
-            public void increment(int i) {
-                if (this.getValue() == null)
-                    setValue(LocalTime.now());
-                else {
-                    LocalTime time = (LocalTime) getValue();
-                    setValue(time.plusMinutes(i));
-                }
-            }
-        });
-
-        addCell(timeTxt, timeSpinner);
+        addCell(timeTxt, timeChoice);
 
         Text overTxt = new Text("No. of Overs:");
         overTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         overTxt.setFill(Color.WHITE);
 
-        Spinner overSpinner = new Spinner();
-        overSpinner.setEditable(true);
-        overSpinner.setValueFactory(new SpinnerValueFactory() {
-            @Override
-            public void decrement(int i) {
-                if (getValue() == null) {
-                    setValue(20);
-                } else if ((int) getValue() > 5) {
-                    setValue((int) getValue() - i*5);
-                }
-            }
+        overChoice = new ComboBox<>();
+        for (int i = 0; i <= 60; i += 5) {
+            overChoice.getItems().add(i);
+        }
+        overChoice.setValue(20);
 
-            @Override
-            public void increment(int i) {
-                if (getValue() == null) {
-                    setValue(20);
-                } else {
-                    setValue((int) getValue() + i*5);
-                }
-            }
-        });
-
-        addCell(overTxt, overSpinner);
+        addCell(overTxt, overChoice);
 
         Button addEvent = new Button("Add Event");
         addEvent.setOnAction(e -> addEvent());
@@ -177,15 +170,38 @@ public class EventPanel extends VBox {
     }
 
     private void addEvent() {
-        toggle();
-        Notifications notif = Notifications.create()
-                .title("Event Created")
+        boolean valid = false;
+        if (nameField.getText().equals("")) {
+            errorLbl.setText("Please choose a name");
+        } else if (datePicker.getValue() == null) {
+            errorLbl.setText("Please choose a date");
+        } else if (timeChoice.getValue() == null) {
+            errorLbl.setText("Please choose a time");
+        } else if (overChoice.getValue() == null) {
+            errorLbl.setText("Please choose number of overs");
+
+        } else if (datePicker.getValue().isBefore(LocalDate.now())) {
+            errorLbl.setText("Date must be in the future");
+        } else if ((int) overChoice.getValue() < 1) {
+            errorLbl.setText("Overs cannot be negative");
+        } else {
+            valid = true;
+        }
+
+        if (valid) {
+            Animator.fade(errorLbl, errorLbl.getOpacity(), 0.0, 0.5);
+            toggle();
+            Notifications notif = Notifications.create()
+                    .title("Event Created")
 //                .text("Event Title:"+nameField.getText())
-                .graphic(null)
-                .hideAfter(Duration.seconds(2))
-                .position(Pos.BOTTOM_RIGHT);
-        if (Main.getnotifstatus()){
-            notif.show();
+                    .graphic(null)
+                    .hideAfter(Duration.seconds(2))
+                    .position(Pos.BOTTOM_RIGHT);
+            if (Main.getnotifstatus()) {
+                notif.show();
+            }
+        } else {
+            Animator.fade(errorLbl, 0.0, 1.0, 0.5);
         }
     }
 
@@ -216,6 +232,7 @@ public class EventPanel extends VBox {
             ((InitialView) Main.getViews().get(ViewName.INITIAL)).blur(blur);
             ((HourlyView) Main.getViews().get(ViewName.HOURLY)).blur(blur);
 
+            Animator.fade(errorLbl, errorLbl.getOpacity(), 0.0, 0.5);
             Animator.fade(newEventBtn, 0.0, 1.0, 0.3);
             newEventBtn.setDisable(false);
 

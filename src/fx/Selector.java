@@ -251,13 +251,14 @@ public class Selector extends ScrollPane {
 
             dateLbl.setTextFill(Color.WHITE);
             monthLbl.setTextFill(Color.WHITE);
-            if (Main.getViews().get(ViewName.INITIAL) != null) {
-                Main.getViews().get(ViewName.INITIAL).show();
-            }
 
             if (Main.temperatureGraph != null) {
                 Main.temperatureGraph.deselect();
                 Main.temperatureGraph.reloadGraph();
+            }
+
+            if (Main.getViews().get(ViewName.INITIAL) != null) {
+                Main.getViews().get(ViewName.INITIAL).show();
             }
         }
 

@@ -150,6 +150,27 @@ public class Graph extends ScrollPane {
         }
     }
 
+    public String getAvgTemperature() {
+        if (temperatures.size() == 0) return "-";
+
+        int count = 0;
+        double total = 0;
+        for (int i = 9; i <= 18; i += 3) {
+            if (temperatures.containsKey(i)) {
+                count += 1;
+                total += temperatures.get(i);
+            }
+        }
+        if (count == 0) {
+            for (double temp : temperatures.values()) {
+                count += 1;
+                total += temp;
+            }
+        }
+
+        return "" + (int) total/count;
+    }
+
     class GraphCell extends Pane {
 
         final int verticalPadding = 10; //Gap between max/min dots and pane top/bottom
@@ -200,10 +221,15 @@ public class Graph extends ScrollPane {
 
                 Label timeLbl = new Label("" + hour);
                 timeLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), timeHeight - 3));
-                timeLbl.setLayoutY(graphHeight - timeHeight - 4);
-                timeLbl.setPrefWidth(cellWidth);
                 timeLbl.setAlignment(Pos.CENTER);
-                timeLbl.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                timeLbl.setPrefWidth(cellWidth);
+
+                Pane lblPane = new Pane();
+                lblPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+                lblPane.getChildren().add(timeLbl);
+                lblPane.setLayoutY(graphHeight - timeHeight - 4);
+                lblPane.setPrefWidth(cellWidth);
+                lblPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
                 tempLbl = new Label(temperatures.get(hour).intValue() + "°");
                 tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
@@ -211,7 +237,7 @@ public class Graph extends ScrollPane {
                 tempLbl.setPrefWidth(cellWidth);
                 tempLbl.setAlignment(Pos.CENTER);
 
-                getChildren().addAll(dot, tempLbl, timeLbl);
+                getChildren().addAll(dot, tempLbl, lblPane);
                 tempLbl.setVisible(false);
 
                 addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));

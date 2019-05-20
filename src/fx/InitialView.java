@@ -30,7 +30,7 @@ public class InitialView extends View {
         mainPane.getChildren().clear();
         root.getChildren().add(mainPane);
 
-        Label mainTemp = new Label("15°");
+        Label mainTemp = new Label(Main.temperatureGraph.getAvgTemperature() + "°");
         mainTemp.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 150));
         mainTemp.setLayoutX(0);
         mainTemp.setLayoutY(80);
