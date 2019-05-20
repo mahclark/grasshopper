@@ -34,10 +34,12 @@ public class Selector extends ScrollPane {
     public Selector() {
         setStyle("-fx-focus-color: transparent;");
 
+        setLayoutY(20);
+
         setOnDragDetected(e -> dragging = true);
 
         Pane blankPaneStart = new Pane();
-        blankPaneStart.setPrefWidth(Main.screenWidth/2 - separation - 25);
+        blankPaneStart.setPrefWidth(Main.screenWidth/2.0 - separation - 25);
         content.getChildren().add(blankPaneStart);
 
         for (Pane item : items) {
@@ -45,7 +47,7 @@ public class Selector extends ScrollPane {
         }
 
         Pane blankPaneEnd = new Pane();
-        blankPaneEnd.setPrefWidth(Main.screenWidth/2 - separation - 25);
+        blankPaneEnd.setPrefWidth(Main.screenWidth/2.0 - separation - 25);
         content.getChildren().add(blankPaneEnd);
 
         items.get(0).select();
@@ -167,6 +169,31 @@ public class Selector extends ScrollPane {
             item.select();
         }
     }
+
+//    public void addEvent(Event event) {
+//        EventItem eventItem = new EventItem(event);
+//        boolean newDateRequired = true;
+//        int insertIndex = 0;
+//        for (SelectorItem item : items) {
+//            if (item.getDate() == event.getDate()) {
+//                newDateRequired = false;
+//            }
+//            if (item.getDate() <= event.getDate()) {
+//                insertIndex++;
+//            }
+//        }
+//
+//        if (newDateRequired) {
+//            DateItem dateItem = new DateItem(event.getDate());
+//            items.add(insertIndex, dateItem);
+//            getChildren().add(insertIndex, dateItem);
+//            items.add(insertIndex + 1, eventItem);
+//            getChildren().add(insertIndex + 1, eventItem);
+//        } else {
+//            items.add(insertIndex, eventItem);
+//            getChildren().add(insertIndex, eventItem);
+//        }
+//    }
 
     private List<SelectorItem> makeSomeStuff() {
         List<EventItem> events = new ArrayList<>();

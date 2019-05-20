@@ -32,6 +32,8 @@ public class HourlyView extends View {
 
     public HourlyView(Stage stage) {
         this.stage = stage;
+        eventPanel.setLayoutX(0);
+        eventPanel.setLayoutY(Main.screenHeight - 50);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
     }
@@ -43,12 +45,10 @@ public class HourlyView extends View {
 
         mainPane.getChildren().add(graph);
 
+        selector = Main.selector;
         mainPane.getChildren().add(selector);
-        Animator.transitionTo(selector, 0, 20, 0.2);
 
         root.getChildren().add(eventPanel);
-        eventPanel.setLayoutX(0);
-        eventPanel.setLayoutY(Main.screenHeight - 50);
 
         scene.setOnMouseReleased(e -> selector.mouseUp());
     }

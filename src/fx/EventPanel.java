@@ -1,5 +1,6 @@
 package fx;
 
+import backend.Location;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,17 +18,19 @@ import org.controlsfx.control.Notifications;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 public class EventPanel extends VBox {
 
     public boolean isShowing = false;
     private final int inputIndent = 125;
 
-    private int editorHeight = 265;
-    private int eventsHeight = Main.events.size()*65 + 60;
+    private int editorHeight = 270;
+    private int eventsHeight;
 
     private Button newEventBtn;
     private Label errorLbl;
+    private Button deleteBtn;
 
     private TextField nameField;
     private ComboBox locationChoice;
@@ -35,11 +38,20 @@ public class EventPanel extends VBox {
     private ComboBox<Integer> timeChoice;
     private ComboBox<Integer> overChoice;
 
+    private Event editingEvent;
+
     public EventPanel() {
         super(20);
+        reformat();
+    }
+    private void reformat() {
+        getChildren().clear();
         setPrefWidth(Main.screenWidth);
-        setPrefHeight(Main.screenHeight);
-        setPadding(new Insets(10,10,10,10));
+        setPadding(new Insets(10, 10, 100, 10));
+
+        editingEvent = null;
+
+        eventsHeight = Math.min(Main.events.size()*45, 300) + 70;
 
         setStyle("-fx-background-color: rgba(40,40,40, 0.7); -fx-background-radius: 10;");
 
@@ -51,7 +63,19 @@ public class EventPanel extends VBox {
         title.setLayoutY(5);
         getChildren().add(title);
 
-        title.setOnMouseClicked(e -> clicked());
+        title.setOnMouseClicked(e -> toggle());
+
+        ScrollPane scrollPane = new ScrollPane();
+        Pane scrollContent = new VBox(10);
+        scrollPane.setContent(scrollContent);
+        scrollPane.setMinHeight(0);
+        scrollPane.setMaxHeight(300);
+        scrollPane.setPannable(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.getStylesheets().add("fx/scrollPane.css");
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        getChildren().add(scrollPane);
 
         for (Event event : Main.events) {
             Text eventTxt = new Text(event.getName());
@@ -61,17 +85,18 @@ public class EventPanel extends VBox {
             eventTxt.setLayoutY(20);
 
             Button editBtn = new Button("Edit");
-            editBtn.setLayoutX(Main.screenWidth - 60);
+            editBtn.setLayoutX(Main.screenWidth - 80);
             editBtn.setLayoutY(0);
 
-            Pane cell = new Pane();
-            cell.setPrefWidth(Main.screenWidth - 20);
-            cell.getChildren().addAll(eventTxt, editBtn);
-            getChildren().add(cell);
+            editBtn.setOnAction(e -> editEvent(event));
 
-            Line lineBreak = new Line(10,0,Main.screenWidth - 10,0);
+            Pane cell = new Pane();
+            cell.getChildren().addAll(eventTxt, editBtn);
+            scrollContent.getChildren().add(cell);
+
+            Line lineBreak = new Line(10,0,Main.screenWidth - 40,0);
             lineBreak.setStroke(Color.WHITE);
-            getChildren().add(lineBreak);
+            scrollContent.getChildren().add(lineBreak);
         }
 
         newEventBtn = new Button("New Event");
@@ -157,9 +182,16 @@ public class EventPanel extends VBox {
 
         addCell(overTxt, overChoice);
 
-        Button addEvent = new Button("Add Event");
+        Button addEvent = new Button("Save Event");
         addEvent.setOnAction(e -> addEvent());
-        getChildren().add(addEvent);
+
+        deleteBtn = new Button("Cancel");
+        deleteBtn.setOnAction(e -> deleteEvent());
+        deleteBtn.setLayoutX(Main.screenWidth - 70);
+
+        Pane btnPane = new Pane();
+        btnPane.getChildren().addAll(addEvent, deleteBtn);
+        getChildren().add(btnPane);
     }
 
     private void addCell(Node node1, Node node2) {
@@ -175,9 +207,41 @@ public class EventPanel extends VBox {
         getChildren().add(cell);
     }
 
-    private void newEvent() {
+    private void deleteEvent() {
+        if (editingEvent != null) {
+            Main.events.remove(editingEvent);
+        }
+
+        resetView();
+    }
+
+    private void editEvent(Event event) {
+        editingEvent = event;
+
+        deleteBtn.setText("Delete");
+
         Animator.transitionTo(this, 0, -eventsHeight - editorHeight, 0.3);
-        Animator.fade(newEventBtn, 1.0, 0.0, 0.3);
+        Animator.fade(newEventBtn, newEventBtn.getOpacity(), 0.0, 0.3);
+        newEventBtn.setDisable(true);
+
+        nameField.setText(event.getName());
+        locationChoice.setValue(event.getLocation().getInput());
+        System.out.println(event.getDate());
+        System.out.println((event.getDate() - event.getDate() % 10000)/10000);
+        System.out.println((event.getDate() % 10000  - event.getDate() % 100)/100);
+        System.out.println(event.getDate() % 100);
+        datePicker.setValue(LocalDate.of((event.getDate() - event.getDate() % 10000)/10000, (event.getDate() % 10000  - event.getDate() % 100)/100, event.getDate() % 100));
+        timeChoice.setValue(event.getStartHour());
+        overChoice.setValue(event.getOvers());
+    }
+
+    private void newEvent() {
+        editingEvent = null;
+
+        deleteBtn.setText("Cancel");
+
+        Animator.transitionTo(this, 0, -eventsHeight - editorHeight, 0.3);
+        Animator.fade(newEventBtn, newEventBtn.getOpacity(), 0.0, 0.3);
         newEventBtn.setDisable(true);
     }
 
@@ -196,7 +260,7 @@ public class EventPanel extends VBox {
 
         } else if (datePicker.getValue().isBefore(LocalDate.now())) {
             errorLbl.setText("Date must be in the future");
-        } else if ((int) overChoice.getValue() < 1) {
+        } else if (overChoice.getValue() < 1) {
             errorLbl.setText("Overs cannot be negative");
         } else {
             valid = true;
@@ -204,7 +268,22 @@ public class EventPanel extends VBox {
 
         if (valid) {
             Animator.fade(errorLbl, errorLbl.getOpacity(), 0.0, 0.5);
-            toggle();
+
+            int month = datePicker.getValue().getMonthValue();
+            int day = datePicker.getValue().getDayOfMonth();
+            String date = "" + datePicker.getValue().getYear() + (month < 10 ? "0" : "") + month + (day < 10 ? "0" : "") + day;
+
+            Event newEvent = new Event(nameField.getText(), new Location("Cambridge"), Integer.parseInt(date), timeChoice.getValue(), overChoice.getValue());
+
+            if (editingEvent != null) {
+                Main.events.remove(editingEvent);
+            }
+
+            Main.events.add(newEvent);
+            Main.events.sort(Comparator.comparingInt(Event::getDate));
+
+            resetView();
+
             Notifications notif = Notifications.create()
                     .title("Event Created")
 //                .text("Event Title:"+nameField.getText())
@@ -219,8 +298,13 @@ public class EventPanel extends VBox {
         }
     }
 
-    private void clicked() {
+    private void resetView() {
+        Main.selector = new Selector();
+
         toggle();
+        reformat();
+
+        Main.getViews().get(ViewName.INITIAL).show();
     }
 
     public void toggle() {

@@ -64,6 +64,8 @@ public class Main extends Application {
     }
 
     private void loadEvents() {
+//        events.add(new Event("Match vs Oxford",   new Location("Cambridge"), 20190521, 7, 20));
+//        events.add(new Event("Match vs Oxford",   new Location("Cambridge"), 20190521, 7, 20));
         events.add(new Event("Match vs Oxford",   new Location("Cambridge"), 20190521, 7, 20));
         events.add(new Event("M2",                new Location("Cambridge"), 20190521, 12, 30));
         events.add(new Event("Rematch vs Oxford", new Location("Cambridge"), 20190524, 12, 30));

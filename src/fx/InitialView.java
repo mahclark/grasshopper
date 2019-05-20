@@ -23,6 +23,8 @@ public class InitialView extends View {
     public InitialView(Stage stage) {
         this.stage = stage;
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
+        eventPanel.setLayoutX(0);
+        eventPanel.setLayoutY(Main.screenHeight - 50);
     }
 
     private void makeScene(boolean withAnimation) {
@@ -50,8 +52,6 @@ public class InitialView extends View {
         settingsButton.setLayoutY(Main.screenHeight - 90);
 
         root.getChildren().add(eventPanel);
-        eventPanel.setLayoutX(0);
-        eventPanel.setLayoutY(Main.screenHeight - 50);
 
         root.getChildren().add(settingsPanel);
         settingsPanel.setLayoutX(-Main.screenWidth+1);
@@ -60,7 +60,6 @@ public class InitialView extends View {
         if (withAnimation) {
             Animator.fade(mainTemp, 0.0, 1.0, 0.5);
             Animator.transitionTo(graph, 0, 270, 0.2);
-            Animator.transitionTo(selector, 0, 20, 0.2);
 
             settingsButton.setLayoutY(Main.screenHeight + 10);
             Animator.transitionBy(settingsButton, 0, -100, 0.2);
