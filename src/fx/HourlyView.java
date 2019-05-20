@@ -1,5 +1,6 @@
 package fx;
 
+import backend.Location;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -8,6 +9,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import weather.LocationWeatherOWM;
+import weather.NoInternetConnection;
+import weather.WeatherData;
 
 import java.util.List;
 
@@ -24,11 +27,14 @@ public class HourlyView extends View {
     private boolean settingsShowing = false;
 
     private Label strategyLbl = new Label();
+    private Label weatherTitle = new Label();
     private Label weatherLbl = new Label();
     private Label eventInfoLbl = new Label();
     private Selector selector = Main.selector;
     private Graph graph = Main.temperatureGraph;
     private StrategyGenerator generator;
+
+    private LocationWeatherOWM weather;
 
     public HourlyView(Stage stage) {
         this.stage = stage;
@@ -36,6 +42,12 @@ public class HourlyView extends View {
         eventPanel.setLayoutY(Main.screenHeight - 50);
 
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
+
+        try {
+            weather = new LocationWeatherOWM(Main.getUserLocation());
+        } catch (NoInternetConnection noInternetConnection) {
+            weather = null;
+        }
     }
 
     private void makeScene() {
@@ -59,15 +71,45 @@ public class HourlyView extends View {
         eventInfoLbl.setVisible(false);
 
         int date = selector.getSelectedDate();
-        weatherLbl.setText("Weather info for " + hour + " " + date + " goes here");
 
-        weatherLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 21));
+        weatherTitle.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 50));
+        weatherTitle.setWrapText(true);
+        weatherTitle.setLayoutX(10);
+        weatherTitle.setLayoutY(280);
+        weatherTitle.setPrefWidth(Main.screenWidth - 20);
+        mainPane.getChildren().add(weatherTitle);
+
+        weatherLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 25));
         weatherLbl.setWrapText(true);
         weatherLbl.setLayoutX(10);
-        weatherLbl.setLayoutY(320);
+        weatherLbl.setLayoutY(340);
         weatherLbl.setPrefWidth(Main.screenWidth - 20);
         mainPane.getChildren().add(weatherLbl);
 
+        if (weather != null) {
+            try {
+                WeatherData data = weather.giveData(date, hour);
+                weatherTitle.setText(data.getWeather());
+                weatherLbl.setText(
+                                data.getDescription() + "\n\n" +
+                                "Cloud cover:\t" + data.getClouds() + "%\n" +
+                                "Wind speed:\t" + data.getWindSpeed() + "mph\n" +
+                                "Humidity:\t" + data.getHumidity() + "%\n" +
+                                "Pressure:\t\t" + data.getPressure()
+                );
+            } catch (IndexOutOfBoundsException e) {
+                weatherTitle.setText("");
+                weatherLbl.setText("");
+            }
+        } else {
+            try {
+                weather = new LocationWeatherOWM(Main.getUserLocation());
+            } catch (NoInternetConnection noInternetConnection) {
+                weather = null;
+            }
+        }
+
+        Animator.fade(weatherTitle, 0.0, 1.0, 0.5);
         Animator.fade(weatherLbl, 0.0, 1.0, 0.5);
         Animator.transitionTo(graph, 0, 80, 0.2);
 

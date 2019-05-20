@@ -24,7 +24,7 @@ public class InitialView extends View {
     private SettingsPanel settingsPanel = Main.settingsPanel;
     private boolean settingsShowing = false;
 
-    LocationWeatherOWM weather;
+    private LocationWeatherOWM weather;
 
     public InitialView(Stage stage) {
         this.stage = stage;
@@ -33,7 +33,7 @@ public class InitialView extends View {
         eventPanel.setLayoutY(Main.screenHeight - 50);
 
         try {
-            weather = new LocationWeatherOWM(new Location("Cambridge"));
+            weather = new LocationWeatherOWM(Main.getUserLocation());
         } catch (NoInternetConnection noInternetConnection) {
             weather = null;
         }
@@ -67,7 +67,11 @@ public class InitialView extends View {
                 titleLbl.setText("");
             }
         } else {
-            System.out.println("Weather is null");
+            try {
+                weather = new LocationWeatherOWM(Main.getUserLocation());
+            } catch (NoInternetConnection noInternetConnection) {
+                weather = null;
+            }
         }
 
         Graph graph = Main.temperatureGraph;
@@ -91,6 +95,7 @@ public class InitialView extends View {
 
         if (withAnimation) {
             Animator.fade(mainTemp, 0.0, 1.0, 0.5);
+            Animator.fade(titleLbl, 0.0, 1.0, 0.5);
             Animator.transitionTo(graph, 0, 270, 0.2);
 
             settingsButton.setLayoutY(Main.screenHeight + 10);
