@@ -93,9 +93,9 @@ public class HourlyView extends View {
                 weatherLbl.setText(
                                 data.getDescription() + "\n\n" +
                                 "Cloud cover:\t" + data.getClouds() + "%\n" +
-                                "Wind speed:\t" + data.getWindSpeed() + "mph\n" +
+                                "Wind speed:\t" + data.getWindSpeed() + " mph\n" +
                                 "Humidity:\t" + data.getHumidity() + "%\n" +
-                                "Pressure:\t\t" + data.getPressure()
+                                "Pressure:\t\t" + data.getPressure() + " mb"
                 );
             } catch (IndexOutOfBoundsException e) {
                 weatherTitle.setText("");
