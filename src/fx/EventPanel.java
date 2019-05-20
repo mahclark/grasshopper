@@ -226,10 +226,7 @@ public class EventPanel extends VBox {
 
         nameField.setText(event.getName());
         locationChoice.setValue(event.getLocation().getInput());
-        System.out.println(event.getDate());
-        System.out.println((event.getDate() - event.getDate() % 10000)/10000);
-        System.out.println((event.getDate() % 10000  - event.getDate() % 100)/100);
-        System.out.println(event.getDate() % 100);
+
         datePicker.setValue(LocalDate.of((event.getDate() - event.getDate() % 10000)/10000, (event.getDate() % 10000  - event.getDate() % 100)/100, event.getDate() % 100));
         timeChoice.setValue(event.getStartHour());
         overChoice.setValue(event.getOvers());
@@ -301,10 +298,15 @@ public class EventPanel extends VBox {
     private void resetView() {
         Main.selector = new Selector();
 
+        saveEvents();
         toggle();
         reformat();
 
         Main.getViews().get(ViewName.INITIAL).show();
+    }
+
+    private void saveEvents() {
+
     }
 
     public void toggle() {
