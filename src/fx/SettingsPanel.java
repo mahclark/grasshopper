@@ -39,23 +39,23 @@ public class SettingsPanel extends Pane {
         //TODO: implement PREVIOUS VIEW
         close.setOnMousePressed(e -> clicked());
 
-        ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
-        if (Main.gettimeformat()){
-            timeformat.setValue("12Hr");
-        }
-        else{
-            timeformat.setValue("24Hr");
-        }
-
-        timeformat.getSelectionModel().selectedIndexProperty().addListener(
-                new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                        //Change the time display style
-                        Main.changetimeformat(t1);
-                    }
-                }
-        );
+//        ChoiceBox timeformat = new ChoiceBox(FXCollections.observableArrayList("24Hr","12Hr"));
+//        if (Main.gettimeformat()){
+//            timeformat.setValue("12Hr");
+//        }
+//        else{
+//            timeformat.setValue("24Hr");
+//        }
+//
+//        timeformat.getSelectionModel().selectedIndexProperty().addListener(
+//                new ChangeListener<Number>() {
+//                    @Override
+//                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+//                        //Change the time display style
+//                        Main.changetimeformat(t1);
+//                    }
+//                }
+//        );
 
 
         ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
@@ -105,11 +105,11 @@ public class SettingsPanel extends Pane {
         );
 
         getChildren().add(nearmebox);
-        nearmebox.setLayoutX(20);
+        nearmebox.setLayoutX(30);
         nearmebox.setLayoutY(103);
 
         getChildren().add(location);
-        location.setLayoutX(100);
+        location.setLayoutX(110);
         location.setLayoutY(100);
 
         Text l =new Text("Location");
@@ -119,27 +119,27 @@ public class SettingsPanel extends Pane {
         l.setLayoutX(30);
         l.setLayoutY(85);
 
-        getChildren().add(timeformat);
-        timeformat.setLayoutX(50);
-        timeformat.setLayoutY(250);
-
-        Text t =new Text("Time Format");
-        t.setFont(Font.font("Times New Roman",20));
-        t.setFill(Color.WHITE);
-        getChildren().add(t);
-        t.setLayoutX(30);
-        t.setLayoutY(235);
+//        getChildren().add(timeformat);
+//        timeformat.setLayoutX(50);
+//        timeformat.setLayoutY(250);
+//
+//        Text t =new Text("Time Format");
+//        t.setFont(Font.font("Times New Roman",20));
+//        t.setFill(Color.WHITE);
+//        getChildren().add(t);
+//        t.setLayoutX(30);
+//        t.setLayoutY(235);
 
         getChildren().add(notification);
-        notification.setLayoutX(50);
-        notification.setLayoutY(400);
+        notification.setLayoutX(30);
+        notification.setLayoutY(300);
 
         Text n =new Text("Notification");
         n.setFont(Font.font("Times New Roman",20));
         n.setFill(Color.WHITE);
         getChildren().add(n);
         n.setLayoutX(30);
-        n.setLayoutY(385);
+        n.setLayoutY(285);
     }
 
     private void clicked() {

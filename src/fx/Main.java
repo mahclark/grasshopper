@@ -19,7 +19,6 @@ public class Main extends Application {
     public final static int screenWidth = 375;
     public final static int screenHeight = 667;  // 0.5 scaled resolution of iPhone 8
 
-    //Depend on whether u guys think is needed
     private static boolean notification_status;//false=NO,true=YES
     private static boolean time_format;//false=24hr,true=12Hr
     private static Location userLocation = new Location("Cambridge");
