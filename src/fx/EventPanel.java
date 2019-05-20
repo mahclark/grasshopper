@@ -1,17 +1,23 @@
 package fx;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import javafx.util.converter.LocalTimeStringConverter;
+import org.controlsfx.control.Notifications;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class EventPanel extends Pane {
+
     public EventPanel() {
         setPrefWidth(Main.screenWidth);
         setPrefHeight(Main.screenHeight);
@@ -53,21 +59,116 @@ public class EventPanel extends Pane {
         eventtime.setFill(Color.WHITE);
         eventtime.setLayoutX(30);
         eventtime.setLayoutY(280);
+        Label fromword = new Label("From:");
+        fromword.setTextFill(Color.WHITE);
+        fromword.setLayoutX(30);
+        fromword.setLayoutY(297);
+        Spinner from = new Spinner();
+        from.setEditable(true);
+        from.setValueFactory(new SpinnerValueFactory() {
+            {
+                setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern("HH:mm"), DateTimeFormatter.ofPattern("HH:mm")));
+            }
+            @Override
+            public void decrement(int i) {
+                if (getValue()==null)
+                    setValue(LocalTime.now());
+                else {
+                    LocalTime time = (LocalTime) getValue();
+                    setValue(time.minusMinutes(i));
+                }
+            }
+
+            @Override
+            public void increment(int i) {
+                if (this.getValue() == null)
+                    setValue(LocalTime.now());
+                else {
+                    LocalTime time = (LocalTime) getValue();
+                    setValue(time.plusMinutes(i));
+                }
+            }
+        });
+        from.setLayoutX(70);
+        from.setLayoutY(295);
+        from.setPrefWidth(100);
+        Label toword = new Label("To:");
+        toword.setTextFill(Color.WHITE);
+        toword.setLayoutX(190);
+        toword.setLayoutY(297);
+        Spinner to = new Spinner();
+        to.setEditable(true);
+        to.setValueFactory(new SpinnerValueFactory() {
+            {
+                setConverter(new LocalTimeStringConverter(DateTimeFormatter.ofPattern("HH:mm"), DateTimeFormatter.ofPattern("HH:mm")));
+            }
+            @Override
+            public void decrement(int i) {
+                if (getValue()==null)
+                    setValue(LocalTime.now());
+                else {
+                    LocalTime time = (LocalTime) getValue();
+                    setValue(time.minusMinutes(i));
+                }
+            }
+
+            @Override
+            public void increment(int i) {
+                if (this.getValue() == null)
+                    setValue(LocalTime.now());
+                else {
+                    LocalTime time = (LocalTime) getValue();
+                    setValue(time.plusMinutes(i));
+                }
+            }
+        });
+        to.setLayoutX(230);
+        to.setLayoutY(295);
+        to.setPrefWidth(100);
+
         Text description = new Text("Description");
         description.setFont(Font.loadFont(Main.class.getResource("Kollektif.ttf").toExternalForm(), 20));
         description.setFill(Color.WHITE);
         description.setLayoutX(30);
         description.setLayoutY(380);
+        TextField descriptionbox = new TextField();
+        descriptionbox.setPromptText("Enter a brief description of the event");
+        descriptionbox.setLayoutX(30);
+        descriptionbox.setLayoutY(395);
+        descriptionbox.setPrefSize(310,130);
+        descriptionbox.setAlignment(Pos.TOP_LEFT);
+
         getChildren().add(eventtitle);
         getChildren().add(eventtitlebox);
         getChildren().add(eventdate);
         getChildren().add(eventdatepicker);
         getChildren().add(eventtime);
+        getChildren().add(from);
+        getChildren().add(fromword);
+        getChildren().add(to);
+        getChildren().add(toword);
         getChildren().add(description);
+        getChildren().add(descriptionbox);
 
         Button addEvent = new Button("Add Event");
         addEvent.setLayoutX(Main.screenWidth-100);
         addEvent.setLayoutY(560);
+        addEvent.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                ((InitialView) Main.getViews().get(ViewName.INITIAL)).toggleEventPanel();
+                ((HourlyView) Main.getViews().get(ViewName.HOURLY)).toggleEventPanel();
+                Notifications notif = Notifications.create()
+                        .title("Event Created")
+                        .text("Event Title:"+eventtitlebox.getText())
+                        .graphic(null)
+                        .hideAfter(Duration.seconds(2))
+                        .position(Pos.BOTTOM_RIGHT);
+                if (Main.getnotifstatus()){
+                    notif.show();
+                }
+            }
+            });
         getChildren().add(addEvent);
     }
 
