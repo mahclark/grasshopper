@@ -2,6 +2,8 @@ package fx;
 
 import backend.EventFunctions;
 import backend.Location;
+import backend.SettingsFunctions;
+import com.sun.scenario.Settings;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -23,7 +25,7 @@ public class Main extends Application {
     private static boolean notification_status;//false=NO,true=YES
     private static boolean temperature_status;//false=C,true=F
     private static boolean time_format;//false=24hr,true=12Hr
-    private static Location userLocation = new Location("Cambridge");
+    private static Location userLocation = new Location(SettingsFunctions.getLocation());
 
     private static Map<ViewName, View> views = new HashMap<>();
     public static List<Event> events = new ArrayList<>();
@@ -48,6 +50,9 @@ public class Main extends Application {
         eventPanel = new EventPanel();
         settingsPanel = new SettingsPanel();
 
+
+
+
         views.put(ViewName.INITIAL, new InitialView(stage));
         views.put(ViewName.HOURLY, new HourlyView(stage));
 
@@ -69,10 +74,12 @@ public class Main extends Application {
     }
 
     public static Location getUserLocation() {
+        userLocation = new Location(SettingsFunctions.getLocation());
         return userLocation;
     }
 
     public static void setUserLocation(Location userLocation) {
+        SettingsFunctions.setLocation(userLocation);
         Main.userLocation = userLocation;
     }
 
@@ -81,27 +88,34 @@ public class Main extends Application {
     }
 
     public static boolean getnotifstatus(){
+        notification_status = SettingsFunctions.getNotificationStatus();
         return notification_status;
     }
 
     public static void changenotistatus(Number notistatus){
         if (notistatus.equals(0)){
             notification_status=false;
+            SettingsFunctions.setNotificationStatus(false);
         }
         else{
             notification_status=true;
+            SettingsFunctions.setNotificationStatus(true);
         }
     }
     public static boolean gettempformat(){
+        temperature_status = SettingsFunctions.getTemperatureStatus();
         return temperature_status;
     }
 
     public static void changetempformat(Number timeformat){
+
         if (timeformat.equals(0)){
             temperature_status=false;
+            SettingsFunctions.setTemperatureStatus(false);
         }
         else{
             temperature_status=true;
+            SettingsFunctions.setTemperatureStatus(true);
         }
     }
 

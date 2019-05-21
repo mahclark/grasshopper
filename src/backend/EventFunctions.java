@@ -84,7 +84,7 @@ public class EventFunctions {
 
     // Methods to save current events
     public static void saveEvents(List<Event> events){
-        // Creates writeer for file
+        // Creates writer for file
         String filepath = "resources/event.txt";
         try {
             PrintWriter writer = new PrintWriter(filepath, "UTF-8");
