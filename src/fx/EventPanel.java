@@ -2,6 +2,9 @@ package fx;
 
 import backend.EventFunctions;
 import backend.Location;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -16,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
@@ -24,6 +29,7 @@ import org.controlsfx.control.textfield.TextFields;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class EventPanel extends VBox {
 
@@ -38,7 +44,7 @@ public class EventPanel extends VBox {
     private Button deleteBtn;
 
     private TextField nameField;
-    private ComboBox locationChoice;
+    private ComboBox<String> locationChoice;
     private DatePicker datePicker;
     private ComboBox<Integer> timeChoice;
     private ComboBox<Integer> overChoice;
@@ -106,7 +112,7 @@ public class EventPanel extends VBox {
             scrollContent.getChildren().add(lineBreak);
         }
 
-        newEventBtn = new Button("New UserEvent");
+        newEventBtn = new Button("New Event");
         newEventBtn.setOnAction(e -> newEvent());
         newEventBtn.setLayoutX(0);
         newEventBtn.setLayoutY(0);
@@ -125,7 +131,7 @@ public class EventPanel extends VBox {
         cell.getChildren().addAll(errorLbl, newEventBtn);
         getChildren().add(cell);
 
-        Text nameTxt = new Text("UserEvent Name:");
+        Text nameTxt = new Text("Event Name:");
         nameTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         nameTxt.setFill(Color.WHITE);
 
@@ -139,7 +145,7 @@ public class EventPanel extends VBox {
         locationTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         locationTxt.setFill(Color.WHITE);
 
-        //TODO: Make this work
+//        TODO: Make this work
         locationChoice = new ComboBox<String>();
         locationChoice.setEditable(true);
         //locationChoice.setValue(Main.getUserLocation().getInput());
@@ -158,7 +164,15 @@ public class EventPanel extends VBox {
             }
         });
 
-
+//        locationBox = new ComboBox<>();
+//        locationBox.setTooltip(new Tooltip());
+//        new ComboBoxAutoComplete<String>(locationBox);
+//        getChildren().add(locationBox);
+//
+////        locationBox.setLayoutX(150);
+////        locationBox.setLayoutY(40);
+//        locationBox.setPrefWidth(200);
+//
         addCell(locationTxt, locationChoice);
 
         Text dateTxt = new Text("Date:");
@@ -218,7 +232,7 @@ public class EventPanel extends VBox {
 
         addCell(overTxt, overChoice);
 
-        Button addEvent = new Button("Save UserEvent");
+        Button addEvent = new Button("Save Event");
         addEvent.setOnAction(e -> addEvent());
 
         deleteBtn = new Button("Cancel");
@@ -249,8 +263,8 @@ public class EventPanel extends VBox {
         }
 
         Notifications notif = Notifications.create()
-                .title("UserEvent Deleted")
-//                .text("UserEvent Title:"+nameField.getText())
+                .title("Event Deleted")
+//                .text("Event Title:"+nameField.getText())
                 .graphic(null)
                 .hideAfter(Duration.seconds(2))
                 .position(Pos.BOTTOM_RIGHT);
@@ -327,8 +341,8 @@ public class EventPanel extends VBox {
             resetView();
 
             Notifications notif = Notifications.create()
-                    .title("UserEvent Saved")
-//                .text("UserEvent Title:"+nameField.getText())
+                    .title("Event Saved")
+//                .text("Event Title:"+nameField.getText())
                     .graphic(null)
                     .hideAfter(Duration.seconds(2))
                     .position(Pos.BOTTOM_RIGHT);
@@ -383,6 +397,75 @@ public class EventPanel extends VBox {
             newEventBtn.setDisable(false);
 
             Animator.transitionTo(this, 0, 0,0.5);
+        }
+    }
+
+    class ComboBoxAutoComplete<T> {
+
+        private ComboBox<String> cmb;
+        String filter = "";
+        private ObservableList<String> originalItems;
+
+        public ComboBoxAutoComplete(ComboBox<String> cmb) {
+            this.cmb = cmb;
+            originalItems = FXCollections.observableArrayList(cmb.getItems());
+            cmb.setTooltip(new Tooltip());
+            cmb.setOnKeyPressed(this::handleOnKeyPressed);
+            cmb.setOnHidden(this::handleOnHiding);
+        }
+
+        public void handleOnKeyPressed(KeyEvent e) {
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList(Location.getLocation(filter, true));
+                cmb.setItems(list);
+                originalItems = list;
+            } catch (IOException exception) {
+                System.out.println("No internet connection");
+            }
+            ObservableList<String> filteredList = FXCollections.observableArrayList();
+            KeyCode code = e.getCode();
+
+            if (code.isLetterKey()) {
+                filter += e.getText();
+            }
+            if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
+                filter = filter.substring(0, filter.length() - 1);
+            }
+            cmb.getItems().setAll(originalItems);
+            if (code == KeyCode.ESCAPE) {
+                filter = "";
+            }
+            if (filter.length() == 0) {
+                cmb.getTooltip().hide();
+            } else {
+                Stream<String> items = cmb.getItems().stream();
+                String txtUsr = filter.toString().toLowerCase();
+                items.filter(el -> el.toString().toLowerCase().contains(txtUsr)).forEach(filteredList::add);
+                cmb.getTooltip().setText(txtUsr);
+                Window stage = cmb.getScene().getWindow();
+                double posX = stage.getX() + cmb.getBoundsInParent().getMinX();
+                double posY = stage.getY() + cmb.getBoundsInParent().getMinY();
+                cmb.getTooltip().show(stage, posX, posY);
+                cmb.show();
+            }
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList(Location.getLocation(filter, true));
+                cmb.setItems(list);
+            } catch (IOException exception) {
+
+            }
+        }
+
+        public void handleOnHiding(Event e) {
+            if (cmb.getValue() != null) {
+                cmb.setValue(filter);
+                cmb.getEditor().setText(filter);
+                System.out.println(cmb.getValue());
+                filter = "";
+//                cmb.getTooltip().hide();
+//                String s = cmb.getSelectionModel().getSelectedItem();
+//                cmb.getSelectionModel().select(s);
+            }
         }
     }
 }

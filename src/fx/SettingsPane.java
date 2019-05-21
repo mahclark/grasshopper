@@ -59,21 +59,14 @@ public class SettingsPane extends Pane {
             }
         });
 
-        getChildren().add(locationChoice);
-        locationChoice.setLayoutX(150);
-        locationChoice.setLayoutY(40);
+        ComboBox<String> cmb = new ComboBox<>();
+        cmb.setTooltip(new Tooltip());
+        new ComboBoxAutoComplete<String>(cmb);
+        getChildren().add(cmb);
 
-        Button change = new Button("Go");
-        change.setOnMousePressed(e->{
-            Main.setUserLocation(new Location(locationChoice.getEditor().getText()));
-            Main.temperatureGraph.reloadGraph();
-            Main.getViews().get(ViewName.INITIAL).show();
-        });
-
-        getChildren().add(change);
-        change.setLayoutX(330);
-        change.setLayoutY(40);
-
+        cmb.setLayoutX(150);
+        cmb.setLayoutY(40);
+        cmb.setPrefWidth(200);
 
         Text locationTxt =new Text("Location:");
         locationTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
@@ -130,8 +123,7 @@ public class SettingsPane extends Pane {
         notificationChoice.setLayoutX(150);
         notificationChoice.setLayoutY(120);
     }
-
-    public class ComboBoxAutoComplete<T> {
+    class ComboBoxAutoComplete<T> {
 
         private ComboBox<String> cmb;
         String filter = "";
@@ -189,17 +181,18 @@ public class SettingsPane extends Pane {
         }
 
         public void handleOnHiding(Event e) {
-            Main.setUserLocation(new Location(filter));
-            Main.getViews().get(ViewName.INITIAL).show();
-            Main.temperatureGraph.reloadGraph();
+            if (cmb.getValue() != null) {
+                Main.setUserLocation(new Location(cmb.getValue()));
+                Main.getViews().get(ViewName.INITIAL).show();
+                Main.temperatureGraph.reloadGraph();
 
-            cmb.setValue(filter);
-            filter = "";
-            cmb.getTooltip().hide();
-            String s = cmb.getSelectionModel().getSelectedItem();
-            cmb.getSelectionModel().select(s);
+                cmb.setValue(filter);
+                filter = "";
+                cmb.getTooltip().hide();
+                String s = cmb.getSelectionModel().getSelectedItem();
+                cmb.getSelectionModel().select(s);
+            }
         }
-
     }
-}
 
+}
