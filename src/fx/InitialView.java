@@ -52,13 +52,13 @@ public class InitialView extends View {
         }
         mainTemp.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 150));
         mainTemp.setLayoutX(0);
-        mainTemp.setLayoutY(80);
+        mainTemp.setLayoutY(75);
         mainPane.getChildren().add(mainTemp);
 
         titleLbl = new Label();
         titleLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 40));
-        titleLbl.setLayoutX(Main.screenWidth/2.0);
-        titleLbl.setLayoutY(200);
+        titleLbl.setLayoutX(10 + Main.screenWidth/2.0);
+        titleLbl.setLayoutY(160);
         titleLbl.setWrapText(true);
         titleLbl.setPrefWidth(Main.screenWidth/2.0);
         mainPane.getChildren().add(titleLbl);
