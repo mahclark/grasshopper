@@ -1,5 +1,6 @@
 package backend;
 
+import fx.Main;
 import fx.UserEvent;
 
 import java.io.*;
@@ -13,8 +14,7 @@ public class EventFunctions {
     // Returns events in even list (accounts for errors)
     public static List<UserEvent> getEvents(){
         // Tries to get event file, returns empty if none found
-        String filepath = "resources/event.txt";
-        File file = new File(filepath);
+        File file = new File(Main.pathToEventFile);
         if (!file.exists()){
             return new ArrayList<>();
         }
@@ -92,9 +92,8 @@ public class EventFunctions {
     // Methods to save current events
     public static void saveEvents(List<UserEvent> events){
         // Creates writer for file
-        String filepath = "resources/event.txt";
         try {
-            PrintWriter writer = new PrintWriter(filepath, "UTF-8");
+            PrintWriter writer = new PrintWriter(Main.pathToEventFile, "UTF-8");
             for (UserEvent event: events){
                 //Prints required info then newline
                 writer.println(event.getName());

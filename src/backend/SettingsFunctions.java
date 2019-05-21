@@ -1,5 +1,7 @@
 package backend;
 
+import fx.Main;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -7,8 +9,7 @@ public class SettingsFunctions {
     public static boolean getNotificationStatus(){
 
         // Tries to get file with setting
-        String filepath = "resources/notifications.txt";
-        File file = new File(filepath);
+        File file = new File(Main.pathToNotificationsFile);
         if (!file.exists()){
             return true;
         }
@@ -34,8 +35,7 @@ public class SettingsFunctions {
     public static boolean getTemperatureStatus(){
 
         // Tries to get file with setting
-        String filepath = "resources/temperature.txt";
-        File file = new File(filepath);
+        File file = new File(Main.pathToTemperatureFile);
         if (!file.exists()){
             return false;
         }
@@ -61,8 +61,7 @@ public class SettingsFunctions {
     public static Location getLocation(){
 
         // Tries to get file with setting
-        String filepath = "resources/location.txt";
-        File file = new File(filepath);
+        File file = new File(Main.pathToLocationFile);
         if (!file.exists()){
             return new Location("Cambridge", "333245852306", 52.2107375, 0.09179849999999999);
         }
@@ -88,10 +87,9 @@ public class SettingsFunctions {
 
     public static void setNotificationStatus(Boolean status){
         // Creates writer for file
-        String filepath = "resources/notifications.txt";
         try {
             // Writes value
-            PrintWriter writer = new PrintWriter(filepath, "UTF-8");
+            PrintWriter writer = new PrintWriter(Main.pathToLocationFile, "UTF-8");
             writer.println(status);
             writer.close();
         }
@@ -102,10 +100,9 @@ public class SettingsFunctions {
 
     public static void setTemperatureStatus(Boolean status){
         // Creates writer for file
-        String filepath = "resources/temperature.txt";
         try {
             // Writes value
-            PrintWriter writer = new PrintWriter(filepath, "UTF-8");
+            PrintWriter writer = new PrintWriter(Main.pathToTemperatureFile, "UTF-8");
             writer.println(status);
             writer.close();
         }
@@ -116,10 +113,9 @@ public class SettingsFunctions {
 
     public static void setLocation(Location location){
         // Creates writer for file
-        String filepath = "resources/location.txt";
         try {
             // Writes value
-            PrintWriter writer = new PrintWriter(filepath, "UTF-8");
+            PrintWriter writer = new PrintWriter(Main.pathToLocationFile, "UTF-8");
             writer.println(location.getInput());
             writer.println(location.getPlaceId());
             writer.println(location.getLat());

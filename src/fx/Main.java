@@ -29,6 +29,11 @@ public class Main extends Application {
     private static Map<ViewName, View> views = new HashMap<>();
     public static List<UserEvent> events = new ArrayList<>();
 
+    public static final String pathToEventFile = "grasshopper_resources/event.txt";
+    public static final String pathToLocationFile = "grasshopper_resources/location.txt";
+    public static final String pathToNotificationsFile = "grasshopper_resources/notifications.txt";
+    public static final String pathToTemperatureFile = "grasshopper_resources/temperature.txt";
+
     public static Selector selector;
     public static Graph temperatureGraph;
     public static EventPanel eventPanel;
