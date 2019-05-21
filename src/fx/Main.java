@@ -3,7 +3,6 @@ package fx;
 import backend.EventFunctions;
 import backend.Location;
 import backend.SettingsFunctions;
-import com.sun.scenario.Settings;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -28,7 +27,7 @@ public class Main extends Application {
     private static Location userLocation = new Location(SettingsFunctions.getLocation());
 
     private static Map<ViewName, View> views = new HashMap<>();
-    public static List<Event> events = new ArrayList<>();
+    public static List<UserEvent> events = new ArrayList<>();
 
     public static Selector selector;
     public static Graph temperatureGraph;

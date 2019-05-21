@@ -2,7 +2,7 @@ package fx;
 
 import backend.Location;
 
-public class Event {
+public class UserEvent {
     final static String[] months = {
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     };
@@ -14,7 +14,7 @@ public class Event {
     private int startHour;
     private int overs;
 
-    public Event(String name, Location location, int date, int startHour, int overs) {
+    public UserEvent(String name, Location location, int date, int startHour, int overs) {
         this.name = name;
         this.location = location;
         this.locationName = location.getInput();

@@ -1,6 +1,6 @@
 package backend;
 
-import fx.Event;
+import fx.UserEvent;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -11,7 +11,7 @@ import java.util.List;
 public class EventFunctions {
 
     // Returns events in even list (accounts for errors)
-    public static List<Event> getEvents(){
+    public static List<UserEvent> getEvents(){
         // Tries to get event file, returns empty if none found
         String filepath = "resources/event.txt";
         File file = new File(filepath);
@@ -35,7 +35,7 @@ public class EventFunctions {
             String line = "initial";
             String[] values;
             int index;
-            List<Event> events = new ArrayList<>();
+            List<UserEvent> events = new ArrayList<>();
 
 
             String name;
@@ -66,7 +66,7 @@ public class EventFunctions {
                         overs = Integer.parseInt(values[4]);
 
                         if (date >= currentDate) {
-                            events.add(new Event(name, new Location(locationName), date, startHour, overs));
+                            events.add(new UserEvent(name, new Location(locationName), date, startHour, overs));
                         }
                     }
                     catch (NumberFormatException e) {
@@ -83,12 +83,12 @@ public class EventFunctions {
     }
 
     // Methods to save current events
-    public static void saveEvents(List<Event> events){
+    public static void saveEvents(List<UserEvent> events){
         // Creates writer for file
         String filepath = "resources/event.txt";
         try {
             PrintWriter writer = new PrintWriter(filepath, "UTF-8");
-            for (Event event: events){
+            for (UserEvent event: events){
                 //Prints required info then newline
                 writer.println(event.getName());
                 writer.println(event.getLocationName());

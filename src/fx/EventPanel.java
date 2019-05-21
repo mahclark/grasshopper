@@ -2,7 +2,6 @@ package fx;
 
 import backend.EventFunctions;
 import backend.Location;
-import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,18 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.controlsfx.control.PopOver;
@@ -49,7 +43,7 @@ public class EventPanel extends VBox {
     private ComboBox<Integer> timeChoice;
     private ComboBox<Integer> overChoice;
 
-    private Event editingEvent;
+    private UserEvent editingEvent;
 
     public EventPanel() {
         super(20);
@@ -90,7 +84,7 @@ public class EventPanel extends VBox {
         scrollPane.setHmin(0);
         getChildren().add(scrollPane);
 
-        for (Event event : Main.events) {
+        for (UserEvent event : Main.events) {
             Text eventTxt = new Text(event.getName());
             eventTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
             eventTxt.setFill(Color.WHITE);
@@ -112,7 +106,7 @@ public class EventPanel extends VBox {
             scrollContent.getChildren().add(lineBreak);
         }
 
-        newEventBtn = new Button("New Event");
+        newEventBtn = new Button("New UserEvent");
         newEventBtn.setOnAction(e -> newEvent());
         newEventBtn.setLayoutX(0);
         newEventBtn.setLayoutY(0);
@@ -131,7 +125,7 @@ public class EventPanel extends VBox {
         cell.getChildren().addAll(errorLbl, newEventBtn);
         getChildren().add(cell);
 
-        Text nameTxt = new Text("Event Name:");
+        Text nameTxt = new Text("UserEvent Name:");
         nameTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         nameTxt.setFill(Color.WHITE);
 
@@ -224,7 +218,7 @@ public class EventPanel extends VBox {
 
         addCell(overTxt, overChoice);
 
-        Button addEvent = new Button("Save Event");
+        Button addEvent = new Button("Save UserEvent");
         addEvent.setOnAction(e -> addEvent());
 
         deleteBtn = new Button("Cancel");
@@ -255,8 +249,8 @@ public class EventPanel extends VBox {
         }
 
         Notifications notif = Notifications.create()
-                .title("Event Deleted")
-//                .text("Event Title:"+nameField.getText())
+                .title("UserEvent Deleted")
+//                .text("UserEvent Title:"+nameField.getText())
                 .graphic(null)
                 .hideAfter(Duration.seconds(2))
                 .position(Pos.BOTTOM_RIGHT);
@@ -267,7 +261,7 @@ public class EventPanel extends VBox {
         resetView();
     }
 
-    private void editEvent(Event event) {
+    private void editEvent(UserEvent event) {
         editingEvent = event;
 
         deleteBtn.setText("Delete");
@@ -321,20 +315,20 @@ public class EventPanel extends VBox {
             int day = datePicker.getValue().getDayOfMonth();
             String date = "" + datePicker.getValue().getYear() + (month < 10 ? "0" : "") + month + (day < 10 ? "0" : "") + day;
 
-            Event newEvent = new Event(nameField.getText(), new Location(locationChoice.getEditor().getText()), Integer.parseInt(date), timeChoice.getValue(), overChoice.getValue());
+            UserEvent newEvent = new UserEvent(nameField.getText(), new Location(locationChoice.getEditor().getText()), Integer.parseInt(date), timeChoice.getValue(), overChoice.getValue());
 
             if (editingEvent != null) {
                 Main.events.remove(editingEvent);
             }
 
             Main.events.add(newEvent);
-            Main.events.sort(Comparator.comparingInt(Event::getDate));
+            Main.events.sort(Comparator.comparingInt(UserEvent::getDate));
 
             resetView();
 
             Notifications notif = Notifications.create()
-                    .title("Event Saved")
-//                .text("Event Title:"+nameField.getText())
+                    .title("UserEvent Saved")
+//                .text("UserEvent Title:"+nameField.getText())
                     .graphic(null)
                     .hideAfter(Duration.seconds(2))
                     .position(Pos.BOTTOM_RIGHT);
