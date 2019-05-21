@@ -255,6 +255,11 @@ public class Graph extends ScrollPane {
                 selectedCell = this;
 
                 tempLbl.setVisible(true);
+                if (Main.gettempformat()){
+                    tempLbl.setText(Math.round(temperatures.get(hour).intValue()*9.0/5) + 32 + "°");
+                } else {
+                    tempLbl.setText(temperatures.get(hour).intValue() + "°");
+                }
 
                 HourlyView hourlyView = (HourlyView) Main.getViews().get(ViewName.HOURLY);
                 hourlyView.show();
