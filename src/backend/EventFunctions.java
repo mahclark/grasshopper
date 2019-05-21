@@ -56,6 +56,7 @@ public class EventFunctions {
                     // Only adds if index less than five
                     if (index < 8) {
                         values[index] = line;
+                        System.out.println(line);
                     }
                     index++;
                 }

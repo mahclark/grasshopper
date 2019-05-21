@@ -1,6 +1,7 @@
 package backend;
 
 import java.io.IOException;
+
 public class LocationTester {
 
     public static void main (String[] arg) throws IOException {
@@ -16,6 +17,8 @@ public class LocationTester {
         }
         Location chick = new Location("Chicken");
         System.out.println(chick.getLat());
+
+
     }
 
 }
