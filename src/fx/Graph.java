@@ -227,7 +227,7 @@ public class Graph extends ScrollPane {
                 Pane lblPane = new Pane();
                 lblPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
                 lblPane.getChildren().add(timeLbl);
-                lblPane.setLayoutY(graphHeight - timeHeight - 4);
+                lblPane.setLayoutY(graphHeight - timeHeight + 2);
                 lblPane.setPrefWidth(cellWidth);
                 lblPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
