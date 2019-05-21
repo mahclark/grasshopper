@@ -63,6 +63,7 @@ public class HourlyView extends View {
         root.getChildren().add(eventPanel);
 
         scene.setOnMouseReleased(e -> selector.mouseUp());
+        mainPane.setOnMouseClicked(e -> handleBackgroundTap());
     }
 
     public void showHourlyWeather(int hour) {
@@ -112,8 +113,6 @@ public class HourlyView extends View {
         Animator.fade(weatherTitle, 0.0, 1.0, 0.5);
         Animator.fade(weatherLbl, 0.0, 1.0, 0.5);
         Animator.transitionTo(graph, 0, 80, 0.2);
-
-        mainPane.setOnMouseClicked(e -> handleBackgroundTap());
     }
 
     public void showStrategy(Event event) {
