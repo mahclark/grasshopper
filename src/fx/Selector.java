@@ -32,8 +32,8 @@ public class Selector extends ScrollPane {
     private List<SelectorItem> items = makeSomeStuff();//new ArrayList<>();
 
     public Selector() {
-
-        setStyle("-fx-background-color: transparent;");
+        setStyle("-fx-focus-color: transparent;");
+        getStylesheets().add("fx/scrollPane.css");
 
         setLayoutY(20);
 
