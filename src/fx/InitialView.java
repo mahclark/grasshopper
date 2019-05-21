@@ -1,16 +1,20 @@
 package fx;
 
 import backend.Location;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
+import javafx.scene.paint.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import weather.LocationWeatherOWM;
 import weather.NoInternetConnection;
 import weather.WeatherData;
+
+import java.util.*;
 
 public class InitialView extends View {
 
@@ -33,6 +37,8 @@ public class InitialView extends View {
         this.scene = new Scene(root, Main.screenWidth, Main.screenHeight);
         eventPanel.setLayoutX(0);
         eventPanel.setLayoutY(Main.screenHeight - 50);
+
+        root.setBackground(new Background(new BackgroundFill(Color.color(0.72, 0.8, 0.94), CornerRadii.EMPTY, Insets.EMPTY)));
 
         try {
             weather = new LocationWeatherOWM(Main.getUserLocation());

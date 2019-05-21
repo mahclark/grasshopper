@@ -16,8 +16,14 @@ Amstedam Amsterdam, NLD
 12
 20
 
+event3
+Incheon, KOR
+20190523
+12
+20
+
 Testing 2
-Nuneaton, Warwickshire, England, GBR
+Egypt
 20190524
 12
 20

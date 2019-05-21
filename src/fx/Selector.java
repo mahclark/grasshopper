@@ -32,7 +32,8 @@ public class Selector extends ScrollPane {
     private List<SelectorItem> items = makeSomeStuff();//new ArrayList<>();
 
     public Selector() {
-        setStyle("-fx-focus-color: transparent;");
+
+        setStyle("-fx-background-color: transparent;");
 
         setLayoutY(20);
 
@@ -259,7 +260,7 @@ public class Selector extends ScrollPane {
             dateLbl = new Label("" + (date % 100));
             dateLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
 
-            setBackground(new Background(new BackgroundFill(Color.color(0.57, 0.72, 0.96), CornerRadii.EMPTY, Insets.EMPTY)));
+            setBackground(new Background(new BackgroundFill(Color.color(1.0, 1.0, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
 
             addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> itemClicked(this)));
 
@@ -311,7 +312,7 @@ public class Selector extends ScrollPane {
             nameLbl = new Label(event.getName());
             nameLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 28));
 
-            setBackground(new Background(new BackgroundFill(Color.color(0.94, 0.89, 0.75), CornerRadii.EMPTY, Insets.EMPTY)));
+            setBackground(new Background(new BackgroundFill(Color.color(0.35, 0.25, 0.20), CornerRadii.EMPTY, Insets.EMPTY)));
 
             addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> itemClicked(this)));
 
