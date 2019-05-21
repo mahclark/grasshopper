@@ -1,6 +1,5 @@
 package fx;
 
-import backend.Location;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -115,7 +114,7 @@ public class HourlyView extends View {
         Animator.transitionTo(graph, 0, 80, 0.2);
     }
 
-    public void showStrategy(Event event) {
+    public void showStrategy(UserEvent event) {
         weatherLbl.setVisible(false);
         strategyLbl.setVisible(true);
         eventInfoLbl.setVisible(true);

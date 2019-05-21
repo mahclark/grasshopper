@@ -180,7 +180,7 @@ public class Selector extends ScrollPane {
         }
     }
 
-//    public void addEvent(Event event) {
+//    public void addEvent(UserEvent event) {
 //        EventItem eventItem = new EventItem(event);
 //        boolean newDateRequired = true;
 //        int insertIndex = 0;
@@ -207,7 +207,7 @@ public class Selector extends ScrollPane {
 
     private List<SelectorItem> makeSomeStuff() {
         List<EventItem> events = new ArrayList<>();
-        for (Event event : Main.events) {
+        for (UserEvent event : Main.events) {
             events.add(new EventItem(event));
         }
 
@@ -263,7 +263,7 @@ public class Selector extends ScrollPane {
             setPrefHeight(50);
             setAlignment(Pos.CENTER);
 
-            monthLbl = new Label(Event.months[(date % 10000  - date % 100)/100]);
+            monthLbl = new Label(UserEvent.months[(date % 10000  - date % 100)/100]);
             monthLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 10));
 
             dateLbl = new Label("" + (date % 100));
@@ -307,11 +307,11 @@ public class Selector extends ScrollPane {
     }
 
     class EventItem extends SelectorItem {
-        private Event event;
+        private UserEvent event;
 
         private Label nameLbl;
 
-        public EventItem(Event event) {
+        public EventItem(UserEvent event) {
             super(-10);
             this.event = event;
             setPrefHeight(50);
