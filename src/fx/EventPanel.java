@@ -328,9 +328,6 @@ public class EventPanel extends VBox {
             Main.events.add(newEvent);
             Main.events.sort(Comparator.comparingInt(Event::getDate));
 
-            // Saves events to file
-            EventFunctions.saveEvents(Main.events);
-
             resetView();
 
             Notifications notif = Notifications.create()
@@ -359,7 +356,8 @@ public class EventPanel extends VBox {
     }
 
     private void saveEvents() {
-
+        // Saves events to file
+        EventFunctions.saveEvents(Main.events);
     }
 
     public void toggle() {
