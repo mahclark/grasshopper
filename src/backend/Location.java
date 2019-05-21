@@ -83,16 +83,25 @@ public class Location {
         JsonParser jp = new JsonParser(); //from gson
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
         JsonObject rootObj = root.getAsJsonObject(); // convert json element to json object as the output gives one big json object
-        JsonArray suggestions = rootObj.get("suggestions").getAsJsonArray(); // get the JsonArray of all the suggested locations
 
-        String[] suggestionList = new String[suggestions.size()];
+        // Only gives adds suggestions if suggestions to give
+        if (rootObj.get("suggestions") != null) {
+            JsonArray suggestions = rootObj.get("suggestions").getAsJsonArray(); // get the JsonArray of all the suggested locations
 
-        for (int i = 0; i < suggestions.size(); i++) {
-            suggestionList[i] = suggestions.get(i).getAsJsonObject().get("text").getAsString();
-            // store the suggestions in an array in the form of strings
-        } // end for
+            String[] suggestionList = new String[suggestions.size()];
 
-        return suggestionList.clone();
+            for (int i = 0; i < suggestions.size(); i++) {
+                suggestionList[i] = suggestions.get(i).getAsJsonObject().get("text").getAsString();
+                // store the suggestions in an array in the form of strings
+            } // end for
+
+            return suggestionList.clone();
+        }
+        else{
+            return new String[0];
+        }
+
+
 
     }
 
