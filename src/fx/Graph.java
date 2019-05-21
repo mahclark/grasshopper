@@ -39,7 +39,6 @@ public class Graph extends ScrollPane {
 
     public Graph() {
         setStyle("-fx-focus-color: transparent;");
-        System.err.println("Cambridge location:\t" + Main.getUserLocation().getLon() + "\t" + Main.getUserLocation().getLat());
 
         reloadGraph();
 
@@ -58,20 +57,21 @@ public class Graph extends ScrollPane {
         temperatures = new TreeMap<>();
 
         try {
-            LocationWeatherOWM cambridgeWeather = new LocationWeatherOWM(Main.getUserLocation());
-
+            LocationWeatherOWM weatherOWM;
             int date = Main.selector.getSelectedDate();
             List<Integer> hours;
             if (Main.selector.eventSelected()) {
+                weatherOWM = new LocationWeatherOWM(Main.selector.eventLocation());
                 hours = ((HourlyView) Main.getViews().get(ViewName.HOURLY)).getRelevantWeatherHours();
             } else {
-                hours = cambridgeWeather.giveHours(date);
+                weatherOWM = new LocationWeatherOWM(Main.getUserLocation());
+                hours = weatherOWM.giveHours(date);
             }
 
             if (hours != null) {
                 for (int hour : hours) {
-                    if (cambridgeWeather.giveHours(date).contains(hour)) {
-                        temperatures.put(hour, cambridgeWeather.giveData(date, hour).getTemp());
+                    if (weatherOWM.giveHours(date).contains(hour)) {
+                        temperatures.put(hour, weatherOWM.giveData(date, hour).getTemp());
                     }
                 }
             }
