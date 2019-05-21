@@ -58,24 +58,31 @@ public class SettingsFunctions {
         }
     }
 
-    public static String getLocation(){
+    public static Location getLocation(){
 
         // Tries to get file with setting
         String filepath = "resources/location.txt";
         File file = new File(filepath);
         if (!file.exists()){
-            return "Cambridge";
+            return new Location("Cambridge", "333245852306", 52.2107375, 0.09179849999999999);
         }
 
         // If file exists, reads, and if set for false, changes to false, otherwise defaults to true
         try {
+            String[] strings = new String[4];
             FileInputStream fileInputStream = new FileInputStream(file);
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            return bufferedReader.readLine();
+            for (int i = 0; i<4; i++){
+                strings[i] = bufferedReader.readLine();
+                if (strings[i]==null || strings[i].equals("")){
+                    throw new IOException();
+                }
+            }
+            return new Location(strings[0], strings[1], Double.parseDouble(strings[2]), Double.parseDouble(strings[3]));
         }
         catch (IOException e){
-            return "Cambridge";
+            return new Location("Cambridge", "333245852306", 52.2107375, 0.09179849999999999);
         }
     }
 
@@ -114,6 +121,9 @@ public class SettingsFunctions {
             // Writes value
             PrintWriter writer = new PrintWriter(filepath, "UTF-8");
             writer.println(location.getInput());
+            writer.println(location.getPlaceId());
+            writer.println(location.getLat());
+            writer.println(location.getLon());
             writer.close();
         }
         catch (IOException e){

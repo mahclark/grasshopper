@@ -47,7 +47,6 @@ public class Location {
 
             URL url = new URL(GeocodeSearchUrl);
             URLConnection request = url.openConnection();
-            TimeUnit.MILLISECONDS.sleep(1000);
             request.connect();
 
             JsonParser jp = new JsonParser(); //from gson
