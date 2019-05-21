@@ -298,7 +298,7 @@ public class EventPanel extends VBox {
         boolean valid = false;
         if (nameField.getText().equals("")) {
             errorLbl.setText("Please choose a name");
-        } else if (locationChoice.getValue().equals("")) { //TODO: Check for valid location
+        } else if ((locationChoice.getValue() == null) || locationChoice.getValue().equals("")) { //TODO: Check for valid location
             errorLbl.setText("Please choose a location");
         } else if (datePicker.getValue() == null) {
             errorLbl.setText("Please choose a date");
