@@ -3,7 +3,9 @@ package backend;
 import fx.Event;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class EventFunctions {
@@ -24,11 +26,17 @@ public class EventFunctions {
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
+            // Gets current date to remove old values
+            Date dateC = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+            int currentDate = Integer.parseInt(formatter.format(dateC));
+
             // Variables for iteration
             String line = "initial";
             String[] values;
             int index;
             List<Event> events = new ArrayList<>();
+
 
             String name;
             String locationName;
@@ -57,7 +65,9 @@ public class EventFunctions {
                         startHour = Integer.parseInt(values[3]);
                         overs = Integer.parseInt(values[4]);
 
-                        events.add(new Event(name, new Location(locationName), date, startHour, overs));
+                        if (date >= currentDate) {
+                            events.add(new Event(name, new Location(locationName), date, startHour, overs));
+                        }
                     }
                     catch (NumberFormatException e) {
                     }
