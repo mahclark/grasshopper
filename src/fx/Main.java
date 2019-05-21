@@ -24,7 +24,7 @@ public class Main extends Application {
     private static boolean notification_status;//false=NO,true=YES
     private static boolean temperature_status;//false=C,true=F
     private static boolean time_format;//false=24hr,true=12Hr
-    private static Location userLocation = new Location(SettingsFunctions.getLocation());
+    private static Location userLocation = SettingsFunctions.getLocation();
 
     private static Map<ViewName, View> views = new HashMap<>();
     public static List<UserEvent> events = new ArrayList<>();
@@ -73,7 +73,7 @@ public class Main extends Application {
     }
 
     public static Location getUserLocation() {
-        userLocation = new Location(SettingsFunctions.getLocation());
+        userLocation = SettingsFunctions.getLocation();
         return userLocation;
     }
 
