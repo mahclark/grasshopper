@@ -231,7 +231,12 @@ public class Graph extends ScrollPane {
                 lblPane.setPrefWidth(cellWidth);
                 lblPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
-                tempLbl = new Label(temperatures.get(hour).intValue() + "°");
+                tempLbl = new Label();
+                if (Main.gettempformat()){
+                    tempLbl.setText(Math.round(temperatures.get(hour).intValue()*9.0/5) + 32 + "°");
+                } else {
+                    tempLbl.setText(temperatures.get(hour).intValue() + "°");
+                }
                 tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 24));
                 tempLbl.setLayoutY(dotCenterY - 15);
                 tempLbl.setPrefWidth(cellWidth);

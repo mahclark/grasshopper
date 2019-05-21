@@ -52,13 +52,13 @@ public class InitialView extends View {
         }
         mainTemp.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 150));
         mainTemp.setLayoutX(0);
-        mainTemp.setLayoutY(75);
+        mainTemp.setLayoutY(55);
         mainPane.getChildren().add(mainTemp);
 
         titleLbl = new Label();
         titleLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 40));
         titleLbl.setLayoutX(10 + Main.screenWidth/2.0);
-        titleLbl.setLayoutY(160);
+        titleLbl.setLayoutY(140);
         titleLbl.setWrapText(true);
         titleLbl.setPrefWidth(Main.screenWidth/2.0);
         mainPane.getChildren().add(titleLbl);
@@ -88,9 +88,13 @@ public class InitialView extends View {
         Button settingsButton = new Button("Settings");
         settingsButton.setOnAction(e -> // Main.getViews().get(ViewName.SETTINGS).show()
                 callSettings());
-        mainPane.getChildren().add(settingsButton);
+//        mainPane.getChildren().add(settingsButton);
         settingsButton.setLayoutX(10);
         settingsButton.setLayoutY(Main.screenHeight - 90);
+
+        SettingsPane settings = new SettingsPane();
+        settings.setLayoutY(460);
+        mainPane.getChildren().add(settings);
 
         root.getChildren().add(eventPanel);
 
@@ -101,7 +105,8 @@ public class InitialView extends View {
         if (withAnimation) {
             Animator.fade(mainTemp, 0.0, 1.0, 0.5);
             Animator.fade(titleLbl, 0.0, 1.0, 0.5);
-            Animator.transitionTo(graph, 0, 270, 0.2);
+            Animator.fade(settings, 0.0, 1.0, 0.5);
+            Animator.transitionTo(graph, 0, 250, 0.2);
 
             settingsButton.setLayoutY(Main.screenHeight + 10);
             Animator.transitionBy(settingsButton, 0, -100, 0.2);
