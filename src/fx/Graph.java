@@ -232,13 +232,14 @@ public class Graph extends ScrollPane {
                 lblPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
 
                 tempLbl = new Label(temperatures.get(hour).intValue() + "°");
-                tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
+                tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 24));
                 tempLbl.setLayoutY(dotCenterY - 15);
                 tempLbl.setPrefWidth(cellWidth);
                 tempLbl.setAlignment(Pos.CENTER);
+                tempLbl.setTextFill(Color.WHITE);
 
                 getChildren().addAll(dot, tempLbl, lblPane);
-                tempLbl.setVisible(false);
+                dot.setVisible(false);
 
                 addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> select()));
             }
@@ -266,19 +267,19 @@ public class Graph extends ScrollPane {
                 hourlyView.showHourlyWeather(hour);
 
                 setColor(Color.WHITE);
-                dot.setVisible(false);
+                tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
+                tempLbl.setTextFill(Color.BLACK);
             }
         }
 
         void deselect() {
-            tempLbl.setVisible(false);
-
             if (hour % 2 == 0) {
                 setColor(Color.color(0.72, 0.8, 0.94));
             } else {
                 setColor(Color.color(0.57, 0.72, 0.96));
             }
-            dot.setVisible(true);
+            tempLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 24));
+            tempLbl.setTextFill(Color.WHITE);
         }
     }
 }
