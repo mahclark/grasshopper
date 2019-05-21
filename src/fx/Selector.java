@@ -71,6 +71,15 @@ public class Selector extends ScrollPane {
         return (selectedItem instanceof EventItem);
     }
 
+    public Location eventLocation() {
+        if (selectedItem instanceof EventItem) {
+            return ((EventItem) selectedItem).getLocation();
+        }
+        else {
+                return null;
+            }
+    }
+
     public int getSelectedDate() {
         return selectedItem.getDate();
     }
@@ -317,6 +326,10 @@ public class Selector extends ScrollPane {
             addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> itemClicked(this)));
 
             getChildren().add(nameLbl);
+        }
+
+        public Location getLocation() {
+            return event.getLocation();
         }
 
         @Override
