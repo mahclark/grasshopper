@@ -20,6 +20,11 @@ public class SettingsPanel extends Pane {
 
     private Button close;
     private boolean nearme;
+    private Label title;
+    private ChoiceBox notification;
+    private CheckBox nearmebox;
+    private ComboBox location;
+
 
     public SettingsPanel(){
         setPrefWidth(300);
@@ -28,7 +33,7 @@ public class SettingsPanel extends Pane {
 
         setStyle("-fx-background-color: rgba(40,40,40, 0.7); -fx-background-radius: 10;");
 
-        Label title = new Label("Settings");
+        title = new Label("Settings");
         title.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 32));
         title.setTextFill(Color.WHITE);
         title.setPrefWidth(Main.screenWidth - 20);
@@ -59,7 +64,7 @@ public class SettingsPanel extends Pane {
 //        );
 
 
-        ChoiceBox notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
+        notification = new ChoiceBox(FXCollections.observableArrayList("No","Yes"));
         if (Main.getnotifstatus()){
             notification.setValue("Yes");
         }
@@ -81,7 +86,7 @@ public class SettingsPanel extends Pane {
         close.setLayoutX(270);
         close.setLayoutY(5);
 
-        CheckBox nearmebox = new CheckBox("Near Me");
+        nearmebox = new CheckBox("Near Me");
         nearmebox.setSelected(nearme);
         nearmebox.setTextFill(Color.WHITE);
         nearmebox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -90,7 +95,7 @@ public class SettingsPanel extends Pane {
                 nearme = t1;
             }
         });
-        ComboBox location = new ComboBox<String>();
+        location = new ComboBox<String>();
         location.setEditable(true);
         location.getEditor().setText(Main.getUserLocation().getInput());
         try {
@@ -104,12 +109,6 @@ public class SettingsPanel extends Pane {
                     TextFields.bindAutoCompletion(location.getEditor(), Location.getLocation(location.getEditor().getText(), true));
                 }
                 catch (IOException e){}
-            }
-        });
-        location.selectionModelProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observableValue, Object o, Object t1) {
-                Main.setUserLocation(new Location(t1.toString()));
             }
         });
 
@@ -179,6 +178,9 @@ public class SettingsPanel extends Pane {
     private void clicked() {
         ((InitialView) Main.getViews().get(ViewName.INITIAL)).recallSettings();
         ((HourlyView) Main.getViews().get(ViewName.HOURLY)).recallSettings();
+        Main.setUserLocation(new Location(location.getEditor().getText()));
+        Main.temperatureGraph.reloadGraph();
+        ((InitialView) Main.getViews().get(ViewName.INITIAL)).show();
     }
 }
 

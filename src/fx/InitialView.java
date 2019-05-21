@@ -17,6 +17,8 @@ public class InitialView extends View {
     private Stage stage;
     private Scene scene;
 
+    public Label titleLbl;
+
     private Pane root = new Pane();
     private Pane mainPane = new Pane();
 
@@ -50,7 +52,7 @@ public class InitialView extends View {
         mainTemp.setLayoutY(80);
         mainPane.getChildren().add(mainTemp);
 
-        Label titleLbl = new Label();
+        titleLbl = new Label();
         titleLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 48));
         titleLbl.setLayoutX(Main.screenWidth/2.0);
         titleLbl.setLayoutY(80);
