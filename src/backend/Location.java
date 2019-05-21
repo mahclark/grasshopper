@@ -28,6 +28,13 @@ public class Location {
     private String placeId;
     private String input;
 
+    public Location (String input, String placeID, double lat, double lon){
+        this.lat = lat;
+        this.lon = lon;
+        this.placeId = placeID;
+        this.input = input;
+    }
+
     public Location (String input) {
         this.input = input;
 
