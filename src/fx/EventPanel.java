@@ -1,5 +1,6 @@
 package fx;
 
+import backend.EventFunctions;
 import backend.Location;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
@@ -297,7 +298,7 @@ public class EventPanel extends VBox {
             int day = datePicker.getValue().getDayOfMonth();
             String date = "" + datePicker.getValue().getYear() + (month < 10 ? "0" : "") + month + (day < 10 ? "0" : "") + day;
 
-            Event newEvent = new Event(nameField.getText(), new Location("Cambridge"), Integer.parseInt(date), timeChoice.getValue(), overChoice.getValue());
+            Event newEvent = new Event(nameField.getText(), new Location(locationChoice.getValue().toString()), Integer.parseInt(date), timeChoice.getValue(), overChoice.getValue());
 
             if (editingEvent != null) {
                 Main.events.remove(editingEvent);
@@ -305,6 +306,9 @@ public class EventPanel extends VBox {
 
             Main.events.add(newEvent);
             Main.events.sort(Comparator.comparingInt(Event::getDate));
+
+            // Saves events to file
+            EventFunctions.saveEvents(Main.events);
 
             resetView();
 

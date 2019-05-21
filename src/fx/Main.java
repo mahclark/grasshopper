@@ -1,5 +1,6 @@
 package fx;
 
+import backend.EventFunctions;
 import backend.Location;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -64,10 +65,7 @@ public class Main extends Application {
     }
 
     private void loadEvents() {
-        events.add(new Event("Match vs Oxford",   new Location("Cambridge"), 20190521, 7, 20));
-        events.add(new Event("M2",                new Location("Cambridge"), 20190521, 12, 30));
-        events.add(new Event("Rematch vs Oxford", new Location("Cambridge"), 20190524, 12, 30));
-        events.add(new Event("Training",          new Location("Cambridge"), 20190531, 12, 30));
+        events = EventFunctions.getEvents();
     }
 
     public static Location getUserLocation() {
