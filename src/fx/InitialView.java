@@ -47,15 +47,18 @@ public class InitialView extends View {
         root.getChildren().add(mainPane);
 
         Label mainTemp = new Label(Main.temperatureGraph.getAvgTemperature() + "°");
+        if (Main.gettempformat()){
+            mainTemp = new Label(Math.round(Integer.parseInt(Main.temperatureGraph.getAvgTemperature())*9.0/5)+32 + "°");
+        }
         mainTemp.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 150));
         mainTemp.setLayoutX(0);
         mainTemp.setLayoutY(80);
         mainPane.getChildren().add(mainTemp);
 
         titleLbl = new Label();
-        titleLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 48));
+        titleLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 40));
         titleLbl.setLayoutX(Main.screenWidth/2.0);
-        titleLbl.setLayoutY(80);
+        titleLbl.setLayoutY(200);
         titleLbl.setWrapText(true);
         titleLbl.setPrefWidth(Main.screenWidth/2.0);
         mainPane.getChildren().add(titleLbl);

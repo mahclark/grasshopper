@@ -229,6 +229,16 @@ public class EventPanel extends VBox {
             Main.events.remove(editingEvent);
         }
 
+        Notifications notif = Notifications.create()
+                .title("Event Deleted")
+//                .text("Event Title:"+nameField.getText())
+                .graphic(null)
+                .hideAfter(Duration.seconds(2))
+                .position(Pos.BOTTOM_RIGHT);
+        if (Main.getnotifstatus()) {
+            notif.show();
+        }
+
         resetView();
     }
 
@@ -299,7 +309,7 @@ public class EventPanel extends VBox {
             resetView();
 
             Notifications notif = Notifications.create()
-                    .title("Event Created")
+                    .title("Event Saved")
 //                .text("Event Title:"+nameField.getText())
                     .graphic(null)
                     .hideAfter(Duration.seconds(2))
@@ -307,6 +317,7 @@ public class EventPanel extends VBox {
             if (Main.getnotifstatus()) {
                 notif.show();
             }
+
         } else {
             Animator.fade(errorLbl, 0.0, 1.0, 0.5);
         }

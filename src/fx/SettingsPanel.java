@@ -121,14 +121,14 @@ public class SettingsPanel extends Pane {
         location.setLayoutY(100);
 
         Text l =new Text("Location");
-        l.setFont(Font.font("Times New Roman",20));
+        l.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         l.setFill(Color.WHITE);
         getChildren().add(l);
         l.setLayoutX(30);
         l.setLayoutY(85);
 
         Text temp = new Text("Temperature");
-        temp.setFont(Font.font("Times New Roman",20));
+        temp.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         temp.setFill(Color.WHITE);
         getChildren().add(temp);
         temp.setLayoutX(30);
@@ -168,7 +168,7 @@ public class SettingsPanel extends Pane {
         notification.setLayoutY(400);
 
         Text n =new Text("Notification");
-        n.setFont(Font.font("Times New Roman",20));
+        n.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
         n.setFill(Color.WHITE);
         getChildren().add(n);
         n.setLayoutX(30);
