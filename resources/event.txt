@@ -16,15 +16,6 @@ Brazilia, Distrito Federal, BRA
 12
 20
 
-Test3
-Toronto, Ontario, CAN
-67479272
-43.6607002
--79.3850889
-20190522
-12
-20
-
 Test4
 Paris, Île-de-France, FRA
 214288338
@@ -48,6 +39,15 @@ New York, NY, USA
 214334866
 40.7127281
 -74.0060152
+20190522
+12
+20
+
+Test3
+Toronto, Ontario, CAN
+67479272
+43.6607002
+-79.3850889
 20190522
 12
 20
