@@ -13,6 +13,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -83,8 +84,10 @@ public class EventPanel extends VBox {
         scrollPane.setPannable(true);
         scrollPane.setFitToWidth(true);
         scrollPane.getStylesheets().add("fx/scrollPane.css");
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); //Hides scroll bars
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setHmax(0);      //Prevents horizontal scrolling
+        scrollPane.setHmin(0);
         getChildren().add(scrollPane);
 
         for (Event event : Main.events) {
