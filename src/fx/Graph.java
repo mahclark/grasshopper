@@ -39,7 +39,6 @@ public class Graph extends ScrollPane {
 
     public Graph() {
         setStyle("-fx-focus-color: transparent;");
-        System.err.println("Cambridge location:\t" + Main.getUserLocation().getLon() + "\t" + Main.getUserLocation().getLat());
 
         reloadGraph();
 
