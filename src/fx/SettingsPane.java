@@ -44,7 +44,7 @@ public class SettingsPane extends Pane {
 
         locationChoice = new ComboBox<String>();
         locationChoice.setEditable(true);
-        locationChoice.getEditor().setText(Main.getUserLocation().getInput());
+        locationChoice.setValue(Main.getUserLocation().getInput());
         try {
             TextFields.bindAutoCompletion(locationChoice.getEditor(), Location.getLocation(locationChoice.getEditor().getText(), true));
         }
@@ -61,6 +61,7 @@ public class SettingsPane extends Pane {
 
         ComboBox<String> cmb = new ComboBox<>();
         cmb.setTooltip(new Tooltip());
+        cmb.setValue(Main.getUserLocation().getInput());
         new ComboBoxAutoComplete<String>(cmb);
         getChildren().add(cmb);
 
@@ -183,8 +184,8 @@ public class SettingsPane extends Pane {
         public void handleOnHiding(Event e) {
             if (cmb.getValue() != null) {
                 Main.setUserLocation(new Location(cmb.getValue()));
-                Main.getViews().get(ViewName.INITIAL).show();
                 Main.temperatureGraph.reloadGraph();
+                Main.getViews().get(ViewName.INITIAL).show();
 
                 cmb.setValue(filter);
                 filter = "";
