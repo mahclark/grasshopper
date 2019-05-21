@@ -269,7 +269,8 @@ public class Selector extends ScrollPane {
             dateLbl = new Label("" + (date % 100));
             dateLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 30));
 
-            setBackground(new Background(new BackgroundFill(Color.color(1.0, 1.0, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+//            setBackground(new Background(new BackgroundFill(Color.color(1.0, 1.0, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+            setBackground(new Background(new BackgroundFill(Color.color(0.72, 0.8, 0.94), CornerRadii.EMPTY, Insets.EMPTY)));
 
             addEventHandler(MouseEvent.ANY, new clickNotDragHandler(e -> itemClicked(this)));
 
