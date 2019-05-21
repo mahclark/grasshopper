@@ -39,6 +39,7 @@ public class Graph extends ScrollPane {
 
     public Graph() {
         setStyle("-fx-focus-color: transparent;");
+        getStylesheets().add("fx/scrollPane.css");
 
         reloadGraph();
 
