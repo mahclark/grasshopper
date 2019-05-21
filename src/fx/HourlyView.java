@@ -120,10 +120,10 @@ public class HourlyView extends View {
         strategyLbl.setVisible(true);
         eventInfoLbl.setVisible(true);
 
-        eventInfoLbl.setText(event.getStartHour() + ":00 - " + event.getLocationName() + ", " + event.getOvers() + " overs");
-        eventInfoLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 28));
-        eventInfoLbl.setLayoutY(72);
-        eventInfoLbl.setPrefWidth(Main.screenWidth);
+        eventInfoLbl.setText(event.getStartHour() + ":00 - " + event.getLocationName().split(",")[0] + ", " + event.getOvers() + " overs");
+        eventInfoLbl.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 26));
+        eventInfoLbl.setLayoutY(75);
+        eventInfoLbl.setMinWidth(Main.screenWidth);
         eventInfoLbl.setAlignment(Pos.CENTER);
         mainPane.getChildren().add(eventInfoLbl);
 
