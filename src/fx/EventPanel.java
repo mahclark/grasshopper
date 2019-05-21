@@ -298,7 +298,7 @@ public class EventPanel extends VBox {
         boolean valid = false;
         if (nameField.getText().equals("")) {
             errorLbl.setText("Please choose a name");
-        } else if ((locationChoice.getValue() == null) || locationChoice.getValue().equals("")) { //TODO: Check for valid location
+        } else if (locationChoice.getEditor().getText().equals("")) { //TODO: Check for valid location
             errorLbl.setText("Please choose a location");
         } else if (datePicker.getValue() == null) {
             errorLbl.setText("Please choose a date");
@@ -306,7 +306,6 @@ public class EventPanel extends VBox {
             errorLbl.setText("Please choose a time");
         } else if (overChoice.getValue() == null) {
             errorLbl.setText("Please choose number of overs");
-
         } else if (datePicker.getValue().isBefore(LocalDate.now())) {
             errorLbl.setText("Date must be in the future");
         } else if (overChoice.getValue() < 1) {
@@ -322,7 +321,7 @@ public class EventPanel extends VBox {
             int day = datePicker.getValue().getDayOfMonth();
             String date = "" + datePicker.getValue().getYear() + (month < 10 ? "0" : "") + month + (day < 10 ? "0" : "") + day;
 
-            Event newEvent = new Event(nameField.getText(), new Location(locationChoice.getValue().toString()), Integer.parseInt(date), timeChoice.getValue(), overChoice.getValue());
+            Event newEvent = new Event(nameField.getText(), new Location(locationChoice.getEditor().getText()), Integer.parseInt(date), timeChoice.getValue(), overChoice.getValue());
 
             if (editingEvent != null) {
                 Main.events.remove(editingEvent);
