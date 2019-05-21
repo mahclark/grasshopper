@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.skin.DatePickerSkin;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
@@ -18,8 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
@@ -174,7 +178,24 @@ public class EventPanel extends VBox {
         datePicker.setValue(LocalDate.now().plusDays(1));
         datePicker.setEditable(false);
 
-        addCell(dateTxt, datePicker);
+        //Making the Date Picker's popup use a PopOver, for easier manipulation
+        DatePickerSkin datePickerSkin = new DatePickerSkin(datePicker);
+
+        Node datePickerPopupContent = datePickerSkin.getPopupContent();
+
+        datePicker.setOnShown(e -> {
+            PopOver datePickerPopover  = new PopOver();
+            datePickerPopover.setAutoFix(true);
+            datePickerPopover.setDetachable(false);
+            datePickerPopover.setAutoHide(true);
+            datePickerPopover.setArrowLocation(PopOver.ArrowLocation.BOTTOM_CENTER);
+            datePickerPopover.setContentNode(datePickerPopupContent);
+            datePickerPopover.show(datePicker);
+
+        });
+
+        datePicker.setSkin(datePickerSkin);
+        addCell(dateTxt, datePicker);   //End of setting up the date picker
 
         Text timeTxt = new Text("Start Hour:");
         timeTxt.setFont(Font.loadFont(Main.class.getResourceAsStream("Kollektif.ttf"), 20));
