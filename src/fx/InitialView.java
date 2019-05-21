@@ -38,7 +38,7 @@ public class InitialView extends View {
         eventPanel.setLayoutX(0);
         eventPanel.setLayoutY(Main.screenHeight - 50);
 
-        root.setBackground(new Background(new BackgroundFill(Color.color(0.72, 0.8, 0.94), CornerRadii.EMPTY, Insets.EMPTY)));
+//        root.setBackground(new Background(new BackgroundFill(Color.color(0.72, 0.8, 0.94), CornerRadii.EMPTY, Insets.EMPTY)));
 
         try {
             weather = new LocationWeatherOWM(Main.getUserLocation());
