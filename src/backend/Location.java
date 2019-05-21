@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class Location {
 
@@ -28,7 +30,15 @@ public class Location {
     private String placeId;
     private String input;
 
+    public Location (String input, String placeID, double lat, double lon){
+        this.lat = lat;
+        this.lon = lon;
+        this.placeId = placeID;
+        this.input = input;
+    }
+
     public Location (String input) {
+
         this.input = input;
 
         this.GeocodeSearchUrl = String.format(GEOCODE_BASE_URL, GEOCODE_TOKEN, input);
@@ -37,7 +47,9 @@ public class Location {
 
             URL url = new URL(GeocodeSearchUrl);
             URLConnection request = url.openConnection();
+            TimeUnit.MILLISECONDS.sleep(1000);
             request.connect();
+
             JsonParser jp = new JsonParser(); //from gson
             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
             JsonArray rootArr = root.getAsJsonArray(); // convert json element to json array as the output gives an array of json objects
@@ -49,7 +61,7 @@ public class Location {
 
         }
 
-        catch (IOException e) {
+        catch (Exception e) {
             System.err.println("IOException: "+e.getMessage());
             this.lat = 52.2107375;
             this.lon = 0.09179849999999999;

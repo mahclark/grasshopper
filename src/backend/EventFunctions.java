@@ -39,34 +39,41 @@ public class EventFunctions {
 
 
             String name;
-            String locationName;
+            String locationInput;
+            String locationID;
+            double latitude;
+            double longitude;
             int date;
             int startHour;
             int overs;
 
             // Iterates through lines
             while (line != null) {
-                values = new String[5];
+                values = new String[8];
                 index = 0;
                 // Processes data, if error occurs will iterate until empty string reached
                 while (((line = bufferedReader.readLine()) != null) && ((!line.equals("")))) {
                     // Only adds if index less than five
-                    if (index < 5) {
+                    if (index < 8) {
                         values[index] = line;
+                        System.out.println(line);
                     }
                     index++;
                 }
                 // Only adds if correct amounts
-                if (index == 5) {
+                if (index == 8) {
                     name = values[0];
-                    locationName = values[1];
+                    locationInput = values[1];
+                    locationID = values[2];
                     try {
-                        date = Integer.parseInt(values[2]);
-                        startHour = Integer.parseInt(values[3]);
-                        overs = Integer.parseInt(values[4]);
+                        latitude = Double.parseDouble(values[3]);
+                        longitude = Double.parseDouble(values[4]);
+                        date = Integer.parseInt(values[5]);
+                        startHour = Integer.parseInt(values[6]);
+                        overs = Integer.parseInt(values[7]);
 
                         if (date >= currentDate) {
-                            events.add(new UserEvent(name, new Location(locationName), date, startHour, overs));
+                            events.add(new UserEvent(name, new Location(locationInput, locationID, latitude, longitude), date, startHour, overs));
                         }
                     }
                     catch (NumberFormatException e) {
@@ -91,7 +98,10 @@ public class EventFunctions {
             for (UserEvent event: events){
                 //Prints required info then newline
                 writer.println(event.getName());
-                writer.println(event.getLocationName());
+                writer.println(event.getLocation().getInput());
+                writer.println(event.getLocation().getPlaceId());
+                writer.println(event.getLocation().getLat());
+                writer.println(event.getLocation().getLon());
                 writer.println(event.getDate());
                 writer.println(event.getStartHour());
                 writer.println(event.getOvers());
