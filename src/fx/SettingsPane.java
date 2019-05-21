@@ -123,77 +123,76 @@ public class SettingsPane extends Pane {
         notificationChoice.setLayoutX(150);
         notificationChoice.setLayoutY(120);
     }
-}
-class ComboBoxAutoComplete<T> {
+    class ComboBoxAutoComplete<T> {
 
-    private ComboBox<String> cmb;
-    String filter = "";
-    private ObservableList<String> originalItems;
+        private ComboBox<String> cmb;
+        String filter = "";
+        private ObservableList<String> originalItems;
 
-    public ComboBoxAutoComplete(ComboBox<String> cmb) {
-        this.cmb = cmb;
-        originalItems = FXCollections.observableArrayList(cmb.getItems());
-        cmb.setTooltip(new Tooltip());
-        cmb.setOnKeyPressed(this::handleOnKeyPressed);
-        cmb.setOnHidden(this::handleOnHiding);
-    }
+        public ComboBoxAutoComplete(ComboBox<String> cmb) {
+            this.cmb = cmb;
+            originalItems = FXCollections.observableArrayList(cmb.getItems());
+            cmb.setTooltip(new Tooltip());
+            cmb.setOnKeyPressed(this::handleOnKeyPressed);
+            cmb.setOnHidden(this::handleOnHiding);
+        }
 
-    public void handleOnKeyPressed(KeyEvent e) {
-        try {
+        public void handleOnKeyPressed(KeyEvent e) {
+            try {
 //                cmb.setValue(filter);
-            ObservableList<String> list = FXCollections.observableArrayList(Location.getLocation(filter, true));
-            cmb.setItems(list);
-            originalItems = list;
-        } catch (IOException exception) {
-            System.out.println("No internet connection");
-        }
-        ObservableList<String> filteredList = FXCollections.observableArrayList();
-        KeyCode code = e.getCode();
+                ObservableList<String> list = FXCollections.observableArrayList(Location.getLocation(filter, true));
+                cmb.setItems(list);
+                originalItems = list;
+            } catch (IOException exception) {
+                System.out.println("No internet connection");
+            }
+            ObservableList<String> filteredList = FXCollections.observableArrayList();
+            KeyCode code = e.getCode();
 
-        if (code.isLetterKey()) {
-            filter += e.getText();
-        }
-        if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
-            filter = filter.substring(0, filter.length() - 1);
-        }
-        cmb.getItems().setAll(originalItems);
-        if (code == KeyCode.ESCAPE) {
-            filter = "";
-        }
-        if (filter.length() == 0) {
-            cmb.getTooltip().hide();
-        } else {
-            Stream<String> items = cmb.getItems().stream();
-            String txtUsr = filter.toString().toLowerCase();
-            items.filter(el -> el.toString().toLowerCase().contains(txtUsr)).forEach(filteredList::add);
-            cmb.getTooltip().setText(txtUsr);
-            Window stage = cmb.getScene().getWindow();
-            double posX = stage.getX() + cmb.getBoundsInParent().getMinX();
-            double posY = stage.getY() + cmb.getBoundsInParent().getMinY();
-            cmb.getTooltip().show(stage, posX, posY);
-            cmb.show();
-        }
-        try {
-            ObservableList<String> list = FXCollections.observableArrayList(Location.getLocation(filter, true));
-            cmb.setItems(list);
-        } catch (IOException exception) {
+            if (code.isLetterKey()) {
+                filter += e.getText();
+            }
+            if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
+                filter = filter.substring(0, filter.length() - 1);
+            }
+            cmb.getItems().setAll(originalItems);
+            if (code == KeyCode.ESCAPE) {
+                filter = "";
+            }
+            if (filter.length() == 0) {
+                cmb.getTooltip().hide();
+            } else {
+                Stream<String> items = cmb.getItems().stream();
+                String txtUsr = filter.toString().toLowerCase();
+                items.filter(el -> el.toString().toLowerCase().contains(txtUsr)).forEach(filteredList::add);
+                cmb.getTooltip().setText(txtUsr);
+                Window stage = cmb.getScene().getWindow();
+                double posX = stage.getX() + cmb.getBoundsInParent().getMinX();
+                double posY = stage.getY() + cmb.getBoundsInParent().getMinY();
+                cmb.getTooltip().show(stage, posX, posY);
+                cmb.show();
+            }
+            try {
+                ObservableList<String> list = FXCollections.observableArrayList(Location.getLocation(filter, true));
+                cmb.setItems(list);
+            } catch (IOException exception) {
 
+            }
         }
-    }
 
-    public void handleOnHiding(Event e) {
-        if (cmb.getValue() != null) {
-            Main.setUserLocation(new Location(cmb.getValue()));
-            Main.getViews().get(ViewName.INITIAL).show();
-            Main.temperatureGraph.reloadGraph();
+        public void handleOnHiding(Event e) {
+            if (cmb.getValue() != null) {
+                Main.setUserLocation(new Location(cmb.getValue()));
+                Main.getViews().get(ViewName.INITIAL).show();
+                Main.temperatureGraph.reloadGraph();
 
-            cmb.setValue(filter);
-            filter = "";
-            cmb.getTooltip().hide();
-            String s = cmb.getSelectionModel().getSelectedItem();
-            cmb.getSelectionModel().select(s);
+                cmb.setValue(filter);
+                filter = "";
+                cmb.getTooltip().hide();
+                String s = cmb.getSelectionModel().getSelectedItem();
+                cmb.getSelectionModel().select(s);
+            }
         }
     }
 
 }
-
